@@ -1,0 +1,71 @@
+/*
+Theme Name: ExcelGraphics
+Theme URI: Customized theme
+Author: Codxel
+Author URI: Codxel Technologies
+Description: This is a custom theme for ExcelGraphics. It offers flexible design options, supported by a variety of patterns for different page types, such as services and landing pages, making it ideal for building personal blogs, professional portfolios, online magazines, or business websites. Its templates cater to various blog styles, from text-focused to image-heavy layouts. Additionally, it supports international typography and diverse color palettes, ensuring accessibility and customization for users worldwide. 
+
+Tags: One Column, Custom Colors, custom-menu, Custom Logo, Editor Style, Featured Images, Site Editor, Block Editor Patterns,threaded-comments, translation-ready, Wide Blocks, Block Editor Styles, Style Variations, Accessibility Ready, Blog, Portfolio, News
+
+Version: 1.0
+
+Text Domain: ExcelGraphics
+This theme, like WordPress, is licensed under the Codxel Technologies.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+html {
+  margin: 0px !important;
+}
+
+body {
+  font-family: "Sora", sans-serif;
+}
+
+
+
+/* Base State: Hidden & Transition Ready */
+.fade-up,
+.fade-left,
+.fade-right {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 1. Fade Up Baseline */
+.fade-up {
+  transform: translateY(40px);
+}
+
+/* 2. Fade From Left Baseline */
+.fade-left {
+  transform: translateX(-50px);
+}
+
+/* 3. Fade From Right Baseline */
+.fade-right {
+  transform: translateX(50px);
+}
+
+/* Active State (Scrolled Into View) */
+.fade-up.is-visible,
+.fade-left.is-visible,
+.fade-right.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Stagger Delays (Only applied when entering) */
+.fade-up.is-visible.delay-100,
+.fade-left.is-visible.delay-100,
+.fade-right.is-visible.delay-100 { transition-delay: 0.1s; }
+
+.fade-up.is-visible.delay-200,
+.fade-left.is-visible.delay-200,
+.fade-right.is-visible.delay-200 { transition-delay: 0.2s; }
+
+.fade-up.is-visible.delay-300,
+.fade-left.is-visible.delay-300,
+.fade-right.is-visible.delay-300 { transition-delay: 0.3s; }

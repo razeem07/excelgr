@@ -1,0 +1,15 @@
+# Ignore everything by default; this repo tracks only our custom code
+# (ExcelWeb theme + mu-plugins), not WordPress core, other plugins, or uploads.
+/*
+
+!/wp-content/
+/wp-content/*
+!/wp-content/themes/
+!/wp-content/mu-plugins/
+
+/wp-content/themes/*
+!/wp-content/themes/ExcelWeb/
+
+# OS/editor cruft that could sneak in under the tracked paths
+.DS_Store
+Thumbs.db
