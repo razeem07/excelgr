@@ -108,7 +108,7 @@
 
 /* Headings & Text */
 .about-hero-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -116,7 +116,7 @@
 }
 
 .about-hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 680px;
@@ -129,7 +129,7 @@
     padding: 50px 40px;
   }
   .about-hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -141,10 +141,10 @@
     padding: 40px 30px;
   }
   .about-hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
   .about-hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -153,7 +153,7 @@
     padding: 30px 20px;
   }
   .about-hero-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 }
 </style>
@@ -258,7 +258,7 @@
 }
 
 .who-we-are-title {
-  font-size: 2.1rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.8px;
@@ -272,7 +272,7 @@
 }
 
 .who-we-are-description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 40px;
@@ -357,7 +357,7 @@
   }
 
   .who-we-are-title {
-    font-size: 1.9rem;
+    font-size: 3rem;
   }
 }
 
@@ -369,11 +369,11 @@
   }
 
   .who-we-are-title {
-    font-size: 1.7rem;
+    font-size: 1.85rem;
   }
 
   .who-we-are-description {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 
   .pillar-card {
@@ -453,7 +453,7 @@
 }
 
 .team-title {
-  font-size: 2.1rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.8px;
@@ -484,7 +484,7 @@
 
 @media (max-width: 1024px) {
   .team-title {
-    font-size: 1.9rem;
+    font-size: 3rem;
   }
   .team-photo-wrapper {
     max-width: 100%;
@@ -501,7 +501,7 @@
     margin-bottom: 50px;
   }
   .team-title {
-    font-size: 1.65rem;
+    font-size: 1.8rem;
   }
   .team-group-photo {
     max-height: 340px;
@@ -834,7 +834,7 @@
 }
 
 .mission-title {
-  font-size: 2.1rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.8px;
@@ -843,7 +843,7 @@
 }
 
 .mission-description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: #444444;
   margin-bottom: 32px;
@@ -915,7 +915,7 @@
   }
 
   .mission-title {
-    font-size: 1.9rem;
+    font-size: 3rem;
   }
 
   .mission-image {
@@ -930,11 +930,11 @@
   }
 
   .mission-title {
-    font-size: 1.65rem;
+    font-size: 1.8rem;
   }
 
   .mission-description {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 
   .mission-image {
@@ -1063,7 +1063,7 @@
 }
 
 .vision-title {
-  font-size: 2.1rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.8px;
@@ -1072,7 +1072,7 @@
 }
 
 .vision-description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   color: #444444;
   margin-bottom: 32px;
@@ -1124,7 +1124,7 @@
   }
 
   .vision-title {
-    font-size: 1.9rem;
+    font-size: 3rem;
   }
 
   .vision-image {
@@ -1139,11 +1139,11 @@
   }
 
   .vision-title {
-    font-size: 1.65rem;
+    font-size: 1.8rem;
   }
 
   .vision-description {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 
   .vision-image {

@@ -196,7 +196,7 @@
 }
 
 .single-post-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -1.2px;
@@ -407,7 +407,7 @@
 }
 
 .related-posts-main-title {
-  font-size: 2.15rem;
+  font-size: 3rem;
   font-weight: 800;
   color: #0d0d0d;
   margin: 0;
@@ -523,7 +523,7 @@
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .single-post-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -532,7 +532,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .single-post-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
 }
 
@@ -543,7 +543,7 @@
   }
 
   .single-post-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
   .single-post-meta {

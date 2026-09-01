@@ -107,7 +107,7 @@
 
 /* Headings & Text */
 .contact-hero-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -115,7 +115,7 @@
 }
 
 .contact-hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 680px;
@@ -128,7 +128,7 @@
     padding: 50px 40px;
   }
   .contact-hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -140,10 +140,10 @@
     padding: 40px 30px;
   }
   .contact-hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
   .contact-hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -152,7 +152,7 @@
     padding: 30px 20px;
   }
   .contact-hero-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 }
 </style>
@@ -303,7 +303,7 @@
 }
 
 .contact-details-main-title {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -312,7 +312,7 @@
 }
 
 .contact-details-description {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   color: #222222;
   margin: 0;
@@ -386,7 +386,7 @@
     padding: 20px 40px;
   }
   .contact-details-main-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -395,7 +395,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .contact-details-main-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
 }
 
@@ -408,7 +408,7 @@
     gap: 20px;
   }
   .contact-details-main-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
   .contact-card {
     padding: 30px 20px;
@@ -496,7 +496,7 @@
 }
 
 .contact-form-title {
-  font-size: 1.9rem;
+  font-size: 2.1rem;
   font-weight: 800;
   color: #0d0d0d;
   margin: 0 0 8px 0;
@@ -621,7 +621,7 @@
   }
 
   .contact-form-title {
-    font-size: 1.6rem;
+    font-size: 1.75rem;
   }
 
   .contact-form-wrapper .forminator-button-submit {

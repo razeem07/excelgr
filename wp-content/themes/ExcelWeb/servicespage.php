@@ -109,7 +109,7 @@
 
 /* Headings & Text */
 .services-hero-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -118,7 +118,7 @@
 }
 
 .services-hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 680px;
@@ -131,7 +131,7 @@
     padding: 50px 40px;
   }
   .services-hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -143,10 +143,10 @@
     padding: 40px 30px;
   }
   .services-hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
   .services-hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -159,21 +159,19 @@
     padding: 30px 20px;
   }
   .services-hero-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 }
 </style>
 
 
 <?php
-  $args = array(
-    'post_type'      => 'service', // Your CPT slug
-    'posts_per_page' => -1,        // Fetch all services
+$services_query = new WP_Query( array(
+    'post_type'      => 'service',
+    'posts_per_page' => -1,
     'orderby'        => 'menu_order title',
-    'order'          => 'ASC'
-  );
-
-  $services_query = new WP_Query($args);
+    'order'          => 'ASC',
+) );
 ?>
 
 <section class="services-list-section">
@@ -188,44 +186,23 @@
       <p class="services-list-subtitle fade-left">Explore our wide range of tailored solutions designed to meet your specific needs.</p>
     </div>
 
-    <div class="services-grid">
-      <?php if ( $services_query->have_posts() ) :
-        while ( $services_query->have_posts() ) : $services_query->the_post(); ?>
+    <?php if ( ! $services_query->have_posts() ) : ?>
+      <p class="no-services-found">No services found.</p>
+    <?php else : ?>
 
-        <article class="service-card">
-          <a href="<?php the_permalink(); ?>" class="service-card-img-link">
-            <?php if ( has_post_thumbnail() ) : ?>
-              <img 
-                src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" 
-                alt="<?php the_title_attribute(); ?>" 
-                class="service-card-img fade-left" 
-              />
-            <?php else : ?>
-              <div class="service-card-placeholder"></div>
-            <?php endif; ?>
-          </a>
-
-          <div class="service-card-content">
-            <h3 class="service-card-title fade-right">
-              <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            </h3>
-
-            <div class="service-card-text fade-left">
-              <?php echo wp_trim_words( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 22, '...' ); ?>
-            </div>
-
-            <a href="<?php the_permalink(); ?>" class="service-card-btn fade-right">
-              Learn More <span class="btn-arrow">→</span>
-            </a>
-          </div>
-        </article>
-
-      <?php endwhile;
-        wp_reset_postdata();
-      else : ?>
-        <p class="no-services-found">No services found.</p>
-      <?php endif; ?>
+    <div class="services-cards-grid">
+      <?php while ( $services_query->have_posts() ) : $services_query->the_post(); ?>
+        <a href="<?php the_permalink(); ?>" class="services-tab-item">
+          <?php if ( has_post_thumbnail() ) : ?>
+            <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="<?php the_title_attribute(); ?>" class="services-tab-img" />
+          <?php endif; ?>
+          <div class="services-tab-overlay"></div>
+          <h3 class="services-tab-title"><?php the_title(); ?></h3>
+        </a>
+      <?php endwhile; wp_reset_postdata(); ?>
     </div>
+
+    <?php endif; ?>
 
   </div>
 </section>
@@ -272,7 +249,7 @@
 }
 
 .services-list-main-title {
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -1.2px;
@@ -287,120 +264,79 @@
   margin: 0;
 }
 
-/* Services 3-Column Grid */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
-}
-
-/* Service Card Styling */
-.service-card {
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 28px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
-}
-
-/* Image Wrapper with Hover Zoom */
-.service-card-img-link {
-  display: block;
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-  position: relative;
-  background-color: #f4f4f4;
-}
-
-.service-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.service-card:hover .service-card-img {
-  transform: scale(1.05);
-}
-
-.service-card-placeholder {
-  width: 100%;
-  height: 100%;
-  background-color: #e9ecef;
-}
-
-/* Card Body Content */
-.service-card-content {
-  padding: 32px 28px 36px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.service-card-title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1.3;
-  margin: 0 0 14px 0;
-}
-
-.service-card-title a {
-  color: #0d0d0d;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.service-card-title a:hover {
-  color: #1ba3b0;
-}
-
-.service-card-text {
-  font-size: 1.1rem;
-  line-height: 1.65;
-  color: #555555;
-  margin-bottom: 24px;
-  flex-grow: 1;
-}
-
-/* Action Button */
-.service-card-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1ba3b0;
-  text-decoration: none;
-  margin-top: auto;
-  transition: gap 0.3s ease, color 0.3s ease;
-}
-
-.service-card-btn .btn-arrow {
-  transition: transform 0.3s ease;
-}
-
-.service-card-btn:hover {
-  color: #14838e;
-}
-
-.service-card-btn:hover .btn-arrow {
-  transform: translateX(5px);
-}
-
 .no-services-found {
-  grid-column: 1 / -1;
   text-align: center;
   font-size: 1.25rem;
   color: #666666;
   padding: 40px 0;
+}
+
+/* Services Cards Grid */
+.services-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+
+.services-tab-item {
+  position: relative;
+  height: 520px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 16px;
+  box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.services-tab-item:hover {
+  transform: translateY(-4px);
+  color: inherit;
+  text-decoration: none;
+}
+
+.services-tab-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+
+.services-tab-item:hover .services-tab-img {
+  transform: scale(1.05);
+}
+
+.services-tab-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 1;
+}
+
+.services-tab-title {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin: 0;
 }
 
 /* Responsive Styles */
@@ -409,17 +345,24 @@
     padding: 0 40px;
   }
   .services-list-main-title {
-    font-size: 2.15rem;
+    font-size: 3rem;
+  }
+  .services-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
   }
 }
 
 @media (max-width: 991px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-  }
   .services-list-main-title {
-    font-size: 1.95rem;
+    font-size: 2.1rem;
+  }
+  .services-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .services-tab-item {
+    height: 420px;
   }
 }
 
@@ -429,21 +372,17 @@
     padding: 0 10px;
   }
 
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
   .services-list-main-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
-  .service-card-img-link {
-    height: 210px;
+  .services-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .service-card-content {
-    padding: 24px 20px 28px;
+  .services-tab-item {
+    height: 380px;
   }
 }
 </style>

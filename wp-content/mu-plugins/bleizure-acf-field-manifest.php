@@ -11,108 +11,6 @@ function bleizure_field_manifest() {
 		'page:5' => array(
 			'screen' => array('post_type' => 'page', 'post_id' => 5),
 			'fields' => array(
-				'home_banner' => array(
-					'group_title' => 'Home Page Settings',
-					'label' => 'Home Banner',
-					'fields' => array(
-						'banner_image' => array(
-							'label' => 'Banner Image',
-							'type' => 'image',
-						),
-						'title' => array(
-							'label' => 'Title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'Content',
-							'type' => 'text',
-						),
-						'title_2' => array(
-							'label' => 'Title 2',
-							'type' => 'text',
-						),
-						'content_2' => array(
-							'label' => 'Content 2',
-							'type' => 'text',
-						),
-						'view_project_button' => array(
-							'label' => 'View Project Button',
-							'type' => 'text',
-						),
-						'reach_out_button' => array(
-							'label' => 'Reach Out Button',
-							'type' => 'text',
-						),
-					),
-				),
-				'home_banner_2' => array(
-					'group_title' => 'Home Page Settings',
-					'label' => 'Home Banner 2',
-					'fields' => array(
-						'banner_image' => array(
-							'label' => 'Banner Image',
-							'type' => 'image',
-						),
-						'title' => array(
-							'label' => 'Title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'Content',
-							'type' => 'text',
-						),
-						'title_2' => array(
-							'label' => 'Title 2',
-							'type' => 'text',
-						),
-						'content_2' => array(
-							'label' => 'Content 2',
-							'type' => 'text',
-						),
-						'view_project_button' => array(
-							'label' => 'View Project Button',
-							'type' => 'text',
-						),
-						'reach_out_button' => array(
-							'label' => 'Reach Out Button',
-							'type' => 'text',
-						),
-					),
-				),
-				'home_banner_3' => array(
-					'group_title' => 'Home Page Settings',
-					'label' => 'Home Banner 3',
-					'fields' => array(
-						'banner_image' => array(
-							'label' => 'Banner Image',
-							'type' => 'image',
-						),
-						'title' => array(
-							'label' => 'Title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'Content',
-							'type' => 'text',
-						),
-						'title_2' => array(
-							'label' => 'Title 2',
-							'type' => 'text',
-						),
-						'content_2' => array(
-							'label' => 'Content 2',
-							'type' => 'text',
-						),
-						'view_project_button' => array(
-							'label' => 'View Project Button',
-							'type' => 'text',
-						),
-						'reach_out_button' => array(
-							'label' => 'Reach Out Button',
-							'type' => 'text',
-						),
-					),
-				),
 				'who_we_are' => array(
 					'group_title' => 'Home Page Settings',
 					'label' => 'Who We Are',
@@ -163,85 +61,6 @@ function bleizure_field_manifest() {
 											'type' => 'image',
 										),
 							),
-						),
-					),
-				),
-				'what_we_do' => array(
-					'group_title' => 'Home Page Settings',
-					'label' => 'What We Do',
-					'fields' => array(
-						'title' => array(
-							'label' => 'Title',
-							'type' => 'text',
-						),
-						'card_1' => array(
-							'label' => 'Card 1',
-							'fields' => array(
-										'image' => array(
-											'label' => 'Image',
-											'type' => 'image',
-										),
-										'title' => array(
-											'label' => 'Title',
-											'type' => 'text',
-										),
-							),
-						),
-						'card_2' => array(
-							'label' => 'Card 2',
-							'fields' => array(
-										'image' => array(
-											'label' => 'Image',
-											'type' => 'image',
-										),
-										'title' => array(
-											'label' => 'Title',
-											'type' => 'text',
-										),
-							),
-						),
-						'card_3' => array(
-							'label' => 'Card 3',
-							'fields' => array(
-										'image' => array(
-											'label' => 'Image',
-											'type' => 'image',
-										),
-										'title' => array(
-											'label' => 'Title',
-											'type' => 'text',
-										),
-							),
-						),
-						'card_4' => array(
-							'label' => 'Card 4',
-							'fields' => array(
-										'image' => array(
-											'label' => 'Image',
-											'type' => 'image',
-										),
-										'title' => array(
-											'label' => 'Title',
-											'type' => 'text',
-										),
-							),
-						),
-						'card_5' => array(
-							'label' => 'Card 5',
-							'fields' => array(
-										'image' => array(
-											'label' => 'Image',
-											'type' => 'image',
-										),
-										'title' => array(
-											'label' => 'Title',
-											'type' => 'text',
-										),
-							),
-						),
-						'view_all_button' => array(
-							'label' => 'View All Button',
-							'type' => 'text',
 						),
 					),
 				),
@@ -760,10 +579,50 @@ function bleizure_field_manifest() {
 		'posttype:service' => array(
 			'screen' => array('post_type' => 'service'),
 			'fields' => array(
+				'service_banner_image' => array(
+					'group_title' => 'Single Services Settings',
+					'label' => 'Banner Image (used on the service detail hero — separate from the Featured Image used on listing cards)',
+					'type' => 'image',
+				),
 				'services_faq' => array(
 					'group_title' => 'Single Services Settings',
 					'label' => 'Services FAQ',
 					'type' => 'wysiwyg',
+				),
+			),
+		),
+		'posttype:banner' => array(
+			'screen' => array('post_type' => 'banner'),
+			'fields' => array(
+				'banner_content' => array(
+					'group_title' => 'Banner Content',
+					'label' => 'Banner Content',
+					'fields' => array(
+						'headline' => array(
+							'label' => 'Headline (HTML allowed, e.g. <br> for line breaks)',
+							'type' => 'text',
+						),
+						'description' => array(
+							'label' => 'Description',
+							'type' => 'text',
+						),
+						'badge_title' => array(
+							'label' => 'Badge Title (e.g. "SINCE 2002") — optional',
+							'type' => 'text',
+						),
+						'badge_content' => array(
+							'label' => 'Badge Subtext — optional',
+							'type' => 'text',
+						),
+						'view_project_button' => array(
+							'label' => 'View Project Button URL',
+							'type' => 'text',
+						),
+						'reach_out_button' => array(
+							'label' => 'Reach Out Button URL',
+							'type' => 'text',
+						),
+					),
 				),
 			),
 		),

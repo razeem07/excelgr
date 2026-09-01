@@ -120,7 +120,7 @@
 
 /* Headings & Text */
 .process-hero-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -129,7 +129,7 @@
 }
 
 .process-hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 680px;
@@ -142,7 +142,7 @@
     padding: 50px 40px;
   }
   .process-hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -154,10 +154,10 @@
     padding: 40px 30px;
   }
   .process-hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
   .process-hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -170,7 +170,7 @@
     padding: 30px 20px;
   }
   .process-hero-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 }
 </style>
@@ -288,7 +288,7 @@
 }
 
 .process-list-main-title {
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -1.2px;
@@ -406,13 +406,13 @@
     padding: 0 40px;
   }
   .process-list-main-title {
-    font-size: 2.15rem;
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 991px) {
   .process-list-main-title {
-    font-size: 1.95rem;
+    font-size: 2.1rem;
   }
   .process-detail-item {
     padding: 36px 28px;
@@ -429,7 +429,7 @@
   }
 
   .process-list-main-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
   .process-fullwidth-description {

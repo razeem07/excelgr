@@ -3,19 +3,26 @@
  ?>
 
  <?php get_header(); ?>
-<?php 
-// Example structure: Fetch the flexible content or repeater array
-// Adjust 'home_banners' if you are using an ACF Repeater field
-$banners = get_field('home_banners'); 
+<?php
+$banner_posts = get_posts([
+    'post_type'      => 'banner',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC',
+]);
 
-// Fallback to array of 3 if single group is used
-if (!$banners) {
-    $banners = [
-        get_field('home_banner'),
-        get_field('home_banner_2'),
-        get_field('home_banner_3')
+$banners = array_map(function ($p) {
+    return [
+        'banner_image'         => get_the_post_thumbnail_url($p->ID, 'full'),
+        'title'                => get_post_meta($p->ID, 'banner_content_headline', true),
+        'content'              => get_post_meta($p->ID, 'banner_content_description', true),
+        'title_2'              => get_post_meta($p->ID, 'banner_content_badge_title', true),
+        'content_2'            => get_post_meta($p->ID, 'banner_content_badge_content', true),
+        'view_project_button'  => get_post_meta($p->ID, 'banner_content_view_project_button', true),
+        'reach_out_button'     => get_post_meta($p->ID, 'banner_content_reach_out_button', true),
     ];
-}
+}, $banner_posts);
 ?>
 
 <section class="hero-banner-slider">
@@ -149,7 +156,7 @@ if (!$banners) {
 }
 
 .hero-title {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -157,7 +164,7 @@ if (!$banners) {
 }
 
 .hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 600px;
@@ -252,7 +259,7 @@ if (!$banners) {
   }
 
   .hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -269,11 +276,11 @@ if (!$banners) {
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
 
   .hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 
   .hero-right {
@@ -436,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 
 .eg-about-main-title {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -449,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 
 .eg-about-description {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   color: #222222;
   margin-bottom: 56px;
@@ -503,7 +510,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   .eg-about-main-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -518,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   .eg-about-main-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
 }
 
@@ -536,6 +543,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+<?php
+$home_services = get_posts([
+    'post_type'      => 'service',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC',
+]);
+?>
+
 <section class="eg-services-section">
   <!-- Header Block -->
   <div class="eg-services-header">
@@ -544,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <span class="eg-services-badge-text  fade-left">What we do</span>
     </div>
     <h2 class="eg-services-main-title fade-right">
-      <?php echo get_field('what_we_do')['title']; ?>
+      Innovative ideas and bold execution<br />that drive measurable growth
     </h2>
   </div>
 
@@ -552,67 +569,26 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="eg-services-carousel-wrapper">
     <!-- Carousel Track -->
     <div class="eg-services-carousel-track" id="egServicesTrack">
-      
-      <!-- Card 1 -->
-      <div class="eg-services-card">
-        <img 
-          src="<?php echo get_field('what_we_do')['card_1']['image']; ?>" 
-          alt="LED Signage" 
-          class="eg-services-card-img  fade-up"
-        />
-        <div class="eg-services-card-overlay"></div>
-        <h3 class="eg-services-card-title fade-left"><?php echo get_field('what_we_do')['card_1']['title']; ?></h3>
-      </div>
 
-      <!-- Card 2 -->
-      <div class="eg-services-card">
-        <img 
-          src="<?php echo get_field('what_we_do')['card_2']['image']; ?>" 
-          alt="Acrylic Laser Cutting" 
-          class="eg-services-card-img fade-up"
-        />
-        <div class="eg-services-card-overlay"></div>
-        <h3 class="eg-services-card-title fade-left"><?php echo get_field('what_we_do')['card_2']['title']; ?></h3>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="eg-services-card">
-        <img 
-          src="<?php echo get_field('what_we_do')['card_3']['image']; ?>" 
-          alt="Scrolling Display Board" 
-          class="eg-services-card-img fade-up"
-        />
-        <div class="eg-services-card-overlay"></div>
-        <h3 class="eg-services-card-title fade-left"><?php echo get_field('what_we_do')['card_3']['title']; ?></h3>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="eg-services-card">
-        <img 
-          src="<?php echo get_field('what_we_do')['card_4']['image']; ?>" 
-          alt="Reflective Sign Board Material" 
-          class="eg-services-card-img fade-up"
-        />
-        <div class="eg-services-card-overlay"></div>
-        <h3 class="eg-services-card-title fade-left"><?php echo get_field('what_we_do')['card_4']['title']; ?></h3>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="eg-services-card">
-        <img 
-          src="<?php echo get_field('what_we_do')['card_5']['image']; ?>" 
-          alt="Custom Logos" 
-          class="eg-services-card-img fade-up"
-        />
-        <div class="eg-services-card-overlay"></div>
-        <h3 class="eg-services-card-title fade-left"><?php echo get_field('what_we_do')['card_5']['title']; ?></h3>
-      </div>
+      <?php foreach ($home_services as $service): ?>
+        <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="eg-services-card">
+          <?php if (has_post_thumbnail($service->ID)): ?>
+            <img
+              src="<?php echo esc_url(get_the_post_thumbnail_url($service->ID, 'large')); ?>"
+              alt="<?php echo esc_attr(get_the_title($service->ID)); ?>"
+              class="eg-services-card-img fade-up"
+            />
+          <?php endif; ?>
+          <div class="eg-services-card-overlay"></div>
+          <h3 class="eg-services-card-title fade-left"><?php echo esc_html(get_the_title($service->ID)); ?></h3>
+        </a>
+      <?php endforeach; ?>
 
     </div>
 
     <!-- Carousel Arrow Button -->
-    <button 
-      class="eg-services-arrow-btn" 
+    <button
+      class="eg-services-arrow-btn"
       aria-label="Next slide"
       onclick="egScrollCarousel()"
     >
@@ -624,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   <!-- Bottom CTA -->
   <div class="eg-services-footer">
-    <a href="<?php echo get_field('what_we_do')['view_all_button']; ?>" class="eg-services-btn-outline">View all</a>
+    <a href="<?php echo esc_url(home_url('/services/')); ?>" class="eg-services-btn-outline">View all</a>
   </div>
 </section>
 
@@ -632,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function egScrollCarousel() {
   const track = document.getElementById('egServicesTrack');
   const maxScroll = track.scrollWidth - track.clientWidth;
-  
+
   // Check if we reached or are near the end (10px tolerance for decimal precision)
   if (track.scrollLeft >= maxScroll - 10) {
     track.scrollTo({ left: 0, behavior: 'smooth' });
@@ -682,7 +658,7 @@ function egScrollCarousel() {
 }
 
 .eg-services-main-title {
-  font-size: 2.4rem;
+  font-size: 3.6rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -1px;
@@ -718,7 +694,7 @@ function egScrollCarousel() {
 .eg-services-card {
   position: relative;
   /* Formula: (100% width - 3 gaps of 45px [135px]) / 4 cards */
-  flex: 0 0 calc((100% - 135px) / 4); 
+  flex: 0 0 calc((100% - 135px) / 4);
   height: 520px; /* Sleek vertical portrait height */
   border-radius: 4px;
   overflow: hidden;
@@ -730,6 +706,13 @@ function egScrollCarousel() {
   text-align: center;
   padding: 32px 16px;
   box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+}
+
+.eg-services-card:hover {
+  color: inherit;
+  text-decoration: none;
 }
 
 .eg-services-card-img {
@@ -957,7 +940,7 @@ function egScrollCarousel() {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 80px;
+  gap: 48px;
   margin-bottom: 60px;
 }
 
@@ -987,7 +970,7 @@ function egScrollCarousel() {
 }
 
 .eg-features-main-title {
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -998,11 +981,11 @@ function egScrollCarousel() {
 /* Right Column Paragraph */
 .eg-features-right {
   flex: 1.2;
-  padding-top: 40px; /* Aligns paragraph vertically with title */
+  padding-top: 20px; /* Aligns paragraph vertically with title */
 }
 
 .eg-features-description {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.65;
   color: #333333;
   margin: 0;
@@ -1064,7 +1047,7 @@ function egScrollCarousel() {
     padding: 20px 40px;
   }
   .eg-features-main-title {
-    font-size: 2.15rem;
+    font-size: 3rem;
   }
   .eg-features-grid {
     gap: 16px;
@@ -1096,7 +1079,7 @@ function egScrollCarousel() {
     padding: 20px 20px;
   }
   .eg-features-main-title {
-    font-size: 1.9rem;
+    font-size: 2.05rem;
   }
   .eg-features-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1241,7 +1224,7 @@ function egScrollCarousel() {
 
 /* Title Styling */
 .eg-scale-main-title {
-  font-size: 2.2rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -1251,7 +1234,7 @@ function egScrollCarousel() {
 
 /* Sub-description */
 .eg-scale-description {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.45;
   color: #444444;
   margin: 0 0 36px 0;
@@ -1322,7 +1305,7 @@ function egScrollCarousel() {
     padding: 20px 40px;
   }
   .eg-scale-main-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   .eg-scale-num-teal {
     font-size: 3rem;
@@ -1347,7 +1330,7 @@ function egScrollCarousel() {
     padding: 20px 20px;
   }
   .eg-scale-main-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
   .eg-scale-num-teal {
     font-size: 2.5rem;
@@ -1519,7 +1502,7 @@ function egScrollCarousel() {
 }
 
 .eg-work-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -1636,7 +1619,7 @@ function egScrollCarousel() {
 /* Responsive Styles */
 @media (max-width: 768px) {
   .eg-work-section { padding: 0 20px; }
-  .eg-work-title { font-size: 1.8rem; }
+  .eg-work-title { font-size: 1.95rem; }
   .eg-work-card { height: 60vh; top: 15vh; }
   .eg-work-meta-overlay { padding: 20px; }
   .eg-work-meta-left, .eg-work-meta-right { display: none; }
@@ -1811,7 +1794,7 @@ if ($testimonials_query->have_posts()) :
 
 /* Main Heading */
 .eg-reviews-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -1968,7 +1951,7 @@ if ($testimonials_query->have_posts()) :
     padding: 0px 40px 80px;
   }
   .eg-reviews-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 }
 
@@ -2007,7 +1990,7 @@ if ($testimonials_query->have_posts()) :
     padding: 0px 20px 60px !important;
   }
   .eg-reviews-title {
-    font-size: 1.8rem !important;
+    font-size: 1.95rem !important;
   }
   .eg-reviews-stars {
     font-size: 1.4rem !important;
@@ -2231,7 +2214,7 @@ if ($portfolio_query->have_posts()) :
 
 /* Title */
 .eg-latest-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -2305,7 +2288,7 @@ if ($portfolio_query->have_posts()) :
     padding: 60px 40px 80px;
   }
   .eg-latest-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 }
 
@@ -2321,7 +2304,7 @@ if ($portfolio_query->have_posts()) :
     padding: 40px 20px 60px;
   }
   .eg-latest-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
   .eg-latest-grid {
     grid-template-columns: 1fr; /* 1 column on mobile screens */
@@ -2487,7 +2470,7 @@ if ($clients_query->have_posts()) :
 
 /* Title */
 .eg-clients-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -2571,7 +2554,7 @@ if ($clients_query->have_posts()) :
     padding: 30px 40px 80px;
   }
   .eg-clients-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   .eg-clients-grid {
     grid-template-columns: repeat(5, 1fr);
@@ -2597,7 +2580,7 @@ if ($clients_query->have_posts()) :
     padding: 20px 20px 60px;
   }
   .eg-clients-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
   .eg-clients-box {
     padding: 20px 12px;
@@ -2725,7 +2708,7 @@ if ($faq_query->have_posts()) :
 }
 
 .eg-faq-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -2734,7 +2717,7 @@ if ($faq_query->have_posts()) :
 }
 
 .eg-faq-description {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: #222222;
   margin: 0;
@@ -2812,7 +2795,7 @@ if ($faq_query->have_posts()) :
   }
 
   .eg-faq-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   .eg-faq-container {
@@ -2841,7 +2824,7 @@ if ($faq_query->have_posts()) :
   }
 
   .eg-faq-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
   .eg-faq-question {
@@ -2992,7 +2975,7 @@ if ($faq_query->have_posts()) :
 }
 
 .eg-blog-title {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.2px;
@@ -3164,7 +3147,7 @@ if ($faq_query->have_posts()) :
 
 .eg-cta-title {
   color: #ffffff;
-  font-size: 2.2rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -1px;
@@ -3201,7 +3184,7 @@ if ($faq_query->have_posts()) :
   
   .eg-blog-title,
   .eg-cta-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 }
 
@@ -3232,7 +3215,7 @@ if ($faq_query->have_posts()) :
 
   .eg-blog-title,
   .eg-cta-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
   .eg-cta-card {

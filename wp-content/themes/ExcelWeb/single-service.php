@@ -12,151 +12,153 @@
 
 <section class="single-post-section">
   <div class="single-post-container">
-    
-    <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-      <article class="single-post-wrapper">
+    <?php if ( have_posts() ) : while ( have_posts() ) : the_post();
+      $current_service_id = get_the_ID();
+    ?>
 
-        <header class="single-post-header">
-          <div class="single-post-badge">
-            <span class="single-post-diamond">◆</span>
-            <span class="single-post-badge-text fade-left">Our Services</span>
-          </div>
+    <div class="services-detail-layout">
 
-          <h1 class="single-post-title fade-right"><?php the_title(); ?></h1>
-
-          <?php 
-            $service_terms = get_the_terms( get_the_ID(), 'service_category' ); 
-            if ( ! empty( $service_terms ) && ! is_wp_error( $service_terms ) ) :
-          ?>
-            <div class="single-post-meta">
-              <span class="meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                <?php echo esc_html( $service_terms[0]->name ); ?>
-              </span>
-            </div>
-          <?php endif; ?>
-        </header>
-
-        <?php if ( has_post_thumbnail() ) : ?>
-          <div class="single-post-hero-image">
-            <?php the_post_thumbnail('full', ['class' => 'single-post-img', 'alt' => get_the_title()]); ?>
-          </div>
-        <?php endif; ?>
-
-        <div class="single-post-content animate-fade fade-left">
-          <?php the_content(); ?>
-        </div>
-
-        <?php 
-          $service_tags = get_the_terms( get_the_ID(), 'service_tag' );
-          if ( ! empty( $service_tags ) && ! is_wp_error( $service_tags ) ) :
-        ?>
-          <div class="single-post-tags">
-            <span class="tags-label">Service Tags:</span>
-            <div class="tags-list">
-              <?php
-                foreach ( $service_tags as $tag ) {
-                  echo '<a href="' . esc_url( get_term_link( $tag ) ) . '" class="tag-chip">' . esc_html( $tag->name ) . '</a>';
-                }
-              ?>
-            </div>
-          </div>
-        <?php endif; ?>
-
-        <nav class="single-post-navigation">
-          <div class="nav-link-wrapper nav-previous">
-            <?php 
-              $prev_post = get_previous_post();
-              if ( !empty( $prev_post ) ) : 
-            ?>
-              <span class="nav-label">← Previous Service</span>
-              <a href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>" class="nav-title fade-right">
-                <?php echo esc_html( $prev_post->post_title ); ?>
-              </a>
-            <?php endif; ?>
-          </div>
-
-          <div class="nav-link-wrapper nav-next fade-left">
-            <?php 
-              $next_post = get_next_post();
-              if ( !empty( $next_post ) ) : 
-            ?>
-              <span class="nav-label">Next Service →</span>
-              <a href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>" class="nav-title">
-                <?php echo esc_html( $next_post->post_title ); ?>
-              </a>
-            <?php endif; ?>
-          </div>
-        </nav>
-
-      </article>
-
-      <div class="related-posts-section">
-        <div class="related-posts-header">
-          <div class="related-badge">
-            <span class="related-diamond">◆</span>
-            <span class="related-badge-text fade-right">More Solutions</span>
-          </div>
-          <h2 class="related-posts-main-title fade-left">Other Services</h2>
-        </div>
-
-        <div class="related-posts-grid">
-          <?php
-            $term_ids = array();
-            if ( ! empty( $service_terms ) && ! is_wp_error( $service_terms ) ) {
-                $term_ids = wp_list_pluck( $service_terms, 'term_id' );
-            }
-
-            $query_args = array(
+      <!-- Column 1: All Services -->
+      <div class="services-tabs-col">
+        <?php
+          $all_services = new WP_Query( array(
               'post_type'      => 'service',
-              'posts_per_page' => 3,
-              'post__not_in'   => array( get_the_ID() ),
-              'orderby'        => 'date',
-              'order'          => 'DESC'
-            );
-
-            if ( ! empty( $term_ids ) ) {
-              $query_args['tax_query'] = array(
-                array(
-                  'taxonomy' => 'service_category',
-                  'field'    => 'term_id',
-                  'terms'    => $term_ids,
-                ),
-              );
-            }
-
-            $related = new WP_Query( $query_args );
-
-            if ( $related->have_posts() ) :
-              while ( $related->have_posts() ) : $related->the_post(); 
-          ?>
-            <article class="related-card animate-fade">
-              <a href="<?php the_permalink(); ?>" class="related-card-img-link">
-                <?php if ( has_post_thumbnail() ) : ?>
-                  <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ) ); ?>" alt="<?php the_title_attribute(); ?>" class="related-card-img fade-left" />
-                <?php else : ?>
-                  <div class="related-card-placeholder"></div>
-                <?php endif; ?>
-              </a>
-              <div class="related-card-content">
-                <h3 class="related-card-title fade-left">
-                  <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                </h3>
-                <a href="<?php the_permalink(); ?>" class="related-card-btn fade-right">
-                  View Service <span class="btn-arrow">→</span>
-                </a>
-              </div>
-            </article>
-          <?php 
-              endwhile; 
-              wp_reset_postdata();
-            else : 
-          ?>
-            <p class="no-related-posts">No other services found.</p>
-          <?php endif; ?>
-        </div>
+              'posts_per_page' => -1,
+              'orderby'        => 'menu_order title',
+              'order'          => 'ASC',
+          ) );
+          while ( $all_services->have_posts() ) : $all_services->the_post();
+        ?>
+          <a href="<?php the_permalink(); ?>" class="services-tab-item<?php echo ( get_the_ID() === $current_service_id ) ? ' is-active' : ''; ?>">
+            <h3 class="services-tab-title"><?php the_title(); ?></h3>
+          </a>
+        <?php endwhile; wp_reset_postdata(); ?>
       </div>
+
+      <!-- Column 2: Current Service Detail -->
+      <div class="services-detail-col">
+        <article class="single-post-wrapper">
+
+          <header class="single-post-header">
+            <div class="single-post-badge">
+              <span class="single-post-diamond">◆</span>
+              <span class="single-post-badge-text fade-left">Our Services</span>
+            </div>
+
+            <h1 class="single-post-title fade-right"><?php the_title(); ?></h1>
+
+            <?php
+              $service_terms = get_the_terms( get_the_ID(), 'service_category' );
+              if ( ! empty( $service_terms ) && ! is_wp_error( $service_terms ) ) :
+            ?>
+              <div class="single-post-meta">
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                  <?php echo esc_html( $service_terms[0]->name ); ?>
+                </span>
+              </div>
+            <?php endif; ?>
+          </header>
+
+          <?php
+            $service_banner_id  = (int) get_post_meta( get_the_ID(), 'service_banner_image', true );
+            $service_banner_url = $service_banner_id ? wp_get_attachment_url( $service_banner_id ) : ( has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'full' ) : '' );
+          ?>
+          <?php if ( $service_banner_url ) : ?>
+            <img src="<?php echo esc_url( $service_banner_url ); ?>" alt="<?php the_title_attribute(); ?>" class="services-detail-img" />
+          <?php endif; ?>
+
+          <?php if ( get_the_excerpt() ) : ?>
+            <p class="services-detail-excerpt"><?php echo esc_html( get_the_excerpt() ); ?></p>
+          <?php endif; ?>
+
+          <div class="services-detail-content animate-fade fade-left">
+            <?php the_content(); ?>
+          </div>
+
+          <?php
+            $service_tags = get_the_terms( get_the_ID(), 'service_tag' );
+            if ( ! empty( $service_tags ) && ! is_wp_error( $service_tags ) ) :
+          ?>
+            <div class="single-post-tags">
+              <span class="tags-label">Service Tags:</span>
+              <div class="tags-list">
+                <?php
+                  foreach ( $service_tags as $tag ) {
+                    echo '<a href="' . esc_url( get_term_link( $tag ) ) . '" class="tag-chip">' . esc_html( $tag->name ) . '</a>';
+                  }
+                ?>
+              </div>
+            </div>
+          <?php endif; ?>
+
+          <nav class="single-post-navigation">
+            <div class="nav-link-wrapper nav-previous">
+              <?php
+                $prev_post = get_previous_post();
+                if ( !empty( $prev_post ) ) :
+              ?>
+                <span class="nav-label">← Previous Service</span>
+                <a href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>" class="nav-title fade-right">
+                  <?php echo esc_html( $prev_post->post_title ); ?>
+                </a>
+              <?php endif; ?>
+            </div>
+
+            <div class="nav-link-wrapper nav-next fade-left">
+              <?php
+                $next_post = get_next_post();
+                if ( !empty( $next_post ) ) :
+              ?>
+                <span class="nav-label">Next Service →</span>
+                <a href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>" class="nav-title">
+                  <?php echo esc_html( $next_post->post_title ); ?>
+                </a>
+              <?php endif; ?>
+            </div>
+          </nav>
+
+          <?php
+            $raw_wysiwyg = get_field( 'services_faq', $current_service_id );
+            $faq_items   = array();
+
+            if ( ! empty( $raw_wysiwyg ) ) {
+                $pattern = '/<(strong|b)[^>]*>(.*?)<\/\1>\s*([\s\S]*?)(?=(?:<(?:strong|b)[^>]*>|$))/i';
+                if ( preg_match_all( $pattern, $raw_wysiwyg, $matches, PREG_SET_ORDER ) ) {
+                    foreach ( $matches as $match ) {
+                        $question = trim( strip_tags( $match[2] ) );
+                        $answer   = trim( $match[3] );
+                        $answer   = preg_replace( '/^<\/p>|<p>$/i', '', $answer );
+                        $answer   = trim( $answer );
+                        if ( ! empty( $question ) ) {
+                            $faq_items[] = array( 'question' => $question, 'answer' => $answer );
+                        }
+                    }
+                }
+            }
+          ?>
+          <?php if ( ! empty( $faq_items ) ) : ?>
+            <div class="services-detail-faq">
+              <h4 class="services-detail-faq-title">Frequently Asked Questions</h4>
+              <?php foreach ( $faq_items as $item ) : ?>
+                <details class="services-detail-faq-item">
+                  <summary class="services-detail-faq-question">
+                    <span><?php echo esc_html( $item['question'] ); ?></span>
+                    <span class="services-detail-faq-icon">+</span>
+                  </summary>
+                  <div class="services-detail-faq-answer">
+                    <?php echo wp_kses_post( wpautop( $item['answer'] ) ); ?>
+                  </div>
+                </details>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+
+        </article>
+      </div>
+
+    </div>
 
     <?php endwhile; endif; ?>
 
@@ -181,6 +183,66 @@
 
 .single-post-wrapper {
   width: 100%;
+}
+
+/* Two-Column Layout: All Services + Current Service Detail */
+.services-detail-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.services-tabs-col {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;
+  top: 20px;
+}
+
+.services-tab-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 18px 22px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  color: inherit;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-left: 4px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.services-tab-item:hover {
+  background-color: #f0f4f4;
+  color: inherit;
+  text-decoration: none;
+}
+
+.services-tab-item.is-active {
+  background-color: #ffffff;
+  border-color: #e9ecef;
+  border-left-color: #1ba3b0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.services-tab-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #0d0d0d;
+  margin: 0;
+}
+
+.services-tab-item.is-active .services-tab-title {
+  color: #1ba3b0;
+}
+
+.services-detail-col {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Header & Meta */
@@ -212,7 +274,7 @@
 }
 
 .single-post-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -1.2px;
@@ -242,24 +304,25 @@
 }
 
 /* Featured Image */
-.single-post-hero-image {
+.services-detail-img {
   width: 100%;
-  max-height: 600px;
-  border-radius: 28px;
-  overflow: hidden;
-  margin-bottom: 60px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 28px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.single-post-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.services-detail-excerpt {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1ba3b0;
+  margin: 0 0 20px 0;
 }
 
 /* Post Content Body */
-.single-post-content {
+.services-detail-content {
   width: 100%;
   font-size: 1.2rem;
   line-height: 1.85;
@@ -270,25 +333,25 @@
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.single-post-content.visible {
+.services-detail-content.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.single-post-content p {
+.services-detail-content p {
   margin-bottom: 24px;
 }
 
-.single-post-content h2, 
-.single-post-content h3, 
-.single-post-content h4 {
+.services-detail-content h2, 
+.services-detail-content h3, 
+.services-detail-content h4 {
   color: #0d0d0d;
   font-weight: 800;
   line-height: 1.25;
   margin: 44px 0 20px 0;
 }
 
-.single-post-content blockquote {
+.services-detail-content blockquote {
   border-left: 4px solid #1ba3b0;
   background-color: #f8f9fa;
   padding: 28px 36px;
@@ -299,7 +362,7 @@
   color: #333333;
 }
 
-.single-post-content img {
+.services-detail-content img {
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -419,7 +482,7 @@
 }
 
 .related-posts-main-title {
-  font-size: 2.15rem;
+  font-size: 3rem;
   font-weight: 800;
   color: #0d0d0d;
   margin: 0;
@@ -527,7 +590,7 @@
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .single-post-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -536,7 +599,21 @@
     grid-template-columns: repeat(2, 1fr);
   }
   .single-post-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
+  }
+  .services-detail-layout {
+    flex-direction: column;
+  }
+  .services-tabs-col {
+    flex: 1 1 auto;
+    width: 100%;
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .services-tab-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
@@ -547,7 +624,7 @@
   }
 
   .single-post-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 
   .single-post-navigation {
@@ -583,264 +660,66 @@
 
 
 
-<!-- FAQ -->
-<?php
-// Fetch raw HTML from ACF WYSIWYG editor
-$raw_wysiwyg = get_field('services_faq');
-
-$faq_items = array();
-
-if (!empty($raw_wysiwyg)) {
-    // Regex matches <strong> or <b> tags as questions and captures everything following as answer
-    // until the next bold tag or end of content.
-    $pattern = '/<(strong|b)[^>]*>(.*?)<\/\1>\s*([\s\S]*?)(?=(?:<(?:strong|b)[^>]*>|$))/i';
-    
-    if (preg_match_all($pattern, $raw_wysiwyg, $matches, PREG_SET_ORDER)) {
-        foreach ($matches as $match) {
-            $question = trim(strip_tags($match[2]));
-            
-            // Clean up answer HTML by stripping outer tags if necessary
-            $answer = trim($match[3]);
-            
-            // Remove leading/trailing empty paragraph wrappers if left over
-            $answer = preg_replace('/^<\/p>|<p>$/i', '', $answer);
-            $answer = trim($answer);
-
-            if (!empty($question)) {
-                $faq_items[] = array(
-                    'question' => $question,
-                    'answer'   => $answer
-                );
-            }
-        }
-    }
-}
-
-if (!empty($faq_items)) :
-?>
-
-<section class="eg-faq-section">
-  <div class="eg-faq-container">
-    
-    <!-- Left Column: Title & Subtitle -->
-    <div class="eg-faq-left">
-      <div class="eg-faq-badge">
-        <span class="eg-faq-diamond">◆</span>
-        <span class="eg-faq-badge-text fade-left">Frequently asked questions</span>
-      </div>
-
-      <h2 class="eg-faq-title fade-right">
-        Got questions?<br />
-        We’ve got answers
-      </h2>
-
-      <p class="eg-faq-description fade-left">
-        Everything you need to know about our process, pricing, and how we work together
-      </p>
-    </div>
-
-    <!-- Right Column: Accordion Box -->
-    <div class="eg-faq-right">
-      <div class="eg-faq-accordion">
-        
-        <?php foreach ($faq_items as $item) : ?>
-          <!-- Accordion Item -->
-          <details class="eg-faq-item">
-            <summary class="eg-faq-question fade-left">
-              <span><?php echo esc_html($item['question']); ?></span>
-              <span class="eg-faq-icon">+</span>
-            </summary>
-            <div class="eg-faq-answer">
-              <?php echo wp_kses_post(wpautop($item['answer'])); ?>
-            </div>
-          </details>
-        <?php endforeach; ?>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<?php endif; ?>
-
 <style>
-/* Main FAQ Section Wrapper */
-.eg-faq-section {
-  width: calc(100% - 40px);
-  max-width: 100%;
-  margin: 60px auto 90px;
-  padding: 20px 80px;
-  box-sizing: border-box;
-  color: #111111;
+/* Per-Service FAQ Accordion (matches services listing page detail panel) */
+.services-detail-faq {
+  margin-top: 20px;
+  margin-bottom: 60px;
+  border-top: 1px solid #e9ecef;
+  padding-top: 32px;
 }
 
-.eg-faq-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 80px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Left Column Styling */
-.eg-faq-left {
-  flex: 1;
-  max-width: 580px;
-}
-
-.eg-faq-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.eg-faq-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.eg-faq-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #111111;
-}
-
-.eg-faq-title {
-  font-size: 2.3rem;
+.services-detail-faq-title {
+  font-size: 1.3rem;
   font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -1.2px;
   color: #0d0d0d;
-  margin: 0 0 28px 0;
+  margin: 0 0 18px 0;
 }
 
-.eg-faq-description {
-  font-size: 1.05rem;
-  line-height: 1.5;
-  color: #222222;
-  margin: 0;
-  max-width: 480px;
+.services-detail-faq-item {
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 4px 20px;
+  margin-bottom: 12px;
 }
 
-/* Right Column: Gray Card Box & Accordion */
-.eg-faq-right {
-  flex: 1.1;
-}
-
-.eg-faq-accordion {
-  background-color: #e5e5e5;
-  border-radius: 20px;
-  overflow: hidden;
+.services-detail-faq-question {
   display: flex;
-  flex-direction: column;
-}
-
-.eg-faq-item {
-  border-bottom: 2px solid #ffffff;
-}
-
-.eg-faq-item:last-child {
-  border-bottom: none;
-}
-
-/* Question Row Header */
-.eg-faq-question {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 26px 32px;
-  font-size: 1.35rem;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  font-size: 1.05rem;
   font-weight: 700;
   color: #0d0d0d;
   cursor: pointer;
   list-style: none;
-  user-select: none;
 }
 
-.eg-faq-question::-webkit-details-marker {
+.services-detail-faq-question::-webkit-details-marker {
   display: none;
 }
 
-.eg-faq-icon {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: #0d0d0d;
+.services-detail-faq-icon {
+  flex-shrink: 0;
+  color: #1ba3b0;
+  font-size: 1.3rem;
   transition: transform 0.3s ease;
-  line-height: 1;
 }
 
-/* Rotate icon on toggle */
-.eg-faq-item[open] .eg-faq-icon {
+.services-detail-faq-item[open] .services-detail-faq-icon {
   transform: rotate(45deg);
 }
 
-/* Expandable Answer Box */
-.eg-faq-answer {
-  padding: 0 32px 24px 32px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #444444;
+.services-detail-faq-answer {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #555555;
+  padding-bottom: 16px;
 }
 
-.eg-faq-answer p {
-  margin: 0 0 12px 0;
-}
-
-.eg-faq-answer p:last-child {
-  margin-bottom: 0;
-}
-
-/* Responsive Handling */
-@media (max-width: 1200px) {
-  .eg-faq-section {
-    padding: 20px 40px;
-  }
-
-  .eg-faq-title {
-    font-size: 2rem;
-  }
-
-  .eg-faq-container {
-    gap: 40px;
-  }
-}
-
-@media (max-width: 991px) {
-  .eg-faq-container {
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .eg-faq-left {
-    max-width: 100%;
-  }
-
-  .eg-faq-right {
-    width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  .eg-faq-section {
-    padding: 20px 20px;
-  }
-
-  .eg-faq-title {
-    font-size: 1.8rem;
-  }
-
-  .eg-faq-question {
-    padding: 20px 20px;
-    font-size: 1.15rem;
-  }
-
-  .eg-faq-answer {
-    padding: 0 20px 20px 20px;
-  }
+.services-detail-faq-answer p {
+  margin: 0 0 10px 0;
 }
 </style>
 

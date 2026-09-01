@@ -37,6 +37,10 @@ function bleizure_register_acf_replacement_post_types() {
 	);
 
 	foreach ( $post_types as $slug => $names ) {
+		$supports = array( 'title', 'editor', 'thumbnail', 'custom-fields' );
+		if ( $slug === 'service' ) {
+			$supports[] = 'page-attributes'; // servicespage.php already orders by menu_order
+		}
 		register_post_type( $slug, array(
 			'labels'            => bleizure_acf_cpt_labels( $names[0], $names[1] ),
 			'public'            => true,
@@ -47,7 +51,7 @@ function bleizure_register_acf_replacement_post_types() {
 			'show_in_nav_menus' => true,
 			'show_in_rest'      => true,
 			'menu_icon'         => 'dashicons-admin-post',
-			'supports'          => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+			'supports'          => $supports,
 			'has_archive'       => false,
 			'rewrite'           => array( 'slug' => $slug, 'with_front' => true, 'pages' => true, 'feeds' => false ),
 			'query_var'         => true,

@@ -130,7 +130,7 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
 
 /* Headings & Text */
 .blog-hero-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -139,7 +139,7 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
 }
 
 .blog-hero-subtext {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   max-width: 680px;
@@ -152,7 +152,7 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
     padding: 50px 40px;
   }
   .blog-hero-title {
-    font-size: 2.3rem;
+    font-size: 3rem;
   }
 }
 
@@ -164,10 +164,10 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
     padding: 40px 30px;
   }
   .blog-hero-title {
-    font-size: 2rem;
+    font-size: 2.15rem;
   }
   .blog-hero-subtext {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -180,7 +180,7 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
     padding: 30px 20px;
   }
   .blog-hero-title {
-    font-size: 1.8rem;
+    font-size: 1.95rem;
   }
 }
 </style>
