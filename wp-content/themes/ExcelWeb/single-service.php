@@ -3,7 +3,102 @@
 
     
 <!-- Section 1: Banner -->
- <?php get_template_part('template-parts/banner-archive'); ?>
+<?php
+  $hero_service_id  = get_queried_object_id();
+  $hero_banner_id   = (int) get_post_meta( $hero_service_id, 'service_banner_image', true );
+  $hero_banner_url  = $hero_banner_id
+    ? wp_get_attachment_url( $hero_banner_id )
+    : ( has_post_thumbnail( $hero_service_id ) ? get_the_post_thumbnail_url( $hero_service_id, 'full' ) : get_template_directory_uri() . '/assets/images/services-banner.jpg' );
+?>
+<section class="service-hero-banner">
+  <img src="<?php echo esc_url( $hero_banner_url ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" />
+  <div class="service-hero-overlay"></div>
+  <div class="service-hero-container">
+    <div class="service-hero-content">
+      <h1 class="service-hero-title fade-right"><?php echo esc_html( get_the_title( $hero_service_id ) ); ?></h1>
+    </div>
+  </div>
+</section>
+
+<style>
+.service-hero-banner {
+  position: relative;
+  width: calc(100% - 40px);
+  max-width: 100%;
+  min-height: 340px;
+  margin: 20px auto 60px;
+  border-radius: 36px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.service-hero-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+.service-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+.service-hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 50px 40px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.service-hero-content {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.service-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  margin: 0;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .service-hero-banner {
+    min-height: 280px;
+  }
+  .service-hero-container {
+    padding: 30px 24px;
+  }
+  .service-hero-title {
+    font-size: 2.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .service-hero-banner {
+    width: calc(100% - 20px);
+    margin: 10px auto 40px;
+  }
+  .service-hero-title {
+    font-size: 1.85rem;
+  }
+}
+</style>
 
 
 
@@ -60,14 +155,6 @@
               </div>
             <?php endif; ?>
           </header>
-
-          <?php
-            $service_banner_id  = (int) get_post_meta( get_the_ID(), 'service_banner_image', true );
-            $service_banner_url = $service_banner_id ? wp_get_attachment_url( $service_banner_id ) : ( has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'full' ) : '' );
-          ?>
-          <?php if ( $service_banner_url ) : ?>
-            <img src="<?php echo esc_url( $service_banner_url ); ?>" alt="<?php the_title_attribute(); ?>" class="services-detail-img" />
-          <?php endif; ?>
 
           <?php if ( get_the_excerpt() ) : ?>
             <p class="services-detail-excerpt"><?php echo esc_html( get_the_excerpt() ); ?></p>

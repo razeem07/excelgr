@@ -4,63 +4,44 @@
 
 <?php get_header(); ?>
 
-<!-- Gallery Hero Banner Section -->
+<!-- Gallery Hero Banner - Minimal (image kept, centered, no badge) -->
+<?php $banner = get_field('gallery_banner'); ?>
 <section class="gallery-hero-banner">
-  <!-- Background Image -->
-  <?php $banner = get_field('gallery_banner'); ?>
   <?php if ( ! empty( $banner['image'] ) ) : ?>
-    <img 
-      src="<?php echo esc_url( $banner['image'] ); ?>" 
-      alt="Gallery Page Banner" 
-      class="gallery-hero-bg-img"
-    />
+    <img src="<?php echo esc_url( $banner['image'] ); ?>" alt="Gallery Page Banner" class="gallery-hero-bg-img" />
+    <div class="gallery-hero-overlay"></div>
   <?php endif; ?>
 
-  <!-- Dark Overlay -->
-  <div class="gallery-hero-overlay"></div>
-
-  <!-- Content Container -->
   <div class="gallery-hero-container">
     <div class="gallery-hero-content">
-      <?php if ( ! empty( $banner['subtitle'] ) ) : ?>
-        <div class="gallery-hero-badge">
-          <span class="gallery-hero-diamond">◆</span>
-          <span class="gallery-hero-badge-text fade-left"><?php echo esc_html( $banner['subtitle'] ); ?></span>
-        </div>
-      <?php endif; ?>
-
       <?php if ( ! empty( $banner['title'] ) ) : ?>
-        <h1 class="gallery-hero-title fade-right">
-          <?php echo esc_html( $banner['title'] ); ?>
-        </h1>
+        <h1 class="gallery-hero-title fade-right"><?php echo esc_html( $banner['title'] ); ?></h1>
       <?php endif; ?>
 
       <?php if ( ! empty( $banner['content'] ) ) : ?>
-        <p class="gallery-hero-subtext fade-left">
-          <?php echo esc_html( $banner['content'] ); ?>
-        </p>
+        <p class="gallery-hero-subtext fade-left"><?php echo esc_html( $banner['content'] ); ?></p>
       <?php endif; ?>
     </div>
   </div>
 </section>
 
 <style>
-/* Gallery Hero Container */
 .gallery-hero-banner {
   position: relative;
   width: calc(100% - 40px);
   max-width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   margin: 20px auto 60px;
   border-radius: 36px;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
+  background-color: #0d0d0d;
   box-sizing: border-box;
 }
 
-/* Background Image */
 .gallery-hero-bg-img {
   position: absolute;
   top: 0;
@@ -72,86 +53,49 @@
   z-index: 0;
 }
 
-/* Dark Gradient Overlay */
 .gallery-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Inner Layout Wrapper */
 .gallery-hero-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 60px 80px;
+  padding: 60px 40px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .gallery-hero-content {
-  max-width: 820px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-/* Diamond Badge */
-.gallery-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.gallery-hero-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.gallery-hero-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-/* Headings & Text */
 .gallery-hero-title {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
-  margin-bottom: 20px;
   color: #ffffff;
+  margin: 0 0 20px 0;
 }
 
 .gallery-hero-subtext {
   font-size: 1.15rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 680px;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .gallery-hero-container {
-    padding: 50px 40px;
-  }
-  .gallery-hero-title {
-    font-size: 3rem;
-  }
 }
 
 @media (max-width: 900px) {
   .gallery-hero-banner {
-    min-height: 400px;
+    min-height: 340px;
   }
   .gallery-hero-container {
-    padding: 40px 30px;
+    padding: 40px 24px;
   }
   .gallery-hero-title {
     font-size: 2.15rem;
@@ -165,9 +109,6 @@
   .gallery-hero-banner {
     width: calc(100% - 20px);
     margin: 10px auto 40px;
-  }
-  .gallery-hero-container {
-    padding: 30px 20px;
   }
   .gallery-hero-title {
     font-size: 1.95rem;

@@ -33,7 +33,8 @@ function bleizure_register_acf_replacement_post_types() {
 		'service'     => array( 'Service', 'Services' ),
 		'gallery'     => array( 'Gallery Item', 'Gallery' ),
 		'testimonial' => array( 'Testimonial', 'Testimonials' ),
-		'process'     => array( 'Process Step', 'Our Process' ),
+		// 'process' removed: "Our Process" is now a plain page with its own
+		// custom fields (page ID 271), not a post type — see ourprocesspage.php.
 	);
 
 	foreach ( $post_types as $slug => $names ) {

@@ -4,52 +4,43 @@
 
  <?php get_header(); ?>
 
-<!-- Services Hero Banner Section -->
+<!-- Services Hero Banner - Minimal (image kept, centered, no badge) -->
+<?php $banner = get_field('services_banner'); ?>
 <section class="services-hero-banner">
-  <!-- Background Image -->
-  <img 
-    src="<?php echo get_field('services_banner')['image']; ?>" 
-    alt="Services Page Banner" 
-    class="services-hero-bg-img"
-  />
+  <?php if ( ! empty( $banner['image'] ) ) : ?>
+    <img src="<?php echo esc_url( $banner['image'] ); ?>" alt="Services Page Banner" class="services-hero-bg-img" />
+    <div class="services-hero-overlay"></div>
+  <?php endif; ?>
 
-  <!-- Dark Overlay -->
-  <div class="services-hero-overlay"></div>
-
-  <!-- Content Container -->
   <div class="services-hero-container">
     <div class="services-hero-content">
-      <div class="services-hero-badge">
-        <span class="services-hero-diamond">◆</span>
-        <span class="services-hero-badge-text fade-left"><?php echo get_field('services_banner')['subtitle']; ?></span>
-      </div>
-      <h1 class="services-hero-title fade-right">
-        <?php echo get_field('services_banner')['title']; ?>
-      </h1>
-      <p class="services-hero-subtext fade-left">
-        <?php echo get_field('services_banner')['content']; ?>
-      </p>
+      <?php if ( ! empty( $banner['title'] ) ) : ?>
+        <h1 class="services-hero-title fade-right"><?php echo $banner['title']; ?></h1>
+      <?php endif; ?>
+      <?php if ( ! empty( $banner['content'] ) ) : ?>
+        <p class="services-hero-subtext fade-left"><?php echo $banner['content']; ?></p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
 
 <style>
-/* Services Hero Container */
 .services-hero-banner {
   position: relative;
   width: calc(100% - 40px);
   max-width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   margin: 20px auto 60px;
   border-radius: 36px;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
+  background-color: #0d0d0d;
   box-sizing: border-box;
 }
 
-/* Background Image */
 .services-hero-bg-img {
   position: absolute;
   top: 0;
@@ -61,86 +52,49 @@
   z-index: 0;
 }
 
-/* Dark Gradient Overlay */
 .services-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Inner Layout Wrapper */
 .services-hero-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 60px 80px;
+  padding: 60px 40px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .services-hero-content {
-  max-width: 820px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-/* Diamond Badge */
-.services-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.services-hero-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.services-hero-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-/* Headings & Text */
 .services-hero-title {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
-  margin-bottom: 20px;
   color: #ffffff;
+  margin: 0 0 20px 0;
 }
 
 .services-hero-subtext {
   font-size: 1.15rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 680px;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .services-hero-container {
-    padding: 50px 40px;
-  }
-  .services-hero-title {
-    font-size: 3rem;
-  }
 }
 
 @media (max-width: 900px) {
   .services-hero-banner {
-    min-height: 400px;
+    min-height: 340px;
   }
   .services-hero-container {
-    padding: 40px 30px;
+    padding: 40px 24px;
   }
   .services-hero-title {
     font-size: 2.15rem;
@@ -154,9 +108,6 @@
   .services-hero-banner {
     width: calc(100% - 20px);
     margin: 10px auto 40px;
-  }
-  .services-hero-container {
-    padding: 30px 20px;
   }
   .services-hero-title {
     font-size: 1.95rem;

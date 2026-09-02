@@ -265,10 +265,10 @@ function bleizure_field_manifest() {
 				),
 				'who_we_are' => array(
 					'group_title' => 'About Page Settings',
-					'label' => 'Who We Are',
+					'label' => 'About Intro (badge, heading, description, image, 4 stats)',
 					'fields' => array(
 						'subtitle' => array(
-							'label' => 'Subtitle',
+							'label' => 'Badge Text (e.g. "About Excel Graphics")',
 							'type' => 'text',
 						),
 						'heading' => array(
@@ -276,35 +276,99 @@ function bleizure_field_manifest() {
 							'type' => 'text',
 						),
 						'description' => array(
-							'label' => 'description',
+							'label' => 'Description',
 							'type' => 'text',
 						),
-						'card_1' => array(
-							'label' => 'Card 1',
+						'image' => array(
+							'label' => 'Image',
+							'type' => 'image',
+						),
+						'stat_1' => array(
+							'label' => 'Stat 1',
 							'fields' => array(
-										'title' => array(
-											'label' => 'title',
-											'type' => 'text',
-										),
-										'content' => array(
-											'label' => 'content',
-											'type' => 'text',
-										),
+								'number' => array( 'label' => 'Number (e.g. "20+")', 'type' => 'text' ),
+								'label' => array( 'label' => 'Label', 'type' => 'text' ),
 							),
 						),
-						'card_2' => array(
-							'label' => 'Card 2',
+						'stat_2' => array(
+							'label' => 'Stat 2',
 							'fields' => array(
-										'title' => array(
-											'label' => 'title',
-											'type' => 'text',
-										),
-										'content' => array(
-											'label' => 'content',
-											'type' => 'text',
-										),
+								'number' => array( 'label' => 'Number', 'type' => 'text' ),
+								'label' => array( 'label' => 'Label', 'type' => 'text' ),
 							),
 						),
+						'stat_3' => array(
+							'label' => 'Stat 3',
+							'fields' => array(
+								'number' => array( 'label' => 'Number', 'type' => 'text' ),
+								'label' => array( 'label' => 'Label', 'type' => 'text' ),
+							),
+						),
+						'stat_4' => array(
+							'label' => 'Stat 4',
+							'fields' => array(
+								'number' => array( 'label' => 'Number', 'type' => 'text' ),
+								'label' => array( 'label' => 'Label', 'type' => 'text' ),
+							),
+						),
+					),
+				),
+				'about_purpose' => array(
+					'group_title' => 'About Page Settings',
+					'label' => 'Our Purpose (badge, heading, image, intro text, button)',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge Text (e.g. "Our Purpose")', 'type' => 'text' ),
+						'heading' => array( 'label' => 'Heading', 'type' => 'text' ),
+						'image' => array( 'label' => 'Image', 'type' => 'image' ),
+						'intro_text' => array( 'label' => 'Intro Text', 'type' => 'text' ),
+						'button_text' => array( 'label' => 'Button Text', 'type' => 'text' ),
+						'button_link' => array( 'label' => 'Button Link', 'type' => 'text' ),
+					),
+				),
+				'about_why_choose' => array(
+					'group_title' => 'About Page Settings',
+					'label' => 'Why Choose Us (badge, heading, description, image, 4 features, mini CTA)',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge Text (e.g. "Why Choose Us")', 'type' => 'text' ),
+						'heading' => array( 'label' => 'Heading', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+						'image' => array( 'label' => 'Image', 'type' => 'image' ),
+						'feature_1' => array(
+							'label' => 'Feature 1',
+							'fields' => array(
+								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+								'title' => array( 'label' => 'Title', 'type' => 'text' ),
+								'description' => array( 'label' => 'Description', 'type' => 'text' ),
+							),
+						),
+						'feature_2' => array(
+							'label' => 'Feature 2',
+							'fields' => array(
+								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+								'title' => array( 'label' => 'Title', 'type' => 'text' ),
+								'description' => array( 'label' => 'Description', 'type' => 'text' ),
+							),
+						),
+						'feature_3' => array(
+							'label' => 'Feature 3',
+							'fields' => array(
+								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+								'title' => array( 'label' => 'Title', 'type' => 'text' ),
+								'description' => array( 'label' => 'Description', 'type' => 'text' ),
+							),
+						),
+						'feature_4' => array(
+							'label' => 'Feature 4',
+							'fields' => array(
+								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+								'title' => array( 'label' => 'Title', 'type' => 'text' ),
+								'description' => array( 'label' => 'Description', 'type' => 'text' ),
+							),
+						),
+						'cta_text' => array( 'label' => 'Mini CTA Text', 'type' => 'text' ),
+						'cta_link_text' => array( 'label' => 'Mini CTA Link Text', 'type' => 'text' ),
+						'cta_link' => array( 'label' => 'Mini CTA Link URL', 'type' => 'text' ),
+						'cta_image' => array( 'label' => 'Mini CTA Background Image', 'type' => 'image' ),
 					),
 				),
 				'group_photo' => array(
@@ -336,70 +400,20 @@ function bleizure_field_manifest() {
 				),
 				'mission_section' => array(
 					'group_title' => 'About Page Settings',
-					'label' => 'Our Mission',
+					'label' => 'Our Mission (small card: icon, title, description)',
 					'fields' => array(
-						'subtitle' => array(
-							'label' => 'Subtitle',
-							'type' => 'text',
-						),
-						'heading' => array(
-							'label' => 'Heading',
-							'type' => 'text',
-						),
-						'description' => array(
-							'label' => 'description',
-							'type' => 'text',
-						),
-						'card_1' => array(
-							'label' => 'Card 1',
-							'type' => 'text',
-						),
-						'card_2' => array(
-							'label' => 'Card 2',
-							'type' => 'text',
-						),
-						'card_3' => array(
-							'label' => 'Card 3',
-							'type' => 'text',
-						),
-						'image' => array(
-							'label' => 'Image',
-							'type' => 'image_array',
-						),
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
 					),
 				),
 				'vision_section' => array(
 					'group_title' => 'About Page Settings',
-					'label' => 'Our Vision',
+					'label' => 'Our Vision (small card: icon, title, description)',
 					'fields' => array(
-						'subtitle' => array(
-							'label' => 'Subtitle',
-							'type' => 'text',
-						),
-						'heading' => array(
-							'label' => 'Heading',
-							'type' => 'text',
-						),
-						'description' => array(
-							'label' => 'description',
-							'type' => 'text',
-						),
-						'card_1' => array(
-							'label' => 'Card 1',
-							'type' => 'text',
-						),
-						'card_2' => array(
-							'label' => 'Card 2',
-							'type' => 'text',
-						),
-						'card_3' => array(
-							'label' => 'Card 3',
-							'type' => 'text',
-						),
-						'image' => array(
-							'label' => 'Image',
-							'type' => 'image_array',
-						),
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
 					),
 				),
 			),
@@ -566,12 +580,148 @@ function bleizure_field_manifest() {
 				),
 				'video_link' => array(
 					'group_title' => 'Our Process Page',
-					'label' => 'Youtube Video ID',
+					'label' => 'Video Link (YouTube video ID, e.g. dQw4w9WgXcQ)',
 					'type' => 'text',
 				),
 				'process_video_banner_image' => array(
 					'group_title' => 'Our Process Page',
-					'label' => 'process_video_banner_image',
+					'label' => 'Video Section Background Image',
+					'type' => 'image',
+				),
+				'process_intro' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Process Section Intro',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge Text', 'type' => 'text' ),
+						'title' => array( 'label' => 'Section Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_1' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 1',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_2' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 2',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_3' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 3',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_4' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 4',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_5' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 5',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_6' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 6',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_7' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 7',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'step_8' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Step 8',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'quality_intro' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Quality Section Intro',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge Text', 'type' => 'text' ),
+						'title' => array( 'label' => 'Section Title', 'type' => 'text' ),
+					),
+				),
+				'quality_feature_1' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Quality Feature 1',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'quality_feature_2' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Quality Feature 2',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'quality_feature_3' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Quality Feature 3',
+					'fields' => array(
+						'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'description' => array( 'label' => 'Description', 'type' => 'text' ),
+					),
+				),
+				'process_cta' => array(
+					'group_title' => 'Our Process Page',
+					'label' => 'Call To Action Banner',
+					'fields' => array(
+						'image' => array( 'label' => 'Background Image', 'type' => 'image' ),
+						'title' => array( 'label' => 'Title', 'type' => 'text' ),
+						'subtitle' => array( 'label' => 'Subtitle', 'type' => 'text' ),
+						'contact_text' => array( 'label' => 'Contact Text', 'type' => 'text' ),
+					),
+				),
+			),
+		),
+		'posttype:post' => array(
+			'screen' => array('post_type' => 'post'),
+			'fields' => array(
+				'post_banner_image' => array(
+					'group_title' => 'Blog Post Settings',
+					'label' => 'Banner Image (used on the post detail hero — separate from the Featured Image used on listing cards)',
 					'type' => 'image',
 				),
 			),

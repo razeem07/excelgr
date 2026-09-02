@@ -25,52 +25,36 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
 }
 ?>
 
-<!-- Blog Archive Banner Section -->
+<!-- Blog Archive Banner Section - Minimal (image kept, centered, no badge) -->
 <section class="blog-hero-banner">
-  <!-- Background Image -->
-  <img 
-    src="<?php echo esc_url( $banner_image ); ?>" 
-    alt="<?php echo esc_attr( $banner_title ); ?>" 
-    class="blog-hero-bg-img"
-  />
-
-  <!-- Dark Overlay -->
+  <img src="<?php echo esc_url( $banner_image ); ?>" alt="<?php echo esc_attr( $banner_title ); ?>" class="blog-hero-bg-img" />
   <div class="blog-hero-overlay"></div>
 
-  <!-- Content Container -->
   <div class="blog-hero-container">
     <div class="blog-hero-content">
-      <div class="blog-hero-badge">
-        <span class="blog-hero-diamond">◆</span>
-        <span class="blog-hero-badge-text fade-left"><?php echo esc_html( $banner_subtitle ); ?></span>
-      </div>
-      <h1 class="blog-hero-title fade-right">
-        <?php echo esc_html( $banner_title ); ?>
-      </h1>
-      <p class="blog-hero-subtext fade-left">
-        <?php echo esc_html( $banner_desc ); ?>
-      </p>
+      <h1 class="blog-hero-title fade-right"><?php echo esc_html( $banner_title ); ?></h1>
+      <p class="blog-hero-subtext fade-left"><?php echo esc_html( $banner_desc ); ?></p>
     </div>
   </div>
 </section>
 
 <style>
-/* Blog Hero Container */
 .blog-hero-banner {
   position: relative;
   width: calc(100% - 40px);
   max-width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   margin: 20px auto 60px;
   border-radius: 36px;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
+  background-color: #0d0d0d;
   box-sizing: border-box;
 }
 
-/* Background Image */
 .blog-hero-bg-img {
   position: absolute;
   top: 0;
@@ -82,55 +66,29 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
   z-index: 0;
 }
 
-/* Dark Gradient Overlay */
 .blog-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Inner Layout Wrapper */
 .blog-hero-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 60px 80px;
+  padding: 60px 40px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .blog-hero-content {
-  max-width: 820px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-/* Diamond Badge */
-.blog-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.blog-hero-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.blog-hero-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-/* Headings & Text */
 .blog-hero-title {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
@@ -141,27 +99,16 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
 .blog-hero-subtext {
   font-size: 1.15rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 680px;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .blog-hero-container {
-    padding: 50px 40px;
-  }
-  .blog-hero-title {
-    font-size: 3rem;
-  }
 }
 
 @media (max-width: 900px) {
   .blog-hero-banner {
-    min-height: 400px;
+    min-height: 340px;
   }
   .blog-hero-container {
-    padding: 40px 30px;
+    padding: 40px 24px;
   }
   .blog-hero-title {
     font-size: 2.15rem;
@@ -175,9 +122,6 @@ elseif ( is_post_type_archive('service') || is_singular('service') || is_page('s
   .blog-hero-banner {
     width: calc(100% - 20px);
     margin: 10px auto 40px;
-  }
-  .blog-hero-container {
-    padding: 30px 20px;
   }
   .blog-hero-title {
     font-size: 1.95rem;

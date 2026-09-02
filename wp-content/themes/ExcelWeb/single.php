@@ -1,13 +1,101 @@
  <?php get_header(); ?>
 
+<?php
+  $hero_post_id     = get_queried_object_id();
+  $hero_banner_id   = (int) get_post_meta( $hero_post_id, 'post_banner_image', true );
+  $hero_banner_url  = $hero_banner_id
+    ? wp_get_attachment_url( $hero_banner_id )
+    : ( has_post_thumbnail( $hero_post_id ) ? get_the_post_thumbnail_url( $hero_post_id, 'full' ) : get_template_directory_uri() . '/assets/images/blog-banner.jpg' );
+?>
+<section class="post-hero-banner">
+  <img src="<?php echo esc_url( $hero_banner_url ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_post_id ) ); ?>" class="post-hero-bg-img" />
+  <div class="post-hero-overlay"></div>
+  <div class="post-hero-container">
+    <div class="post-hero-content">
+      <h1 class="post-hero-title fade-right"><?php echo esc_html( get_the_title( $hero_post_id ) ); ?></h1>
+    </div>
+  </div>
+</section>
 
-    
-<!-- Section 1: Banner -->
- <?php get_template_part('template-parts/banner-archive'); ?>
+<style>
+.post-hero-banner {
+  position: relative;
+  width: calc(100% - 40px);
+  max-width: 100%;
+  min-height: 380px;
+  margin: 20px auto 60px;
+  border-radius: 36px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-sizing: border-box;
+}
 
+.post-hero-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
 
+.post-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
 
+.post-hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 50px 40px;
+  box-sizing: border-box;
+  text-align: center;
+}
 
+.post-hero-content {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.post-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.2px;
+  margin: 0;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .post-hero-banner {
+    min-height: 300px;
+  }
+  .post-hero-container {
+    padding: 32px 24px;
+  }
+  .post-hero-title {
+    font-size: 2.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .post-hero-banner {
+    width: calc(100% - 20px);
+    margin: 10px auto 40px;
+  }
+  .post-hero-title {
+    font-size: 1.85rem;
+  }
+}
+</style>
 
 
 <section class="single-post-section">
@@ -16,33 +104,6 @@
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
       <article class="single-post-wrapper">
-
-        <header class="single-post-header">
-          <div class="single-post-badge">
-            <span class="single-post-diamond">◆</span>
-            <span class="single-post-badge-text fade-left">Blog & Insights</span>
-          </div>
-
-          <h1 class="single-post-title fade-right"><?php the_title(); ?></h1>
-
-          <div class="single-post-meta">
-            <span class="meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              <?php echo get_the_date('F j, Y'); ?>
-            </span>
-            <span class="meta-separator">•</span>
-            <span class="meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              By <?php the_author(); ?>
-            </span>
-          </div>
-        </header>
-
-        <?php if ( has_post_thumbnail() ) : ?>
-          <div class="single-post-hero-image fade-left">
-            <?php the_post_thumbnail('full', ['class' => 'single-post-img', 'alt' => get_the_title()]); ?>
-          </div>
-        <?php endif; ?>
 
         <div class="single-post-content animate-fade fade-right">
           <?php the_content(); ?>
@@ -165,94 +226,21 @@
 
 .single-post-wrapper {
   width: 100%;
-}
-
-/* Header & Meta */
-.single-post-header {
-  text-align: center;
-  margin-bottom: 40px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.single-post-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.single-post-diamond {
-  color: #1ba3b0;
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
-.single-post-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #111111;
-}
-
-.single-post-title {
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -1.2px;
-  color: #0d0d0d;
-  margin: 0 0 24px 0;
-}
-
-.single-post-meta {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  font-size: 1.05rem;
-  color: #666666;
 }
 
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.meta-item svg {
-  width: 18px;
-  height: 18px;
-  stroke: #1ba3b0;
-}
-
-.meta-separator {
-  color: #cccccc;
-}
-
-/* Featured Image - Full Width Banner */
-.single-post-hero-image {
-  width: 100%;
-  max-height: 600px;
-  border-radius: 28px;
-  overflow: hidden;
-  margin-bottom: 60px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.single-post-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Post Content Body - Full Width Layout */
+/* Post Content Body - Centered, comfortable reading width */
 .single-post-content {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto 60px;
   font-size: 1.2rem;
   line-height: 1.85;
   color: #222222;
-  margin-bottom: 60px;
+  text-align: justify;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -264,7 +252,11 @@
 }
 
 .single-post-content p {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+}
+
+.single-post-content p:last-child {
+  margin-bottom: 0;
 }
 
 .single-post-content h2, 
@@ -521,18 +513,9 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 1200px) {
-  .single-post-title {
-    font-size: 3rem;
-  }
-}
-
 @media (max-width: 991px) {
   .related-posts-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .single-post-title {
-    font-size: 2.15rem;
   }
 }
 
@@ -540,19 +523,6 @@
   .single-post-section {
     width: calc(100% - 20px);
     padding: 0 10px;
-  }
-
-  .single-post-title {
-    font-size: 1.95rem;
-  }
-
-  .single-post-meta {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .meta-separator {
-    display: none;
   }
 
   .single-post-navigation {

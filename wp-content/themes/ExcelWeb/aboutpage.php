@@ -1,54 +1,46 @@
-<?php /* Template Name: aboutpage
+﻿<?php /* Template Name: aboutpage
         Template Post Type: page,post */
  ?>
 
  <?php get_header(); ?>
 
-<!-- Hero Banner -->
+<!-- Hero Banner - Minimal (image kept, centered, no badge) -->
+<?php $banner = get_field('about_banner'); ?>
 <section class="about-hero-banner">
-  <!-- Background Image -->
-  <img 
-    src="<?php echo get_field('about_banner')['banner_image']; ?>" 
-    alt="About Page Banner" 
-    class="about-hero-bg-img"
-  />
+  <?php if ( ! empty( $banner['banner_image'] ) ) : ?>
+    <img src="<?php echo esc_url( $banner['banner_image'] ); ?>" alt="About Page Banner" class="about-hero-bg-img" />
+    <div class="about-hero-overlay"></div>
+  <?php endif; ?>
 
-  <!-- Dark Overlay -->
-  <div class="about-hero-overlay"></div>
-
-  <!-- Content Container -->
   <div class="about-hero-container">
     <div class="about-hero-content">
-      <div class="about-hero-badge">
-        <span class="about-hero-diamond">◆</span>
-        <span class="about-hero-badge-text fade-left"><?php echo get_field('about_banner')['subtitle']; ?></span>
-      </div>
-      <h1 class="about-hero-title fade-right">
-        <?php echo get_field('about_banner')['title']; ?>
-      </h1>
-      <p class="about-hero-subtext fade-left">
-        <?php echo get_field('about_banner')['content']; ?>
-      </p>
+      <?php if ( ! empty( $banner['title'] ) ) : ?>
+        <h1 class="about-hero-title fade-right"><?php echo $banner['title']; ?></h1>
+      <?php endif; ?>
+      <?php if ( ! empty( $banner['content'] ) ) : ?>
+        <p class="about-hero-subtext fade-left"><?php echo $banner['content']; ?></p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
 
 <style>
-/* About Hero Container */
 .about-hero-banner {
   position: relative;
   width: calc(100% - 40px);
   max-width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   margin: 20px auto 60px;
   border-radius: 36px;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
+  background-color: #0d0d0d;
+  box-sizing: border-box;
 }
 
-/* Background Image */
 .about-hero-bg-img {
   position: absolute;
   top: 0;
@@ -60,85 +52,49 @@
   z-index: 0;
 }
 
-/* Dark Gradient Overlay */
 .about-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Inner Layout Wrapper */
 .about-hero-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding: 60px 80px;
+  padding: 60px 40px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .about-hero-content {
-  max-width: 820px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-/* Diamond Badge */
-.about-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.about-hero-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.about-hero-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-/* Headings & Text */
 .about-hero-title {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1.2px;
-  margin-bottom: 20px;
+  color: #ffffff;
+  margin: 0 0 20px 0;
 }
 
 .about-hero-subtext {
   font-size: 1.15rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 680px;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .about-hero-container {
-    padding: 50px 40px;
-  }
-  .about-hero-title {
-    font-size: 3rem;
-  }
 }
 
 @media (max-width: 900px) {
   .about-hero-banner {
-    min-height: 400px;
+    min-height: 340px;
   }
   .about-hero-container {
-    padding: 40px 30px;
+    padding: 40px 24px;
   }
   .about-hero-title {
     font-size: 2.15rem;
@@ -149,8 +105,8 @@
 }
 
 @media (max-width: 640px) {
-  .about-hero-container {
-    padding: 30px 20px;
+  .about-hero-banner {
+    width: calc(100% - 20px);
   }
   .about-hero-title {
     font-size: 1.95rem;
@@ -158,226 +114,462 @@
 }
 </style>
 
-<!-- Who We Are -->
-<section class="about-who-we-are">
-  <div class="who-we-are-container">
-    
-    <!-- Left Column: Sticky Section Branding & Heading -->
-    <div class="who-we-are-left">
-      <div class="who-we-are-badge">
-        <span class="who-we-are-diamond">◆</span>
-        <span class="who-we-are-badge-text fade-left">
-          <?php echo get_field('who_we_are')['subtitle'] ?: 'WHO WE ARE'; ?>
-        </span>
+<!-- About Intro: badge/heading/description + image with overlapping stats -->
+<?php $intro = get_field('who_we_are'); ?>
+<section class="about-intro-section">
+  <div class="about-intro-container">
+    <div class="about-intro-top">
+      <div class="about-intro-badge-col">
+        <div class="about-intro-badge">
+          <span class="about-intro-badge-icon">🖨</span>
+          <span class="about-intro-badge-text"><?php echo esc_html( $intro['subtitle'] ?: 'About Us' ); ?></span>
+        </div>
       </div>
-      <h2 class="who-we-are-title fade-right">
-        <?php echo get_field('who_we_are')['heading'] ?: 'Driven by Innovation, Defined by Results.'; ?>
-      </h2>
+
+      <div class="about-intro-text-col">
+        <h2 class="about-intro-heading fade-right"><?php echo esc_html( $intro['heading'] ); ?></h2>
+
+        <?php if ( ! empty( $intro['description'] ) ) : ?>
+          <p class="about-intro-desc fade-left"><?php echo esc_html( $intro['description'] ); ?></p>
+        <?php endif; ?>
+      </div>
     </div>
 
-    <!-- Right Column: Narrative Content & Key Pillars -->
-    <div class="who-we-are-right">
-      <div class="who-we-are-description fade-left">
-        <?php echo get_field('who_we_are')['description']; ?>
+    <div class="about-intro-media">
+      <?php if ( ! empty( $intro['image'] ) ) : ?>
+        <img src="<?php echo esc_url( $intro['image'] ); ?>" alt="<?php echo esc_attr( get_bloginfo('name') ); ?>" class="about-intro-img" />
+      <?php endif; ?>
+
+      <?php
+        $stats = array_filter( array( $intro['stat_1'], $intro['stat_2'], $intro['stat_3'], $intro['stat_4'] ), function ( $s ) { return ! empty( $s['number'] ); } );
+      ?>
+      <?php if ( ! empty( $stats ) ) : ?>
+        <div class="about-intro-stats">
+          <?php foreach ( $stats as $stat ) : ?>
+            <div class="about-intro-stat">
+              <span class="about-intro-stat-number"><?php echo esc_html( $stat['number'] ); ?></span>
+              <span class="about-intro-stat-label"><?php echo esc_html( $stat['label'] ); ?></span>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</section>
+
+<style>
+.about-intro-section {
+  width: calc(100% - 40px);
+  max-width: 100%;
+  margin: 0 auto 100px;
+  padding: 0 80px;
+  box-sizing: border-box;
+}
+
+.about-intro-top {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 48px;
+}
+
+.about-intro-badge-col {
+  flex: 0 0 300px;
+}
+
+.about-intro-text-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-intro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background-color: #f4f6f8;
+  border: 1px solid #e9ecef;
+  border-radius: 50px;
+}
+
+.about-intro-badge-icon {
+  font-size: 1rem;
+}
+
+.about-intro-badge-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.about-intro-heading {
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  color: #0d0d0d;
+  max-width: 100%;
+  margin: 0 0 20px 0;
+}
+
+.about-intro-desc {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #666666;
+  max-width: 100%;
+  margin: 0;
+}
+
+.about-intro-media {
+  position: relative;
+}
+
+.about-intro-img {
+  width: 100%;
+  height: 560px;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
+}
+
+.about-intro-stats {
+  position: relative;
+  z-index: 2;
+  margin: -70px 24px 0;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 36px 24px;
+}
+
+.about-intro-stat {
+  flex: 1 1 25%;
+  min-width: 160px;
+  text-align: left;
+  padding: 0 16px;
+}
+
+.about-intro-stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0d0d0d;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.about-intro-stat-label {
+  display: block;
+  font-size: 0.98rem;
+  color: #666666;
+}
+
+@media (max-width: 1200px) {
+  .about-intro-section {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .about-intro-top {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .about-intro-badge-col {
+    flex: 0 0 auto;
+  }
+  .about-intro-heading {
+    font-size: 2.1rem;
+  }
+  .about-intro-img {
+    height: 420px;
+  }
+  .about-intro-stats {
+    margin: -50px 16px 0;
+    padding: 28px 20px;
+  }
+  .about-intro-stat-number {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-intro-section {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    margin-bottom: 70px;
+  }
+  .about-intro-heading {
+    font-size: 1.7rem;
+  }
+  .about-intro-img {
+    height: 320px;
+    border-radius: 18px;
+  }
+  .about-intro-stats {
+    position: static;
+    margin: 20px 0 0;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .about-intro-stat {
+    padding: 0;
+  }
+}
+</style>
+
+<!-- Our CEO, Founder & Creative Visionary -->
+<?php $owner = get_field('owner'); ?>
+<section class="about-founder-section">
+  <div class="about-founder-container">
+
+    <div class="about-founder-media">
+      <?php
+        $owner_img = isset( $owner['image'] ) ? $owner['image'] : null;
+        $owner_img_url = is_array( $owner_img ) ? ( $owner_img['url'] ?? '' ) : $owner_img;
+        $owner_img_alt = is_array( $owner_img ) && ! empty( $owner_img['alt'] ) ? $owner_img['alt'] : 'Founder Photo';
+      ?>
+      <?php if ( $owner_img_url ) : ?>
+        <img src="<?php echo esc_url( $owner_img_url ); ?>" alt="<?php echo esc_attr( $owner_img_alt ); ?>" class="about-founder-photo fade-up" />
+      <?php else : ?>
+        <img src="https://via.placeholder.com/600x700" alt="Founder Photo" class="about-founder-photo" />
+      <?php endif; ?>
+
+      <?php if ( ! empty( $owner['title'] ) ) : ?>
+        <div class="about-founder-tag">
+          <span class="about-founder-tag-icon">👤</span>
+          <span class="about-founder-tag-text"><?php echo esc_html( $owner['title'] ); ?></span>
+        </div>
+      <?php endif; ?>
+    </div>
+
+    <div class="about-founder-content">
+      <div class="about-founder-badge">
+        <span class="about-founder-badge-icon">🏆</span>
+        <span class="about-founder-badge-text">Leadership</span>
       </div>
 
-      <!-- Feature Grid / Key Highlights -->
-      <div class="who-we-are-pillars">
-          <div class="pillar-card">
-            <div class="pillar-icon-box">
-              <span class="pillar-icon">◆</span>
-            </div>
-            <div class="pillar-content">
-              <h3 class="pillar-title fade-left"><?php echo get_field('who_we_are')['card_1']['title']; ?></h3>
-              <p class="pillar-text fade-right"><?php echo get_field('who_we_are')['card_1']['content']; ?></p>
-            </div>
-          </div>
+      <h2 class="about-founder-heading fade-right">Our CEO, Founder &amp; Creative Visionary</h2>
 
-          <div class="pillar-card">
-            <div class="pillar-icon-box">
-              <span class="pillar-icon">◆</span>
-            </div>
-            <div class="pillar-content">
-              <h3 class="pillar-title fade-left"><?php echo get_field('who_we_are')['card_2']['title']; ?></h3>
-              <p class="pillar-text fade-right"><?php echo get_field('who_we_are')['card_2']['content']; ?></p>
-            </div>
-          </div>
-      </div>
+      <?php if ( ! empty( $owner['content'] ) ) : ?>
+        <div class="about-founder-bio fade-left"><?php echo wp_kses_post( $owner['content'] ); ?></div>
+      <?php endif; ?>
+
+      <?php if ( ! empty( $owner['achievements'] ) ) : ?>
+        <div class="about-founder-achievements">
+          <h3 class="about-founder-achievements-heading">Key Achievements &amp; Milestones</h3>
+          <div class="about-founder-achievements-list"><?php echo $owner['achievements']; ?></div>
+        </div>
+      <?php endif; ?>
     </div>
 
   </div>
 </section>
 
 <style>
-/* Base Section Layout */
-.about-who-we-are {
-  position: relative;
+.about-founder-section {
   width: calc(100% - 40px);
-  margin: 0 auto 80px;
-  padding: 60px 40px;
-  background-color: #0f141c;
-  border-radius: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  max-width: 100%;
+  margin: 0 auto 100px;
+  padding: 0 80px;
   box-sizing: border-box;
 }
 
-.who-we-are-container {
+.about-founder-container {
   display: flex;
   gap: 60px;
-  justify-content: space-between;
   align-items: flex-start;
 }
 
-/* Left Column Styling */
-.who-we-are-left {
+.about-founder-media {
   flex: 0 0 42%;
-  position: sticky;
-  top: 100px;
+  position: relative;
 }
 
-.who-we-are-badge {
-  display: inline-flex;
+.about-founder-photo {
+  width: 100%;
+  height: 560px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  display: block;
+}
+
+.about-founder-tag {
+  position: relative;
+  z-index: 2;
+  margin: -36px 24px 0;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  padding: 16px 20px;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 12px;
 }
 
-.who-we-are-diamond {
-  color: #1ba3b0;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.who-we-are-badge-text {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1ba3b0;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.who-we-are-title {
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.8px;
-  color: #ffffff;
-  margin: 0;
-}
-
-/* Right Column Styling */
-.who-we-are-right {
-  flex: 0 0 52%;
-}
-
-.who-we-are-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.85);
-  margin-bottom: 40px;
-}
-
-.who-we-are-description p {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-.who-we-are-description p:last-child {
-  margin-bottom: 0;
-}
-
-/* Feature Cards Grid */
-.who-we-are-pillars {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.pillar-card {
-  display: flex;
-  gap: 20px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  transition: all 0.3s ease;
-}
-
-.pillar-card:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(27, 163, 176, 0.4);
-  transform: translateY(-2px);
-}
-
-.pillar-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(27, 163, 176, 0.12);
+.about-founder-tag-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: rgba(27, 163, 176, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.1rem;
   flex-shrink: 0;
 }
 
-.pillar-icon {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-}
-
-.pillar-title {
-  font-size: 1.2rem;
+.about-founder-tag-text {
+  font-size: 0.98rem;
   font-weight: 700;
-  margin: 0 0 8px 0;
-  color: #ffffff;
+  color: #111111;
 }
 
-.pillar-text {
+.about-founder-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-founder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background-color: #f4f6f8;
+  border: 1px solid #e9ecef;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.about-founder-badge-icon {
+  font-size: 1rem;
+}
+
+.about-founder-badge-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.about-founder-heading {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  color: #0d0d0d;
+  margin: 0 0 24px 0;
+}
+
+.about-founder-bio {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555555;
+  margin-bottom: 32px;
+}
+
+.about-founder-bio p {
+  margin: 0 0 16px 0;
+}
+
+.about-founder-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.about-founder-achievements {
+  background-color: #f7f9fa;
+  border: 1px solid #eef0f2;
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.about-founder-achievements-heading {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0d0d0d;
+  margin: 0 0 18px 0;
+}
+
+.about-founder-achievements-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+}
+
+.about-founder-achievements-list li {
+  position: relative;
+  padding-left: 30px;
   font-size: 0.98rem;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
+  color: #333333;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 1024px) {
-  .who-we-are-container {
+.about-founder-achievements-list li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #1ba3b0;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .about-founder-section {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .about-founder-container {
     flex-direction: column;
     gap: 40px;
   }
-
-  .who-we-are-left {
-    flex: 0 0 100%;
-    position: static;
-  }
-
-  .who-we-are-right {
+  .about-founder-media {
     flex: 0 0 100%;
   }
-
-  .who-we-are-title {
-    font-size: 3rem;
+  .about-founder-photo {
+    height: 420px;
+  }
+  .about-founder-heading {
+    font-size: 2.1rem;
+  }
+  .about-founder-achievements-list ul {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 640px) {
-  .about-who-we-are {
-    padding: 40px 20px;
-    border-radius: 24px;
-    margin-bottom: 50px;
+  .about-founder-section {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    margin-bottom: 70px;
   }
-
-  .who-we-are-title {
-    font-size: 1.85rem;
+  .about-founder-photo {
+    height: 300px;
+    border-radius: 18px;
   }
-
-  .who-we-are-description {
-    font-size: 1.05rem;
+  .about-founder-tag {
+    margin: -24px 14px 0;
+    padding: 12px 16px;
   }
-
-  .pillar-card {
-    padding: 18px;
+  .about-founder-heading {
+    font-size: 1.7rem;
+  }
+  .about-founder-achievements {
+    padding: 20px;
   }
 }
 </style>
@@ -509,117 +701,91 @@
 }
 </style>
 
-<!-- Our CEO, Founder & Creative Visionary -->
-<section class="about-ceo">
-  <div class="ceo-container">
-    
-    <?php $owner = get_field('owner'); ?>
+<!-- Our Purpose + Mission/Vision -->
+<?php $purpose = get_field('about_purpose'); $mission = get_field('mission_section'); $vision = get_field('vision_section'); ?>
+<section class="about-purpose-section">
+  <div class="about-purpose-container">
 
-    <!-- CEO Image (Left) -->
-    <div class="ceo-image-wrapper">
-      <?php 
-        $owner_img = isset($owner['image']) ? $owner['image'] : null;
-        if ($owner_img) : 
-          $owner_img_url = is_array($owner_img) ? $owner_img['url'] : $owner_img;
-          $owner_img_alt = is_array($owner_img) && !empty($owner_img['alt']) ? $owner_img['alt'] : 'CEO & Founder Photo';
-      ?>
-        <img src="<?php echo esc_url($owner_img_url); ?>" alt="<?php echo esc_attr($owner_img_alt); ?>" class="ceo-image fade-up" />
-      <?php else : ?>
-        <img src="https://via.placeholder.com/600x700" alt="CEO & Founder Photo" class="ceo-image fade-left" />
+    <div class="about-purpose-media">
+      <div class="about-purpose-badge">
+        <span class="about-purpose-diamond">◆</span>
+        <span class="about-purpose-badge-text"><?php echo esc_html( $purpose['badge'] ?: 'Our Purpose' ); ?></span>
+      </div>
+      <h2 class="about-purpose-heading fade-right"><?php echo esc_html( $purpose['heading'] ); ?></h2>
+      <?php if ( ! empty( $purpose['image'] ) ) : ?>
+        <img src="<?php echo esc_url( $purpose['image'] ); ?>" alt="<?php echo esc_attr( $purpose['heading'] ); ?>" class="about-purpose-img fade-left" />
       <?php endif; ?>
     </div>
 
-    <!-- CEO Info Content (Right) -->
-    <div class="ceo-content">
-      <div class="ceo-badge">
-        <span class="ceo-diamond">◆</span>
-        <span class="ceo-badge-text fade-left">LEADERSHIP</span>
-      </div>
-
-      <h2 class="ceo-main-heading fade-right">Our CEO, Founder &amp; Creative Visionary</h2>
-
-      <?php if (!empty($owner['title'])) : ?>
-        <h3 class="ceo-title fade-left"><?php echo esc_html($owner['title']); ?></h3>
+    <div class="about-purpose-content">
+      <?php if ( ! empty( $purpose['intro_text'] ) ) : ?>
+        <p class="about-purpose-intro"><?php echo esc_html( $purpose['intro_text'] ); ?></p>
       <?php endif; ?>
 
-      <?php if (!empty($owner['content'])) : ?>
-        <div class="ceo-bio fade-right">
-          <?php echo wp_kses_post($owner['content']); ?>
-        </div>
+      <?php if ( ! empty( $purpose['button_text'] ) ) : ?>
+        <a href="<?php echo esc_url( $purpose['button_link'] ?: '#' ); ?>" class="about-purpose-btn"><?php echo esc_html( $purpose['button_text'] ); ?></a>
       <?php endif; ?>
 
-      <?php if (!empty($owner['achievements'])) : ?>
-        <div class="ceo-achievements-wrapper">
-          <h4 class="ceo-achievements-heading fade-left">Key Achievements &amp; Milestones</h4>
-          <div class="ceo-achievements-content fade-right">
-            <?php echo $owner['achievements']; ?>
+      <div class="about-purpose-cards">
+        <?php if ( ! empty( $mission['title'] ) ) : ?>
+          <div class="about-purpose-card">
+            <span class="about-purpose-card-icon"><?php echo esc_html( $mission['icon'] ?: '🎯' ); ?></span>
+            <div class="about-purpose-card-body">
+              <h3 class="about-purpose-card-title"><?php echo esc_html( $mission['title'] ); ?></h3>
+              <p class="about-purpose-card-text"><?php echo esc_html( $mission['description'] ); ?></p>
+            </div>
           </div>
-        </div>
-      <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if ( ! empty( $vision['title'] ) ) : ?>
+          <div class="about-purpose-card">
+            <span class="about-purpose-card-icon"><?php echo esc_html( $vision['icon'] ?: '💡' ); ?></span>
+            <div class="about-purpose-card-body">
+              <h3 class="about-purpose-card-title"><?php echo esc_html( $vision['title'] ); ?></h3>
+              <p class="about-purpose-card-text"><?php echo esc_html( $vision['description'] ); ?></p>
+            </div>
+          </div>
+        <?php endif; ?>
+      </div>
     </div>
 
   </div>
 </section>
 
 <style>
-/* CEO Section Styling */
-.about-ceo {
-  position: relative;
+.about-purpose-section {
   width: calc(100% - 40px);
-  margin: 0 auto 90px;
-  padding: 60px 40px;
-  background-color: #ffffff;
-  color: #111111;
+  max-width: 100%;
+  margin: 0 auto 100px;
+  padding: 0 80px;
   box-sizing: border-box;
 }
 
-.ceo-container {
-  width: 100%;
+.about-purpose-container {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   gap: 60px;
+  align-items: flex-start;
 }
 
-/* Image Column */
-.ceo-image-wrapper {
-  flex: 0 0 42%;
-  position: sticky;
-  top: 100px;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+.about-purpose-media,
+.about-purpose-content {
+  flex: 0 0 calc(50% - 30px);
 }
 
-.ceo-image {
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
-  max-height: 600px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-/* Text Content Column */
-.ceo-content {
-  flex: 0 0 52%;
-}
-
-.ceo-badge {
+.about-purpose-badge {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
 }
 
-.ceo-diamond {
+.about-purpose-diamond {
   color: #1ba3b0;
   font-size: 1rem;
   line-height: 1;
 }
 
-.ceo-badge-text {
+.about-purpose-badge-text {
   font-size: 0.95rem;
   font-weight: 700;
   color: #1ba3b0;
@@ -627,205 +793,216 @@
   text-transform: uppercase;
 }
 
-.ceo-main-heading {
-  font-size: 2.8rem;
+.about-purpose-heading {
+  font-size: 2.4rem;
   font-weight: 800;
   line-height: 1.2;
-  letter-spacing: -0.8px;
-  color: #111111;
-  margin: 0 0 8px 0;
+  letter-spacing: -0.6px;
+  color: #0d0d0d;
+  margin: 0 0 28px 0;
 }
 
-.ceo-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #1ba3b0;
-  margin: 0 0 24px 0;
+.about-purpose-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  display: block;
 }
 
-.ceo-bio {
-  font-size: 1.15rem;
+.about-purpose-intro {
+  font-size: 1.1rem;
   line-height: 1.7;
-  color: #444444;
-  margin-bottom: 32px;
+  color: #555555;
+  margin: 0 0 28px 0;
 }
 
-.ceo-bio p {
-  margin-top: 0;
-  margin-bottom: 16px;
+.about-purpose-btn {
+  display: inline-block;
+  padding: 14px 30px;
+  background-color: #1ba3b0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.98rem;
+  border-radius: 50px;
+  text-decoration: none;
+  margin-bottom: 40px;
+  transition: background-color 0.3s ease;
 }
 
-/* Achievements Box Styling */
-.ceo-achievements-wrapper {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-left: 4px solid #1ba3b0;
-  padding: 28px;
-  border-radius: 16px;
+.about-purpose-btn:hover {
+  background-color: #158a95;
 }
 
-.ceo-achievements-heading {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #111111;
-  margin: 0 0 16px 0;
+.about-purpose-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.ceo-achievements-content {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: #333333;
+.about-purpose-card {
+  display: flex;
+  gap: 18px;
+  padding: 26px;
+  background-color: #f7f9fa;
+  border: 1px solid #eef0f2;
+  border-radius: 20px;
 }
 
-.ceo-achievements-content p {
-  margin-top: 0;
-  margin-bottom: 12px;
+.about-purpose-card-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(27, 163, 176, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
 }
 
-.ceo-achievements-content ul,
-.ceo-achievements-content ol {
-  margin: 0 0 12px 20px;
-  padding: 0;
+.about-purpose-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0d0d0d;
+  margin: 0 0 6px 0;
 }
 
-.ceo-achievements-content li {
-  margin-bottom: 8px;
+.about-purpose-card-text {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #666666;
+  margin: 0;
 }
 
-/* Responsive Styles */
-@media (max-width: 1024px) {
-  .ceo-container {
+@media (max-width: 1200px) {
+  .about-purpose-section {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .about-purpose-container {
     flex-direction: column;
     gap: 40px;
   }
-
-  .ceo-image-wrapper,
-  .ceo-content {
+  .about-purpose-media,
+  .about-purpose-content {
     flex: 0 0 100%;
-    position: static;
   }
-
-  .ceo-main-heading {
-    font-size: 2.3rem;
-  }
-
-  .ceo-image {
-    min-height: 380px;
+  .about-purpose-heading {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 640px) {
-  .about-ceo {
-    padding: 40px 20px;
-    margin-bottom: 50px;
+  .about-purpose-section {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    margin-bottom: 70px;
   }
-
-  .ceo-main-heading {
-    font-size: 1.85rem;
+  .about-purpose-heading {
+    font-size: 1.7rem;
   }
-
-  .ceo-bio {
-    font-size: 1.05rem;
+  .about-purpose-img {
+    height: 280px;
   }
-
-  .ceo-achievements-wrapper {
+  .about-purpose-card {
     padding: 20px;
   }
 }
 </style>
 
-<!-- Our Mission -->
-<section class="about-mission">
-  <div class="mission-container">
-    
-    <!-- Content Column (Left) -->
-    <div class="mission-content">
-      <div class="mission-badge">
-        <span class="mission-diamond">◆</span>
-        <span class="mission-badge-text fade-left">
-          <?php echo get_field('mission_section')['subtitle'] ?: 'OUR MISSION'; ?>
-        </span>
+<!-- Why Choose Us -->
+<?php $why = get_field('about_why_choose'); $why_features = array_filter( array( $why['feature_1'], $why['feature_2'], $why['feature_3'], $why['feature_4'] ), function ( $f ) { return ! empty( $f['title'] ); } ); ?>
+<section class="about-why-section">
+  <div class="about-why-container">
+
+    <div class="about-why-media">
+      <div class="about-why-badge">
+        <span class="about-why-diamond">◆</span>
+        <span class="about-why-badge-text"><?php echo esc_html( $why['badge'] ?: 'Why Choose Us' ); ?></span>
       </div>
-
-      <h2 class="mission-title fade-right">
-        <?php echo get_field('mission_section')['heading'] ?: 'Empowering Growth Through Cutting-Edge Engineering'; ?>
-      </h2>
-
-      <div class="mission-description">
-        <?php echo get_field('mission_section')['description']; ?>
-      </div>
-
-      <!-- Key Bullet Points / Value Highlights -->
-      <div class="mission-highlights">
-          <div class="mission-item">
-            <span class="mission-item-icon">◆</span>
-            <span class="mission-item-text fade-left">Delivering secure, resilient, and scalable backend infrastructure.</span>
-          </div>
-          <div class="mission-item">
-            <span class="mission-item-icon">◆</span>
-            <span class="mission-item-text fade-right">Transforming complex technical ideas into intuitive user experiences.</span>
-          </div>
-          <div class="mission-item">
-            <span class="mission-item-icon">◆</span>
-            <span class="mission-item-text fade-left">Ensuring long-term stability and continuous performance optimization.</span>
-          </div>
-      </div>
-    </div>
-
-    <!-- Image Column (Right) -->
-    <div class="mission-image-wrapper">
-      <?php 
-        $mission_img = get_field('mission_section')['image'];
-        if ($mission_img): 
-      ?>
-        <img src="<?php echo esc_url($mission_img['url']); ?>" alt="<?php echo esc_attr($mission_img['alt']); ?>" class="mission-image fade-left" />
-      <?php else: ?>
-        <img src="https://via.placeholder.com/600x700" alt="Our Mission Image" class="mission-image" />
+      <h2 class="about-why-heading fade-right"><?php echo esc_html( $why['heading'] ); ?></h2>
+      <?php if ( ! empty( $why['description'] ) ) : ?>
+        <p class="about-why-desc fade-left"><?php echo esc_html( $why['description'] ); ?></p>
+      <?php endif; ?>
+      <?php if ( ! empty( $why['image'] ) ) : ?>
+        <img src="<?php echo esc_url( $why['image'] ); ?>" alt="<?php echo esc_attr( $why['heading'] ); ?>" class="about-why-img" />
       <?php endif; ?>
     </div>
 
+    <div class="about-why-grid">
+      <?php foreach ( $why_features as $feature ) : ?>
+        <div class="about-why-card">
+          <span class="about-why-card-icon"><?php echo esc_html( $feature['icon'] ); ?></span>
+          <h3 class="about-why-card-title"><?php echo esc_html( $feature['title'] ); ?></h3>
+          <p class="about-why-card-text"><?php echo esc_html( $feature['description'] ); ?></p>
+        </div>
+      <?php endforeach; ?>
+    </div>
+
   </div>
+
 </section>
 
+<?php if ( ! empty( $why['cta_text'] ) ) : ?>
+<!-- CTA Banner - matches Our Process page CTA card exactly -->
+<section class="about-why-cta-section">
+  <div class="about-why-cta-container">
+    <div class="about-why-cta-card">
+      <?php if ( ! empty( $why['cta_image'] ) ) : ?>
+        <img src="<?php echo esc_url( $why['cta_image'] ); ?>" alt="Call To Action Background" class="about-why-cta-bg" />
+      <?php endif; ?>
+      <div class="about-why-cta-overlay"></div>
+
+      <div class="about-why-cta-content">
+        <h2 class="about-why-cta-title fade-right"><?php echo esc_html( $why['cta_text'] ); ?></h2>
+        <?php if ( ! empty( $why['cta_link_text'] ) ) : ?>
+          <a href="<?php echo esc_url( $why['cta_link'] ?: '#' ); ?>" class="about-why-cta-btn fade-left"><?php echo esc_html( $why['cta_link_text'] ); ?></a>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <style>
-/* Base Section Styling */
-.about-mission {
-  position: relative;
+.about-why-section {
   width: calc(100% - 40px);
-  margin: 0 auto 80px;
-  padding: 60px 40px;
-  background-color: #ffffff;
-  color: #111111;
+  max-width: 100%;
+  margin: 0 auto 100px;
+  padding: 0 80px;
   box-sizing: border-box;
 }
 
-.mission-container {
-  width: 100%;
+.about-why-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 60px;
+  align-items: flex-start;
+  margin-bottom: 50px;
 }
 
-/* Left Column: Text & Content */
-.mission-content {
-  flex: 0 0 50%;
+.about-why-media,
+.about-why-grid {
+  flex: 0 0 calc(50% - 30px);
 }
 
-.mission-badge {
+.about-why-badge {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
 }
 
-.mission-diamond {
+.about-why-diamond {
   color: #1ba3b0;
   font-size: 1rem;
   line-height: 1;
 }
 
-.mission-badge-text {
+.about-why-badge-text {
   font-size: 0.95rem;
   font-weight: 700;
   color: #1ba3b0;
@@ -833,321 +1010,224 @@
   text-transform: uppercase;
 }
 
-.mission-title {
-  font-size: 3rem;
+.about-why-heading {
+  font-size: 2.4rem;
   font-weight: 800;
   line-height: 1.2;
-  letter-spacing: -0.8px;
-  color: #111111;
-  margin: 0 0 24px 0;
+  letter-spacing: -0.6px;
+  color: #0d0d0d;
+  margin: 0 0 20px 0;
 }
 
-.mission-description {
-  font-size: 1.1rem;
+.about-why-desc {
+  font-size: 1.05rem;
   line-height: 1.7;
-  color: #444444;
-  margin-bottom: 32px;
+  color: #666666;
+  margin: 0 0 28px 0;
 }
 
-.mission-description p {
-  margin-top: 0;
+.about-why-img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  display: block;
+}
+
+.about-why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid #e6e9ec;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.about-why-card {
+  padding: 32px 26px;
+  border-right: 1px solid #e6e9ec;
+  border-bottom: 1px solid #e6e9ec;
+}
+
+.about-why-card:nth-child(2n) {
+  border-right: none;
+}
+
+.about-why-card:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.about-why-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(27, 163, 176, 0.12);
+  font-size: 1.3rem;
   margin-bottom: 16px;
 }
 
-/* Bullet Point Highlights */
-.mission-highlights {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.mission-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.mission-item-icon {
-  color: #1ba3b0;
-  font-size: 0.9rem;
-  margin-top: 4px;
-  flex-shrink: 0;
-}
-
-.mission-item-text {
+.about-why-card-title {
   font-size: 1.05rem;
-  font-weight: 600;
-  color: #222222;
-  line-height: 1.5;
+  font-weight: 700;
+  color: #0d0d0d;
+  margin: 0 0 8px 0;
 }
 
-/* Right Column: Image */
-.mission-image-wrapper {
-  flex: 0 0 45%;
+.about-why-card-text {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #666666;
+  margin: 0;
+}
+
+.about-why-cta-section {
+  width: 100%;
+  padding: 0 80px 80px;
+  box-sizing: border-box;
+}
+
+.about-why-cta-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.about-why-cta-card {
   position: relative;
-  border-radius: 28px;
+  width: 100%;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  padding: 90px 40px;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.mission-image {
+.about-why-cta-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  min-height: 480px;
-  max-height: 560px;
   object-fit: cover;
-  object-position: center;
-  display: block;
-  border-radius: 28px;
+  z-index: 0;
 }
 
-/* Responsive Styles */
-@media (max-width: 1024px) {
-  .mission-container {
+.about-why-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 8, 20, 0.75);
+  z-index: 1;
+}
+
+.about-why-cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-why-cta-title {
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin: 0 0 32px 0;
+}
+
+.about-why-cta-btn {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.about-why-cta-btn:hover {
+  background-color: #1ba3b0;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) {
+  .about-why-section {
+    padding: 0 40px;
+  }
+  .about-why-cta-section {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .about-why-cta-card {
+    padding: 60px 30px;
+  }
+  .about-why-cta-title {
+    font-size: 2.15rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .about-why-container {
     flex-direction: column;
     gap: 40px;
   }
-
-  .mission-content,
-  .mission-image-wrapper {
+  .about-why-media,
+  .about-why-grid {
     flex: 0 0 100%;
-    max-width: 100%;
   }
-
-  .mission-title {
-    font-size: 3rem;
-  }
-
-  .mission-image {
-    min-height: 380px;
+  .about-why-heading {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 640px) {
-  .about-mission {
-    padding: 40px 20px;
-    margin-bottom: 50px;
+  .about-why-section {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    margin-bottom: 70px;
   }
-
-  .mission-title {
-    font-size: 1.8rem;
+  .about-why-heading {
+    font-size: 1.7rem;
   }
-
-  .mission-description {
-    font-size: 1.05rem;
+  .about-why-img {
+    height: 240px;
   }
-
-  .mission-image {
-    min-height: 300px;
+  .about-why-grid {
+    grid-template-columns: 1fr;
   }
-}
-</style>
-
-<!-- Our Vision -->
-<section class="about-vision">
-  <div class="vision-container">
-    
-    <!-- Image Column (Left) -->
-    <div class="vision-image-wrapper">
-      <?php 
-        $vision_img = get_field('vision_section')['image'];
-        if ($vision_img): 
-      ?>
-        <img src="<?php echo esc_url($vision_img['url']); ?>" alt="<?php echo esc_attr($vision_img['alt']); ?>" class="vision-image fade-right" />
-      <?php else: ?>
-        <img src="https://via.placeholder.com/600x700" alt="Our Vision Image" class="vision-image" />
-      <?php endif; ?>
-    </div>
-
-    <!-- Content Column (Right) -->
-    <div class="vision-content">
-      <div class="vision-badge">
-        <span class="vision-diamond">◆</span>
-        <span class="vision-badge-text fade-left">
-          <?php echo get_field('vision_section')['subtitle'] ?: 'OUR VISION'; ?>
-        </span>
-      </div>
-
-      <h2 class="vision-title fade-right">
-        <?php echo get_field('vision_section')['heading'] ?: 'Shaping the Future of Digital Transformation'; ?>
-      </h2>
-
-      <div class="vision-description">
-        <?php echo get_field('vision_section')['description']; ?>
-      </div>
-
-      <!-- Key Bullet Points / Value Highlights -->
-      <div class="vision-highlights">
-        <div class="vision-item">
-          <span class="vision-item-icon">◆</span>
-          <span class="vision-item-text fade-left"> <?php echo get_field('vision_section')['card_1']; ?></span>
-        </div>
-        <div class="vision-item">
-          <span class="vision-item-icon">◆</span>
-          <span class="vision-item-text fade-right"> <?php echo get_field('vision_section')['card_2']; ?></span>
-        </div>
-        <div class="vision-item">
-          <span class="vision-item-icon">◆</span>
-          <span class="vision-item-text fade-left"> <?php echo get_field('vision_section')['card_3']; ?></span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<style>
-/* Base Section Styling */
-.about-vision {
-  position: relative;
-  width: calc(100% - 40px);
-  margin: 0 auto 80px;
-  padding: 60px 40px;
-  background-color: #ffffff;
-  color: #111111;
-  box-sizing: border-box;
-}
-
-.vision-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 60px;
-}
-
-/* Left Column: Image */
-.vision-image-wrapper {
-  flex: 0 0 45%;
-  position: relative;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-}
-
-.vision-image {
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
-  max-height: 560px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  border-radius: 28px;
-}
-
-/* Right Column: Text & Content */
-.vision-content {
-  flex: 0 0 50%;
-}
-
-.vision-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.vision-diamond {
-  color: #1ba3b0;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.vision-badge-text {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1ba3b0;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.vision-title {
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.8px;
-  color: #111111;
-  margin: 0 0 24px 0;
-}
-
-.vision-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #444444;
-  margin-bottom: 32px;
-}
-
-.vision-description p {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-/* Bullet Point Highlights */
-.vision-highlights {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.vision-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.vision-item-icon {
-  color: #1ba3b0;
-  font-size: 0.9rem;
-  margin-top: 4px;
-  flex-shrink: 0;
-}
-
-.vision-item-text {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #222222;
-  line-height: 1.5;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-  .vision-container {
-    flex-direction: column-reverse;
-    gap: 40px;
+  .about-why-card {
+    border-right: none !important;
+    border-bottom: 1px solid #e6e9ec !important;
   }
-
-  .vision-content,
-  .vision-image-wrapper {
-    flex: 0 0 100%;
-    max-width: 100%;
+  .about-why-card:last-child {
+    border-bottom: none !important;
   }
-
-  .vision-title {
-    font-size: 3rem;
+  .about-why-cta-section {
+    padding-left: 20px;
+    padding-right: 20px;
   }
-
-  .vision-image {
-    min-height: 380px;
+  .about-why-cta-card {
+    padding: 44px 24px;
+    border-radius: 16px;
   }
-}
-
-@media (max-width: 640px) {
-  .about-vision {
-    padding: 40px 20px;
-    margin-bottom: 50px;
-  }
-
-  .vision-title {
-    font-size: 1.8rem;
-  }
-
-  .vision-description {
-    font-size: 1.05rem;
-  }
-
-  .vision-image {
-    min-height: 300px;
+  .about-why-cta-title {
+    font-size: 1.6rem;
   }
 }
 </style>
