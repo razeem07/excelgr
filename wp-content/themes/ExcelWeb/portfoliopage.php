@@ -143,31 +143,42 @@
       <?php if ( $portfolio_query->have_posts() ) :
         while ( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
           $full_img_url  = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-          $thumb_img_url = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+          $bg_img_url    = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+          $category      = get_field( 'service_category' );
+          $excerpt       = get_the_excerpt();
         ?>
 
-        <article class="portfolio-card">
-          <?php if ( has_post_thumbnail() ) : ?>
-            <button
-              type="button"
-              class="portfolio-card-img-btn portfolio-trigger"
-              data-full-img="<?php echo esc_url( $full_img_url ); ?>"
-              data-caption="<?php the_title_attribute(); ?>"
-              aria-label="View project <?php the_title_attribute(); ?>"
-            >
-              <img
-                src="<?php echo esc_url( $thumb_img_url ); ?>"
-                alt="<?php the_title_attribute(); ?>"
-                class="portfolio-card-img fade-left"
-              />
-              <div class="portfolio-card-overlay"></div>
-              <h3 class="portfolio-card-title"><?php the_title(); ?></h3>
-            </button>
-          <?php else : ?>
-            <div class="portfolio-card-placeholder">
-              <h3 class="portfolio-card-title"><?php the_title(); ?></h3>
+        <article class="portfolio-card" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
+          <details class="portfolio-card-panel">
+            <summary class="portfolio-card-summary">
+              <?php if ( ! empty( $category ) ) : ?>
+                <span class="portfolio-card-category"><?php echo esc_html( $category ); ?></span>
+              <?php endif; ?>
+              <hr class="portfolio-card-divider" />
+              <span class="portfolio-card-title-row">
+                <span class="portfolio-card-name"><?php the_title(); ?></span>
+                <span class="portfolio-card-toggle" aria-hidden="true">
+                  <svg class="icon-plus" viewBox="0 0 448 512" fill="currentColor"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+                  <svg class="icon-minus" viewBox="0 0 448 512" fill="currentColor"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+                </span>
+              </span>
+            </summary>
+            <div class="portfolio-card-details">
+              <?php if ( ! empty( $excerpt ) ) : ?>
+                <p class="portfolio-card-excerpt"><?php echo esc_html( $excerpt ); ?></p>
+              <?php endif; ?>
+              <?php if ( $full_img_url ) : ?>
+                <button
+                  type="button"
+                  class="portfolio-card-view-btn portfolio-trigger"
+                  data-full-img="<?php echo esc_url( $full_img_url ); ?>"
+                  data-caption="<?php the_title_attribute(); ?>"
+                >
+                  View Work
+                </button>
+              <?php endif; ?>
             </div>
-          <?php endif; ?>
+          </details>
         </article>
 
       <?php endwhile;
@@ -247,89 +258,129 @@
   margin: 0;
 }
 
-/* Portfolio Grid - image cards, no detail page, click to zoom */
+/* Portfolio Grid - uniform cards, 4 per row, click to zoom */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 .portfolio-card {
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.portfolio-card-img-btn {
   position: relative;
   display: flex;
-  align-items: flex-end;
-  width: 100%;
-  height: 380px;
-  padding: 28px 24px;
-  border: none;
-  background-color: #f4f4f4;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 340px;
+  border-radius: 18px;
   overflow: hidden;
-  cursor: pointer;
-  box-sizing: border-box;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.portfolio-card-img-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
-}
-
-.portfolio-card-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.portfolio-card-img-btn:hover .portfolio-card-img {
-  transform: scale(1.06);
-}
-
-.portfolio-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.15) 55%,
-    rgba(0, 0, 0, 0) 100%
-  );
-}
-
-.portfolio-card-title {
-  position: relative;
-  z-index: 1;
-  color: #ffffff;
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: left;
-  margin: 0;
-}
-
-.portfolio-card-placeholder {
-  width: 100%;
-  height: 380px;
-  border-radius: 20px;
   background-color: #e9ecef;
-  display: flex;
-  align-items: flex-end;
-  padding: 28px 24px;
-  box-sizing: border-box;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
 }
 
-.portfolio-card-placeholder .portfolio-card-title {
-  color: #555555;
+.portfolio-card:hover {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+}
+
+.portfolio-card-panel {
+  margin: 16px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.portfolio-card-summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+}
+
+.portfolio-card-summary::-webkit-details-marker {
+  display: none;
+}
+
+.portfolio-card-category {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1ba3b0;
+}
+
+.portfolio-card-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 10px 0;
+}
+
+.portfolio-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.portfolio-card-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0d0d0d;
+  line-height: 1.25;
+}
+
+.portfolio-card-toggle {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  color: #1ba3b0;
+}
+
+.portfolio-card-toggle svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.portfolio-card-toggle .icon-minus {
+  display: none;
+}
+
+.portfolio-card-panel[open] .portfolio-card-toggle .icon-plus {
+  display: none;
+}
+
+.portfolio-card-panel[open] .portfolio-card-toggle .icon-minus {
+  display: block;
+}
+
+.portfolio-card-details {
+  padding-top: 10px;
+}
+
+.portfolio-card-excerpt {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #667085;
+  margin: 0 0 10px 0;
+}
+
+.portfolio-card-view-btn {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #1ba3b0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.portfolio-card-view-btn:hover {
+  color: #14838e;
 }
 
 .no-portfolio-found {
@@ -425,10 +476,15 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 991px) {
   .portfolio-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
   }
   .portfolio-list-main-title {
     font-size: 2.1rem;
@@ -446,13 +502,12 @@
     gap: 20px;
   }
 
-  .portfolio-list-main-title {
-    font-size: 1.95rem;
+  .portfolio-card {
+    height: 300px;
   }
 
-  .portfolio-card-img-btn,
-  .portfolio-card-placeholder {
-    height: 300px;
+  .portfolio-list-main-title {
+    font-size: 1.95rem;
   }
 
   .portfolio-lightbox-close {

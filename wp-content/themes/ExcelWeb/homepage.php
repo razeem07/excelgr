@@ -1349,11 +1349,6 @@ function egScrollCarousel() {
     
     <!-- Centered Header Block -->
     <div class="eg-work-header">
-      <div class="eg-work-badge">
-        <span class="eg-work-diamond">◆</span>
-        <span class="eg-work-badge-text fade-left">Selected work</span>
-      </div>
-
       <h2 class="eg-work-title fade-right">
         <?php echo get_field('selected_work')['title']; ?>
       </h2>
@@ -1365,91 +1360,51 @@ function egScrollCarousel() {
       <!-- Card 1 (Dynamic ACF Image) -->
       <div class="eg-work-card eg-card-1">
         <div class="eg-work-card-inner">
-          <img 
-            src="<?php echo get_field('selected_work')['image']; ?>" 
-            alt="<?php echo get_field('selected_work')['title']; ?>" 
-            class="eg-work-image" 
+          <img
+            src="<?php echo get_field('selected_work')['image']; ?>"
+            alt="<?php echo esc_attr( get_field('selected_work')['card_1_title'] ); ?>"
+            class="eg-work-image"
           />
           <div class="eg-work-meta-overlay">
-            <div class="eg-work-meta-left fade-left">
-              <span class="eg-meta-label">YEAR</span>
-              <span class="eg-meta-value">2026</span>
-            </div>
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image']; ?>" class="eg-pill-avatar" alt="" />
-              <span class="eg-pill-title fade-left"><?php echo get_field('selected_work')['title']; ?></span>
-              <span class="eg-pill-action fade-right">SEE WORK</span>
-            </div>
-            <div class="eg-work-meta-right">
-              <span class="eg-meta-label fade-left">Excel Graphics</span>
-              <span class="eg-meta-value fade-right">Design</span>
-            </div>
+              <span class="eg-pill-title fade-left"><?php echo esc_html( get_field('selected_work')['card_1_title'] ); ?></span>            </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 2 (Placeholder) -->
+      <!-- Card 2 -->
       <div class="eg-work-card eg-card-2">
         <div class="eg-work-card-inner">
-          <img src="<?php echo get_field('selected_work')['image_2']; ?>" alt="Victoria Project" class="eg-work-image" />
+          <img src="<?php echo get_field('selected_work')['image_2']; ?>" alt="<?php echo esc_attr( get_field('selected_work')['card_2_title'] ); ?>" class="eg-work-image" />
           <div class="eg-work-meta-overlay">
-            <div class="eg-work-meta-left fade-left">
-              <span class="eg-meta-label">YEAR</span>
-              <span class="eg-meta-value">2025</span>
-            </div>
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_2']; ?>" class="eg-pill-avatar" alt="" />
-              <span class="eg-pill-title fade-right"><?php echo get_field('selected_work')['title']; ?></span>
-              <span class="eg-pill-action fade-left">SEE WORK</span>
-            </div>
-            <div class="eg-work-meta-right">
-              <span class="eg-meta-label fade-left">Excel Graphics</span>
-              <span class="eg-meta-value fade-right">Design</span>
-            </div>
+              <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_2_title'] ); ?></span>            </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 3 (Placeholder) -->
+      <!-- Card 3 -->
       <div class="eg-work-card eg-card-3">
         <div class="eg-work-card-inner">
-          <img src="<?php echo get_field('selected_work')['image_3']; ?>" alt="Nuvik Project" class="eg-work-image" />
+          <img src="<?php echo get_field('selected_work')['image_3']; ?>" alt="<?php echo esc_attr( get_field('selected_work')['card_3_title'] ); ?>" class="eg-work-image" />
           <div class="eg-work-meta-overlay">
-            <div class="eg-work-meta-left fade-left">
-              <span class="eg-meta-label">YEAR</span>
-              <span class="eg-meta-value">2024</span>
-            </div>
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_3']; ?>" class="eg-pill-avatar" alt="" />
-              <span class="eg-pill-title fade-right"><?php echo get_field('selected_work')['title']; ?></span>
-              <span class="eg-pill-action fade-left">SEE WORK</span>
-            </div>
-            <div class="eg-work-meta-right">
-              <span class="eg-meta-label fade-left">Excel Graphics</span>
-              <span class="eg-meta-value fade-right">Design</span>
-            </div>
+              <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_3_title'] ); ?></span>            </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 4 (Placeholder) -->
+      <!-- Card 4 -->
       <div class="eg-work-card eg-card-4">
         <div class="eg-work-card-inner">
-          <img src="<?php echo get_field('selected_work')['image_4']; ?>" alt="Auria Project" class="eg-work-image" />
+          <img src="<?php echo get_field('selected_work')['image_4']; ?>" alt="<?php echo esc_attr( get_field('selected_work')['card_4_title'] ); ?>" class="eg-work-image" />
           <div class="eg-work-meta-overlay">
-            <div class="eg-work-meta-left fade-left">
-              <span class="eg-meta-label">YEAR</span>
-              <span class="eg-meta-value">2024</span>
-            </div>
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_4']; ?>" class="eg-pill-avatar" alt="" />
-              <span class="eg-pill-title fade-right"><?php echo get_field('selected_work')['title']; ?></span>
-              <span class="eg-pill-action fade-left">SEE WORK</span>
-            </div>
-            <div class="eg-work-meta-right">
-              <span class="eg-meta-label fade-left">Excel Graphics</span>
-              <span class="eg-meta-value fade-right">Design</span>
-            </div>
+              <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_4_title'] ); ?></span>            </div>
           </div>
         </div>
       </div>
@@ -1481,24 +1436,6 @@ function egScrollCarousel() {
   flex-direction: column;
   align-items: center;
   margin-bottom: 40px;
-}
-
-.eg-work-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.eg-work-diamond {
-  color: #1ba3b0;
-  font-size: 1.1rem;
-}
-
-.eg-work-badge-text {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #111111;
 }
 
 .eg-work-title {
@@ -1557,28 +1494,9 @@ function egScrollCarousel() {
   padding: 30px 40px;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   pointer-events: none;
-}
-
-.eg-work-meta-left, .eg-work-meta-right {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  color: #fff;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-}
-
-.eg-meta-label {
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  opacity: 0.8;
-}
-
-.eg-meta-value {
-  font-size: 1.1rem;
-  font-weight: 700;
 }
 
 .eg-work-pill-btn {
@@ -1589,7 +1507,7 @@ function egScrollCarousel() {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 8px 20px 8px 10px;
+  padding: 8px 18px 8px 10px;
   border-radius: 100px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -1608,21 +1526,12 @@ function egScrollCarousel() {
   font-size: 0.95rem;
 }
 
-.eg-pill-action {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-left: 6px;
-}
-
 /* Responsive Styles */
 @media (max-width: 768px) {
   .eg-work-section { padding: 0 20px; }
   .eg-work-title { font-size: 1.95rem; }
   .eg-work-card { height: 60vh; top: 15vh; }
   .eg-work-meta-overlay { padding: 20px; }
-  .eg-work-meta-left, .eg-work-meta-right { display: none; }
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -2102,7 +2011,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Query ACF Portfolio CPT
 $portfolio_query = new WP_Query(array(
     'post_type'      => 'portfolio',
-    'posts_per_page' => 8, // Retrieves top 8 projects for the 4x2 grid
+    'posts_per_page' => 8, // 4 columns x 2 rows max
     'post_status'    => 'publish',
     'orderby'        => 'date',
     'order'          => 'DESC'
@@ -2127,38 +2036,81 @@ if ($portfolio_query->have_posts()) :
       </h2>
     </div>
 
-    <!-- 4 Columns x 2 Rows Image Grid -->
+    <!-- Portfolio Cards Grid (image background + category + client name + collapsible excerpt) -->
     <div class="eg-latest-grid">
-      
-      <?php 
-      while ($portfolio_query->have_posts()) : $portfolio_query->the_post(); 
-        // Get featured image URL or fall back if empty
-        $featured_img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
-        if (!$featured_img_url) {
-            $featured_img_url = 'https://via.placeholder.com/400x400?text=No+Image';
-        }
+
+      <?php
+      while ($portfolio_query->have_posts()) : $portfolio_query->the_post();
+        $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+        $bg_img_url   = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+        $category     = get_field( 'service_category' );
+        $excerpt      = get_the_excerpt();
       ?>
-        <!-- Image Square -->
-        <div class="eg-latest-item">
-          <a href="<?php the_permalink(); ?>">
-            <img 
-              src="<?php echo esc_url($featured_img_url); ?>" 
-              alt="<?php echo esc_attr(get_the_title()); ?>" 
-              class="eg-latest-img fade-up" 
-            />
-          </a>
-        </div>
-      <?php 
-      endwhile; 
-      wp_reset_postdata(); 
+        <article class="eg-latest-item" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
+          <details class="eg-latest-item-panel">
+            <summary class="eg-latest-item-summary">
+              <?php if ( ! empty( $category ) ) : ?>
+                <span class="eg-latest-item-category"><?php echo esc_html( $category ); ?></span>
+              <?php endif; ?>
+              <hr class="eg-latest-item-divider" />
+              <span class="eg-latest-item-title-row">
+                <span class="eg-latest-item-name"><?php the_title(); ?></span>
+                <span class="eg-latest-item-toggle" aria-hidden="true">
+                  <svg class="icon-plus" viewBox="0 0 448 512" fill="currentColor"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+                  <svg class="icon-minus" viewBox="0 0 448 512" fill="currentColor"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+                </span>
+              </span>
+            </summary>
+            <div class="eg-latest-item-details">
+              <?php if ( ! empty( $excerpt ) ) : ?>
+                <p class="eg-latest-item-excerpt"><?php echo esc_html( $excerpt ); ?></p>
+              <?php endif; ?>
+              <?php if ( $full_img_url ) : ?>
+                <button
+                  type="button"
+                  class="eg-latest-item-view-btn eg-latest-trigger"
+                  data-full-img="<?php echo esc_url( $full_img_url ); ?>"
+                  data-caption="<?php the_title_attribute(); ?>"
+                >
+                  View Work
+                </button>
+              <?php endif; ?>
+            </div>
+          </details>
+        </article>
+      <?php
+      endwhile;
+      wp_reset_postdata();
       ?>
 
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="eg-latest-lightbox" class="eg-latest-lightbox" aria-hidden="true" role="dialog">
+      <div class="eg-latest-lightbox-overlay" id="eg-latest-lightbox-overlay"></div>
+      <div class="eg-latest-lightbox-container">
+        <button type="button" class="eg-latest-lightbox-close" id="eg-latest-lightbox-close" aria-label="Close">&times;</button>
+        <img src="" alt="" id="eg-latest-lightbox-img" class="eg-latest-lightbox-img" />
+        <p class="eg-latest-lightbox-caption" id="eg-latest-lightbox-caption"></p>
+      </div>
     </div>
 
     <!-- Bottom Action Button -->
-    <div class="eg-latest-btn-wrapper">
-      <a href="<?php echo esc_url(get_post_type_archive_link('portfolio')); ?>" class="eg-latest-btn">View all</a>
-    </div>
+    <?php
+      $portfolio_page = get_posts( array(
+        'post_type'      => 'page',
+        'posts_per_page' => 1,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'portfoliopage.php',
+        'fields'         => 'ids',
+      ) );
+      $portfolio_page_url = ! empty( $portfolio_page ) ? get_permalink( $portfolio_page[0] ) : '';
+    ?>
+    <?php if ( $portfolio_page_url ) : ?>
+      <div class="eg-latest-btn-wrapper">
+        <a href="<?php echo esc_url( $portfolio_page_url ); ?>" class="eg-latest-btn">View all</a>
+      </div>
+    <?php endif; ?>
 
   </div>
 </section>
@@ -2222,40 +2174,207 @@ if ($portfolio_query->have_posts()) :
   margin: 0;
 }
 
-/* Grid: 4 Columns with tight spacing */
+/* Uniform Grid: 4 equal-size cards per row, max 2 rows (8 cards) */
 .eg-latest-grid {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 24px;
   margin-bottom: 50px;
 }
 
-/* Square Image Containers */
 .eg-latest-item {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1; /* Forces exact square proportion for every image */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 300px;
+  border-radius: 18px;
   overflow: hidden;
-  border-radius: 4px;
+  background-color: #e9ecef;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+  text-align: left;
 }
 
-.eg-latest-item a {
+.eg-latest-item:hover {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+}
+
+.eg-latest-item-panel {
+  margin: 16px;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.eg-latest-item-summary {
   display: block;
-  width: 100%;
-  height: 100%;
+  cursor: pointer;
+  list-style: none;
 }
 
-.eg-latest-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Fits image inside square without distortion */
+.eg-latest-item-summary::-webkit-details-marker {
+  display: none;
+}
+
+.eg-latest-item-category {
   display: block;
-  transition: transform 0.4s ease;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1ba3b0;
 }
 
-.eg-latest-item:hover .eg-latest-img {
-  transform: scale(1.04);
+.eg-latest-item-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 10px 0;
+}
+
+.eg-latest-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.eg-latest-item-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0d0d0d;
+  line-height: 1.25;
+}
+
+.eg-latest-item-toggle {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  color: #1ba3b0;
+}
+
+.eg-latest-item-toggle svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.eg-latest-item-toggle .icon-minus {
+  display: none;
+}
+
+.eg-latest-item-panel[open] .eg-latest-item-toggle .icon-plus {
+  display: none;
+}
+
+.eg-latest-item-panel[open] .eg-latest-item-toggle .icon-minus {
+  display: block;
+}
+
+.eg-latest-item-details {
+  padding-top: 10px;
+}
+
+.eg-latest-item-excerpt {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #667085;
+  margin: 0 0 10px 0;
+}
+
+.eg-latest-item-view-btn {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  color: #1ba3b0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.eg-latest-item-view-btn:hover {
+  color: #14838e;
+}
+
+/* Lightbox (matches Portfolio page lightbox) */
+.eg-latest-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.eg-latest-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.eg-latest-lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+}
+
+.eg-latest-lightbox-container {
+  position: relative;
+  z-index: 2;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eg-latest-lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.eg-latest-lightbox.active .eg-latest-lightbox-img {
+  transform: scale(1);
+}
+
+.eg-latest-lightbox-caption {
+  margin: 16px 0 0 0;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.eg-latest-lightbox-close {
+  position: absolute;
+  top: -45px;
+  right: -10px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 5px 15px;
+  transition: color 0.2s ease;
+}
+
+.eg-latest-lightbox-close:hover {
+  color: #1ba3b0;
 }
 
 /* Button Wrapper & Bordered Button */
@@ -2290,12 +2409,14 @@ if ($portfolio_query->have_posts()) :
   .eg-latest-title {
     font-size: 3rem;
   }
+  .eg-latest-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 992px) {
   .eg-latest-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2x4 on tablet screens */
-    gap: 14px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -2307,11 +2428,64 @@ if ($portfolio_query->have_posts()) :
     font-size: 1.95rem;
   }
   .eg-latest-grid {
-    grid-template-columns: 1fr; /* 1 column on mobile screens */
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .eg-latest-item {
+    height: 280px;
   }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const lightbox = document.getElementById('eg-latest-lightbox');
+  if (!lightbox) return;
+
+  const lightboxImg = document.getElementById('eg-latest-lightbox-img');
+  const lightboxCaption = document.getElementById('eg-latest-lightbox-caption');
+  const closeBtn = document.getElementById('eg-latest-lightbox-close');
+  const overlay = document.getElementById('eg-latest-lightbox-overlay');
+  const triggers = document.querySelectorAll('.eg-latest-trigger');
+
+  function openLightbox(fullSrc, caption) {
+    lightboxImg.src = fullSrc;
+    lightboxImg.alt = caption || '';
+    lightboxCaption.textContent = caption || '';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(function () {
+      lightboxImg.src = '';
+    }, 300);
+  }
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      const fullSrc = this.getAttribute('data-full-img');
+      const caption = this.getAttribute('data-caption');
+      if (fullSrc) {
+        openLightbox(fullSrc, caption);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', closeLightbox);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+      closeLightbox();
+    }
+  });
+});
+</script>
 
 <!-- <?php
 $clients_query = new WP_Query(array(

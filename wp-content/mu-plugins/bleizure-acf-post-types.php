@@ -42,6 +42,9 @@ function bleizure_register_acf_replacement_post_types() {
 		if ( $slug === 'service' ) {
 			$supports[] = 'page-attributes'; // servicespage.php already orders by menu_order
 		}
+		if ( $slug === 'portfolio' ) {
+			$supports[] = 'excerpt'; // used as the short blurb on the redesigned portfolio cards
+		}
 		register_post_type( $slug, array(
 			'labels'            => bleizure_acf_cpt_labels( $names[0], $names[1] ),
 			'public'            => true,

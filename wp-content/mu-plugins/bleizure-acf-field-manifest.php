@@ -182,25 +182,17 @@ function bleizure_field_manifest() {
 					'label' => 'Selected Work',
 					'fields' => array(
 						'title' => array(
-							'label' => 'Title',
+							'label' => 'Section Heading (above all 4 cards)',
 							'type' => 'text',
 						),
-						'image' => array(
-							'label' => 'Image',
-							'type' => 'image',
-						),
-						'image_2' => array(
-							'label' => 'Image 2',
-							'type' => 'image',
-						),
-						'image_3' => array(
-							'label' => 'Image 3',
-							'type' => 'image',
-						),
-						'image_4' => array(
-							'label' => 'Image 4',
-							'type' => 'image',
-						),
+						'card_1_title' => array( 'label' => 'Card 1 Project Title', 'type' => 'text' ),
+						'image' => array( 'label' => 'Card 1 Image', 'type' => 'image' ),
+						'card_2_title' => array( 'label' => 'Card 2 Project Title', 'type' => 'text' ),
+						'image_2' => array( 'label' => 'Card 2 Image', 'type' => 'image' ),
+						'card_3_title' => array( 'label' => 'Card 3 Project Title', 'type' => 'text' ),
+						'image_3' => array( 'label' => 'Card 3 Image', 'type' => 'image' ),
+						'card_4_title' => array( 'label' => 'Card 4 Project Title', 'type' => 'text' ),
+						'image_4' => array( 'label' => 'Card 4 Image', 'type' => 'image' ),
 					),
 				),
 				'clients_logo' => array(
@@ -234,6 +226,16 @@ function bleizure_field_manifest() {
 				'designation' => array(
 					'group_title' => 'Testimonials Additional Fields',
 					'label' => 'Designation',
+					'type' => 'text',
+				),
+			),
+		),
+		'posttype:portfolio' => array(
+			'screen' => array('post_type' => 'portfolio'),
+			'fields' => array(
+				'service_category' => array(
+					'group_title' => 'Portfolio Additional Fields',
+					'label' => 'Service Category (e.g. "3D Signage", "Storefront Branding")',
 					'type' => 'text',
 				),
 			),
