@@ -120,8 +120,8 @@
   $args = array(
     'post_type'      => 'portfolio',
     'posts_per_page' => -1,
-    'orderby'        => 'date',
-    'order'          => 'DESC'
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC'
   );
 
   $portfolio_query = new WP_Query($args);
@@ -146,6 +146,17 @@
           $bg_img_url    = get_the_post_thumbnail_url( get_the_ID(), 'large' );
           $category      = get_field( 'service_category' );
           $excerpt       = get_the_excerpt();
+
+          // Featured image always leads the gallery (position 1), followed by the extra gallery images.
+          $gallery_urls = array();
+          if ( $full_img_url ) {
+            $gallery_urls[] = $full_img_url;
+          }
+          foreach ( wp_list_pluck( get_field( 'gallery' ), 'url' ) as $gallery_img_url ) {
+            if ( ! in_array( $gallery_img_url, $gallery_urls, true ) ) {
+              $gallery_urls[] = $gallery_img_url;
+            }
+          }
         ?>
 
         <article class="portfolio-card" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
@@ -167,11 +178,11 @@
               <?php if ( ! empty( $excerpt ) ) : ?>
                 <p class="portfolio-card-excerpt"><?php echo esc_html( $excerpt ); ?></p>
               <?php endif; ?>
-              <?php if ( $full_img_url ) : ?>
+              <?php if ( ! empty( $gallery_urls ) ) : ?>
                 <button
                   type="button"
                   class="portfolio-card-view-btn portfolio-trigger"
-                  data-full-img="<?php echo esc_url( $full_img_url ); ?>"
+                  data-gallery="<?php echo esc_attr( wp_json_encode( array_values( $gallery_urls ) ) ); ?>"
                   data-caption="<?php the_title_attribute(); ?>"
                 >
                   View Work
@@ -196,8 +207,11 @@
   <div class="portfolio-lightbox-overlay" id="portfolio-lightbox-overlay"></div>
   <div class="portfolio-lightbox-container">
     <button type="button" class="portfolio-lightbox-close" id="portfolio-lightbox-close" aria-label="Close">&times;</button>
+    <button type="button" class="portfolio-lightbox-nav portfolio-lightbox-prev" id="portfolio-lightbox-prev" aria-label="Previous image">&#8249;</button>
     <img src="" alt="" id="portfolio-lightbox-img" class="portfolio-lightbox-img" />
+    <button type="button" class="portfolio-lightbox-nav portfolio-lightbox-next" id="portfolio-lightbox-next" aria-label="Next image">&#8250;</button>
     <p class="portfolio-lightbox-caption" id="portfolio-lightbox-caption"></p>
+    <p class="portfolio-lightbox-counter" id="portfolio-lightbox-counter"></p>
   </div>
 </div>
 
@@ -466,6 +480,44 @@
   color: #1ba3b0;
 }
 
+.portfolio-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #ffffff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.portfolio-lightbox-nav:hover {
+  background: rgba(27, 163, 176, 0.85);
+}
+
+.portfolio-lightbox-prev {
+  left: -64px;
+}
+
+.portfolio-lightbox-next {
+  right: -64px;
+}
+
+.portfolio-lightbox-counter {
+  margin: 8px 0 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .portfolio-list-section {
@@ -514,6 +566,20 @@
     top: -40px;
     right: 0;
   }
+
+  .portfolio-lightbox-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+
+  .portfolio-lightbox-prev {
+    left: 4px;
+  }
+
+  .portfolio-lightbox-next {
+    right: 4px;
+  }
 }
 </style>
 
@@ -522,14 +588,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const lightbox = document.getElementById('portfolio-lightbox');
   const lightboxImg = document.getElementById('portfolio-lightbox-img');
   const lightboxCaption = document.getElementById('portfolio-lightbox-caption');
+  const lightboxCounter = document.getElementById('portfolio-lightbox-counter');
   const closeBtn = document.getElementById('portfolio-lightbox-close');
+  const prevBtn = document.getElementById('portfolio-lightbox-prev');
+  const nextBtn = document.getElementById('portfolio-lightbox-next');
   const overlay = document.getElementById('portfolio-lightbox-overlay');
   const triggers = document.querySelectorAll('.portfolio-trigger');
 
-  function openLightbox(fullSrc, caption) {
-    lightboxImg.src = fullSrc;
+  let images = [];
+  let currentIndex = 0;
+
+  function showImage(index) {
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    lightboxImg.src = images[currentIndex];
+    const hasMultiple = images.length > 1;
+    prevBtn.style.display = hasMultiple ? '' : 'none';
+    nextBtn.style.display = hasMultiple ? '' : 'none';
+    lightboxCounter.textContent = hasMultiple ? (currentIndex + 1) + ' / ' + images.length : '';
+  }
+
+  function openLightbox(gallery, caption) {
+    images = gallery;
     lightboxImg.alt = caption || '';
     lightboxCaption.textContent = caption || '';
+    showImage(0);
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -546,21 +629,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
   triggers.forEach(function (trigger) {
     trigger.addEventListener('click', function () {
-      const fullSrc = this.getAttribute('data-full-img');
+      const galleryData = this.getAttribute('data-gallery');
       const caption = this.getAttribute('data-caption');
-      if (fullSrc) {
-        openLightbox(fullSrc, caption);
+      if (!galleryData) return;
+      let gallery = [];
+      try {
+        gallery = JSON.parse(galleryData);
+      } catch (err) {
+        gallery = [];
+      }
+      if (gallery.length) {
+        openLightbox(gallery, caption);
       }
     });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
   overlay.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-      closeLightbox();
-    }
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
   });
 });
 </script>

@@ -120,7 +120,7 @@ function mytheme_footer_customize_register( $wp_customize ) {
     ) );
 
     // Social Links
-    $socials = array( 'facebook', 'instagram', 'twitter', 'linkedin' );
+    $socials = array( 'facebook', 'instagram', 'twitter', 'linkedin', 'youtube' );
     foreach ( $socials as $social ) {
         $wp_customize->add_setting( "footer_{$social}", array(
             'default' => '',

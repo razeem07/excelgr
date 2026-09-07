@@ -24,7 +24,7 @@ function register_clients_cpt() {
         'public'       => true,
         'show_in_rest' => true,
         'menu_icon'    => 'dashicons-images-alt2',
-        'supports'     => array('title', 'thumbnail'),
+        'supports'     => array('title', 'thumbnail', 'page-attributes'), // adds the native Order field
     ));
 }
 add_action('init', 'register_clients_cpt');

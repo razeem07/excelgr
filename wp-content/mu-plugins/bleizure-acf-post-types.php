@@ -39,8 +39,8 @@ function bleizure_register_acf_replacement_post_types() {
 
 	foreach ( $post_types as $slug => $names ) {
 		$supports = array( 'title', 'editor', 'thumbnail', 'custom-fields' );
-		if ( $slug === 'service' ) {
-			$supports[] = 'page-attributes'; // servicespage.php already orders by menu_order
+		if ( $slug === 'service' || $slug === 'portfolio' ) {
+			$supports[] = 'page-attributes'; // adds the native Order field; both list pages order by menu_order
 		}
 		if ( $slug === 'portfolio' ) {
 			$supports[] = 'excerpt'; // used as the short blurb on the redesigned portfolio cards

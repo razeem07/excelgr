@@ -65,6 +65,20 @@ function bleizure_resolve_field_value( array $spec, string $meta_key, int $post_
 				'url' => wp_get_attachment_url( $id ),
 				'alt' => get_post_meta( $id, '_wp_attachment_image_alt', true ),
 			); // exception: mission_section.image / vision_section.image only
+		case 'gallery':
+			if ( ! $raw ) {
+				return array();
+			}
+			$ids = array_filter( array_map( 'absint', explode( ',', $raw ) ) );
+			$out = array();
+			foreach ( $ids as $id ) {
+				$out[] = array(
+					'id'  => $id,
+					'url' => wp_get_attachment_url( $id ),
+					'alt' => get_post_meta( $id, '_wp_attachment_image_alt', true ),
+				);
+			}
+			return $out; // comma-separated attachment IDs -> array of {id,url,alt}
 		case 'wysiwyg':
 			return $raw ? wpautop( $raw ) : $raw; // ACF wysiwyg fields auto-wrap in <p> tags by default;
 			                                       // single-service.php's FAQ regex depends on this shape

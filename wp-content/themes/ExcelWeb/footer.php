@@ -351,30 +351,91 @@
   color: #3a4354;
 }
 
-/* Floating WhatsApp Button */
-.exg-ft-whatsapp-float {
+/* Floating Social + WhatsApp Button Stack */
+.exg-social-float-stack {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 56px;
-  height: 56px;
-  background-color: #25d366;
-  color: #ffffff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.exg-social-float {
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
-  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-  z-index: 999;
+  color: #ffffff;
+  font-size: 1.3rem;
   text-decoration: none;
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.exg-ft-whatsapp-float:hover {
+.exg-social-float:hover {
   transform: scale(1.1);
-  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.6);
   color: #ffffff;
+}
+
+.exg-social-float--facebook {
+  background-color: #1877f2;
+}
+
+.exg-social-float--facebook:hover {
+  box-shadow: 0 12px 24px rgba(24, 119, 242, 0.45);
+}
+
+.exg-social-float--instagram {
+  background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+
+.exg-social-float--instagram:hover {
+  box-shadow: 0 12px 24px rgba(214, 36, 159, 0.45);
+}
+
+.exg-social-float--youtube {
+  background-color: #ff0000;
+}
+
+.exg-social-float--youtube:hover {
+  box-shadow: 0 12px 24px rgba(255, 0, 0, 0.4);
+}
+
+.exg-social-float--whatsapp {
+  width: 56px;
+  height: 56px;
+  font-size: 1.75rem;
+  background-color: #25d366;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+}
+
+.exg-social-float--whatsapp:hover {
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.6);
+}
+
+@media (max-width: 640px) {
+  .exg-social-float-stack {
+    bottom: 20px;
+    right: 16px;
+    gap: 10px;
+  }
+
+  .exg-social-float {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .exg-social-float--whatsapp {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
 }
 
 /* Responsive Adjustments */
@@ -431,17 +492,38 @@
 }
 </style>
 
-<!-- Floating WhatsApp Action Button -->
+<!-- Floating Social + WhatsApp Button Stack -->
 <?php
-$whatsapp_number  = get_theme_mod('footer_whatsapp');
-if ( $whatsapp_number ) : ?>
-  <a href="https://wa.me/<?php echo esc_attr( preg_replace('/\D+/', '', $whatsapp_number) ); ?>"
-     class="exg-ft-whatsapp-float"
-     target="_blank"
-     rel="noopener"
-     aria-label="Chat on WhatsApp">
-     <i class="bi bi-whatsapp"></i>
-  </a>
+$float_facebook  = get_theme_mod('footer_facebook');
+$float_instagram = get_theme_mod('footer_instagram');
+$float_youtube   = get_theme_mod('footer_youtube');
+$float_whatsapp  = get_theme_mod('footer_whatsapp');
+if ( $float_facebook || $float_instagram || $float_youtube || $float_whatsapp ) : ?>
+  <div class="exg-social-float-stack">
+    <?php if ( $float_facebook ) : ?>
+      <a href="<?php echo esc_url( $float_facebook ); ?>" class="exg-social-float exg-social-float--facebook" target="_blank" rel="noopener" aria-label="Facebook">
+        <i class="bi bi-facebook"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if ( $float_instagram ) : ?>
+      <a href="<?php echo esc_url( $float_instagram ); ?>" class="exg-social-float exg-social-float--instagram" target="_blank" rel="noopener" aria-label="Instagram">
+        <i class="bi bi-instagram"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if ( $float_youtube ) : ?>
+      <a href="<?php echo esc_url( $float_youtube ); ?>" class="exg-social-float exg-social-float--youtube" target="_blank" rel="noopener" aria-label="YouTube">
+        <i class="bi bi-youtube"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if ( $float_whatsapp ) : ?>
+      <a href="https://wa.me/<?php echo esc_attr( preg_replace('/\D+/', '', $float_whatsapp) ); ?>" class="exg-social-float exg-social-float--whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+      </a>
+    <?php endif; ?>
+  </div>
 <?php endif; ?>
 
 <?php wp_footer(); ?>

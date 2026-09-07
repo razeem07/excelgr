@@ -95,6 +95,31 @@ function bleizure_render_leaf( array $spec, string $meta_key, int $post_id ) {
 				$id ? '' : ' style="display:none;"'
 			);
 			break;
+
+		case 'gallery':
+			$ids = $value ? array_filter( array_map( 'absint', explode( ',', $value ) ) ) : array();
+			$items = '';
+			foreach ( $ids as $id ) {
+				$items .= sprintf(
+					'<div class="bleizure-gallery-item" data-id="%1$d" style="position:relative;display:inline-block;">
+						%2$s
+						<button type="button" class="button-link bleizure-gallery-remove-item" style="position:absolute;top:-8px;right:-8px;background:#dc3232;color:#fff;border-radius:50%%;width:20px;height:20px;line-height:18px;text-align:center;text-decoration:none;">&times;</button>
+					</div>',
+					$id,
+					wp_get_attachment_image( $id, array( 80, 80 ) )
+				);
+			}
+			printf(
+				'<div class="bleizure-gallery-field" data-target="%1$s">
+					<div class="bleizure-gallery-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">%2$s</div>
+					<input type="hidden" id="%1$s" name="bleizure_meta[%1$s]" value="%3$s" />
+					<button type="button" class="button bleizure-select-gallery">Add Images</button>
+				</div>',
+				esc_attr( $meta_key ),
+				$items,
+				esc_attr( $value )
+			);
+			break;
 	}
 	echo '</p>';
 }
@@ -180,6 +205,10 @@ function bleizure_save_meta_boxes( $post_id ) {
 			case 'image':
 			case 'image_array':
 				$value = absint( $raw );
+				break;
+			case 'gallery':
+				$ids = array_filter( array_map( 'absint', explode( ',', $raw ) ) );
+				$value = implode( ',', $ids );
 				break;
 			default:
 				$value = sanitize_text_field( $raw );

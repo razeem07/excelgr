@@ -1140,19 +1140,6 @@ function egScrollCarousel() {
           </span>
         </div>
 
-        <!-- Small Stats Grid (Bottom Row) -->
-        <div class="eg-scale-row-small">
-          <div class="eg-scale-sub-item">
-            <span class="eg-scale-num-dark fade-left"><?php echo get_field('scale')['percentage']; ?></span>
-            <span class="eg-scale-text-sub fade-right">Customer retention</span>
-          </div>
-
-          <div class="eg-scale-sub-item">
-            <span class="eg-scale-num-dark fade-left"><?php echo get_field('scale')['employees']; ?></span>
-            <span class="eg-scale-text-sub fade-right">Employees</span>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -1270,35 +1257,6 @@ function egScrollCarousel() {
   color: #111111;
 }
 
-/* Bottom Small Stats Side-by-side */
-.eg-scale-row-small {
-  display: flex;
-  align-items: flex-start;
-  gap: 60px;
-  margin-top: 6px;
-}
-
-.eg-scale-sub-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.eg-scale-num-dark {
-  font-size: 3.1rem;
-  font-weight: 800;
-  color: #0d0d0d;
-  line-height: 1;
-  letter-spacing: -1.5px;
-  margin-bottom: 6px;
-}
-
-.eg-scale-text-sub {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #444444;
-}
-
 /* Responsive Handling */
 @media (max-width: 1200px) {
   .eg-scale-section {
@@ -1335,9 +1293,6 @@ function egScrollCarousel() {
   .eg-scale-num-teal {
     font-size: 2.5rem;
     min-width: 100px;
-  }
-  .eg-scale-row-small {
-    gap: 30px;
   }
 }
 </style>
@@ -2013,8 +1968,8 @@ $portfolio_query = new WP_Query(array(
     'post_type'      => 'portfolio',
     'posts_per_page' => 8, // 4 columns x 2 rows max
     'post_status'    => 'publish',
-    'orderby'        => 'date',
-    'order'          => 'DESC'
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC'
 ));
 
 if ($portfolio_query->have_posts()) :
@@ -2045,6 +2000,17 @@ if ($portfolio_query->have_posts()) :
         $bg_img_url   = get_the_post_thumbnail_url( get_the_ID(), 'large' );
         $category     = get_field( 'service_category' );
         $excerpt      = get_the_excerpt();
+
+        // Featured image always leads the gallery (position 1), followed by the extra gallery images.
+        $gallery_urls = array();
+        if ( $full_img_url ) {
+          $gallery_urls[] = $full_img_url;
+        }
+        foreach ( wp_list_pluck( get_field( 'gallery' ), 'url' ) as $gallery_img_url ) {
+          if ( ! in_array( $gallery_img_url, $gallery_urls, true ) ) {
+            $gallery_urls[] = $gallery_img_url;
+          }
+        }
       ?>
         <article class="eg-latest-item" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
           <details class="eg-latest-item-panel">
@@ -2065,11 +2031,11 @@ if ($portfolio_query->have_posts()) :
               <?php if ( ! empty( $excerpt ) ) : ?>
                 <p class="eg-latest-item-excerpt"><?php echo esc_html( $excerpt ); ?></p>
               <?php endif; ?>
-              <?php if ( $full_img_url ) : ?>
+              <?php if ( ! empty( $gallery_urls ) ) : ?>
                 <button
                   type="button"
                   class="eg-latest-item-view-btn eg-latest-trigger"
-                  data-full-img="<?php echo esc_url( $full_img_url ); ?>"
+                  data-gallery="<?php echo esc_attr( wp_json_encode( array_values( $gallery_urls ) ) ); ?>"
                   data-caption="<?php the_title_attribute(); ?>"
                 >
                   View Work
@@ -2090,8 +2056,11 @@ if ($portfolio_query->have_posts()) :
       <div class="eg-latest-lightbox-overlay" id="eg-latest-lightbox-overlay"></div>
       <div class="eg-latest-lightbox-container">
         <button type="button" class="eg-latest-lightbox-close" id="eg-latest-lightbox-close" aria-label="Close">&times;</button>
+        <button type="button" class="eg-latest-lightbox-nav eg-latest-lightbox-prev" id="eg-latest-lightbox-prev" aria-label="Previous image">&#8249;</button>
         <img src="" alt="" id="eg-latest-lightbox-img" class="eg-latest-lightbox-img" />
+        <button type="button" class="eg-latest-lightbox-nav eg-latest-lightbox-next" id="eg-latest-lightbox-next" aria-label="Next image">&#8250;</button>
         <p class="eg-latest-lightbox-caption" id="eg-latest-lightbox-caption"></p>
+        <p class="eg-latest-lightbox-counter" id="eg-latest-lightbox-counter"></p>
       </div>
     </div>
 
@@ -2377,6 +2346,44 @@ if ($portfolio_query->have_posts()) :
   color: #1ba3b0;
 }
 
+.eg-latest-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #ffffff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.eg-latest-lightbox-nav:hover {
+  background: rgba(27, 163, 176, 0.85);
+}
+
+.eg-latest-lightbox-prev {
+  left: -64px;
+}
+
+.eg-latest-lightbox-next {
+  right: -64px;
+}
+
+.eg-latest-lightbox-counter {
+  margin: 8px 0 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
 /* Button Wrapper & Bordered Button */
 .eg-latest-btn-wrapper {
   display: flex;
@@ -2434,6 +2441,20 @@ if ($portfolio_query->have_posts()) :
   .eg-latest-item {
     height: 280px;
   }
+
+  .eg-latest-lightbox-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+
+  .eg-latest-lightbox-prev {
+    left: 4px;
+  }
+
+  .eg-latest-lightbox-next {
+    right: 4px;
+  }
 }
 </style>
 
@@ -2444,14 +2465,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const lightboxImg = document.getElementById('eg-latest-lightbox-img');
   const lightboxCaption = document.getElementById('eg-latest-lightbox-caption');
+  const lightboxCounter = document.getElementById('eg-latest-lightbox-counter');
   const closeBtn = document.getElementById('eg-latest-lightbox-close');
+  const prevBtn = document.getElementById('eg-latest-lightbox-prev');
+  const nextBtn = document.getElementById('eg-latest-lightbox-next');
   const overlay = document.getElementById('eg-latest-lightbox-overlay');
   const triggers = document.querySelectorAll('.eg-latest-trigger');
 
-  function openLightbox(fullSrc, caption) {
-    lightboxImg.src = fullSrc;
+  let images = [];
+  let currentIndex = 0;
+
+  function showImage(index) {
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    lightboxImg.src = images[currentIndex];
+    const hasMultiple = images.length > 1;
+    prevBtn.style.display = hasMultiple ? '' : 'none';
+    nextBtn.style.display = hasMultiple ? '' : 'none';
+    lightboxCounter.textContent = hasMultiple ? (currentIndex + 1) + ' / ' + images.length : '';
+  }
+
+  function openLightbox(gallery, caption) {
+    images = gallery;
     lightboxImg.alt = caption || '';
     lightboxCaption.textContent = caption || '';
+    showImage(0);
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -2468,31 +2506,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
   triggers.forEach(function (trigger) {
     trigger.addEventListener('click', function () {
-      const fullSrc = this.getAttribute('data-full-img');
+      const galleryData = this.getAttribute('data-gallery');
       const caption = this.getAttribute('data-caption');
-      if (fullSrc) {
-        openLightbox(fullSrc, caption);
+      if (!galleryData) return;
+      let gallery = [];
+      try {
+        gallery = JSON.parse(galleryData);
+      } catch (err) {
+        gallery = [];
+      }
+      if (gallery.length) {
+        openLightbox(gallery, caption);
       }
     });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
   overlay.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-      closeLightbox();
-    }
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
   });
 });
 </script>
 
-<!-- <?php
+<?php
 $clients_query = new WP_Query(array(
     'post_type'      => 'clients',
-    'posts_per_page' => -1, 
+    'posts_per_page' => -1,
     'post_status'    => 'publish',
-    'orderby'        => 'date',
+    'orderby'        => 'menu_order',
     'order'          => 'ASC'
 ));
 
@@ -2501,60 +2549,7 @@ if ($clients_query->have_posts()) :
 
 <section class="eg-clients-section">
   <div class="eg-clients-container">
-    
- 
-    <div class="eg-clients-header">
-      <div class="eg-clients-badge">
-        <span class="eg-clients-diamond">◆</span>
-        <span class="eg-clients-badge-text fade-left">Major Clients</span>
-      </div>
 
-      <h2 class="eg-clients-title fade-right">
-        Designing Better<br />
-        Customer Experiences
-      </h2>
-    </div>
-
-   
-    <div class="eg-clients-box">
-      <div class="eg-clients-grid">
-        
-        <?php 
-        while ($clients_query->have_posts()) : $clients_query->the_post(); 
-          
-          $logo_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
-          if (!$logo_url) {
-              $logo_url = 'https://via.placeholder.com/200x100?text=No+Logo';
-          }
-        ?>
-          <div class="eg-clients-item">
-            <img 
-              src="<?php echo esc_url($logo_url); ?>" 
-              alt="<?php echo esc_attr(get_the_title()); ?>" 
-              class="eg-clients-logo fade-left" 
-            />
-          </div>
-        <?php 
-        endwhile; 
-        wp_reset_postdata(); 
-        ?>
-
-      </div>
-    </div>
-
-    <div class="eg-clients-btn-wrapper">
-      <a href="<?php echo esc_url(get_post_type_archive_link('client')); ?>" class="eg-clients-btn">View all</a>
-    </div>
-
-  </div>
-</section> 
-<?php endif; ?>
--->
-
-
-<section class="eg-clients-section">
-  <div class="eg-clients-container">
-    
     <div class="eg-clients-header">
       <div class="eg-clients-badge">
         <span class="eg-clients-diamond">◆</span>
@@ -2568,34 +2563,57 @@ if ($clients_query->have_posts()) :
     </div>
 
     <div class="eg-clients-box">
-      <div class="eg-clients-grid">
-        <div class="eg-clients-item">
-          <img 
-            src="<?php echo get_field('clients_logo'); ?>" 
-            alt="Major Clients" 
-            class="eg-clients-logo fade-left" 
-          />
+      <div class="eg-clients-carousel">
+        <div class="eg-clients-track">
+          <?php
+          for ( $eg_clients_pass = 0; $eg_clients_pass < 2; $eg_clients_pass++ ) :
+            while ( $clients_query->have_posts() ) : $clients_query->the_post();
+              $logo_url = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
+              if ( ! $logo_url ) {
+                continue;
+              }
+          ?>
+            <div class="eg-clients-track-item">
+              <img
+                src="<?php echo esc_url( $logo_url ); ?>"
+                alt="<?php echo esc_attr( get_the_title() ?: 'Client logo' ); ?>"
+                class="eg-clients-logo"
+              />
+            </div>
+          <?php
+            endwhile;
+            $clients_query->rewind_posts();
+          endfor;
+          wp_reset_postdata();
+          ?>
         </div>
       </div>
     </div>
 
-    <div class="eg-clients-btn-wrapper">
-      <a href="<?php echo esc_url(get_post_type_archive_link('client')); ?>" class="eg-clients-btn">View all</a>
-    </div>
+    <?php
+      $clients_page = get_posts( array(
+        'post_type'      => 'page',
+        'posts_per_page' => 1,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'clientspage.php',
+        'fields'         => 'ids',
+      ) );
+      $clients_page_url = ! empty( $clients_page ) ? get_permalink( $clients_page[0] ) : '';
+    ?>
+    <?php if ( $clients_page_url ) : ?>
+      <div class="eg-clients-btn-wrapper">
+        <a href="<?php echo esc_url( $clients_page_url ); ?>" class="eg-clients-btn">View all</a>
+      </div>
+    <?php endif; ?>
 
   </div>
 </section>
+<?php endif; ?>
 
 
 
 <style>
-.eg-clients-logo {
-  width: 100%;
-  height: auto;
-}
-
-	
-	/* Main Section Container - Zero top margin/padding to join previous section */
+/* Main Section Container - Zero top margin/padding to join previous section */
 .eg-clients-section {
   width: 100%;
   margin: 0 auto;
@@ -2657,36 +2675,52 @@ if ($clients_query->have_posts()) :
   width: 100%;
   background-color: #ffffff;
   border-radius: 20px;
-  padding: 35px 25px; /* Compact box padding */
+  padding: 35px 0;
   box-sizing: border-box;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-  margin-bottom: 50px;
 }
 
-/* Logos Grid Layout (7 Columns on Desktop with Reduced Gaps) */
-/* .eg-clients-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px 8px; /* Tight gap: 10px vertical, 8px horizontal */
-  align-items: center;
-  justify-items: center;
-} */
-
-.eg-clients-item {
+/* Auto-scrolling Logo Carousel */
+.eg-clients-carousel {
   width: 100%;
-  min-height: 70px; /* Reduced vertical space for tighter flow */
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+.eg-clients-track {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  width: max-content;
+  animation: eg-clients-scroll 30s linear infinite;
+}
+
+.eg-clients-carousel:hover .eg-clients-track {
+  animation-play-state: paused;
+}
+
+@keyframes eg-clients-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.eg-clients-track-item {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px; /* Reduced internal item padding */
-  box-sizing: border-box;
+  height: 95px;
 }
 
 /* Logo Dimensions */
 .eg-clients-logo {
-  width: 100%;
-/*   max-width: 130px;  */
-/*   max-height: 75px;  */
+  max-height: 90px;
+  width: auto;
   object-fit: contain;
   display: block;
   filter: grayscale(0%);
@@ -2702,6 +2736,7 @@ if ($clients_query->have_posts()) :
 .eg-clients-btn-wrapper {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 }
 
 .eg-clients-btn {
@@ -2730,22 +2765,17 @@ if ($clients_query->have_posts()) :
   .eg-clients-title {
     font-size: 3rem;
   }
-  .eg-clients-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px 8px;
-  }
-  .eg-clients-logo {
-    max-height: 65px;
-  }
 }
 
 @media (max-width: 850px) {
-  .eg-clients-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px 8px;
+  .eg-clients-track {
+    gap: 50px;
+  }
+  .eg-clients-track-item {
+    height: 75px;
   }
   .eg-clients-logo {
-    max-height: 60px;
+    max-height: 70px;
   }
 }
 
@@ -2757,15 +2787,14 @@ if ($clients_query->have_posts()) :
     font-size: 1.95rem;
   }
   .eg-clients-box {
-    padding: 20px 12px;
+    padding: 20px 0;
     border-radius: 14px;
   }
-  .eg-clients-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px 6px;
+  .eg-clients-track {
+    gap: 36px;
   }
-  .eg-clients-item {
-    min-height: 55px;
+  .eg-clients-track-item {
+    height: 60px;
   }
   .eg-clients-logo {
     max-height: 55px;

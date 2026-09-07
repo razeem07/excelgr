@@ -238,6 +238,11 @@ function bleizure_field_manifest() {
 					'label' => 'Service Category (e.g. "3D Signage", "Storefront Branding")',
 					'type' => 'text',
 				),
+				'gallery' => array(
+					'group_title' => 'Portfolio Additional Fields',
+					'label' => 'Gallery Images (shown in the View Work lightbox; falls back to the Featured Image if empty)',
+					'type' => 'gallery',
+				),
 			),
 		),
 		'page:153' => array(
@@ -534,6 +539,33 @@ function bleizure_field_manifest() {
 				'gallery_banner' => array(
 					'group_title' => 'Gallery Page Settings',
 					'label' => 'Gallery Banner',
+					'fields' => array(
+						'subtitle' => array(
+							'label' => 'subtitle',
+							'type' => 'text',
+						),
+						'title' => array(
+							'label' => 'title',
+							'type' => 'text',
+						),
+						'content' => array(
+							'label' => 'content',
+							'type' => 'text',
+						),
+						'image' => array(
+							'label' => 'image',
+							'type' => 'image',
+						),
+					),
+				),
+			),
+		),
+		'page:370' => array(
+			'screen' => array('post_type' => 'page', 'post_id' => 370),
+			'fields' => array(
+				'clients_banner' => array(
+					'group_title' => 'Clients Page Settings',
+					'label' => 'Clients Banner',
 					'fields' => array(
 						'subtitle' => array(
 							'label' => 'subtitle',
