@@ -215,7 +215,7 @@
   }
 
   .logo-wrapper .navbar-brand img {
-    height: 48px;
+    height: 66px;
   }
 }
 </style>

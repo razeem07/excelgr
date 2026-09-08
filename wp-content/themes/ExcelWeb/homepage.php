@@ -265,33 +265,68 @@ $banners = array_map(function ($p) {
 
 @media (max-width: 900px) {
   .hero-swiper {
-    height: auto;
-    min-height: 500px;
+    height: 460px;
+    min-height: 460px;
+  }
+
+  .hero-slide {
+    align-items: center;
   }
 
   .hero-container {
     flex-direction: column;
     align-items: flex-start;
-    padding: 60px 30px 80px;
+    justify-content: center;
+    padding: 70px 24px 40px;
+    gap: 24px;
+  }
+
+  .hero-left {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .hero-title {
-    font-size: 2.15rem;
+    font-size: 1.75rem;
+    margin-bottom: 16px;
   }
 
   .hero-subtext {
-    font-size: 1.05rem;
+    font-size: 1rem;
+    max-width: 100%;
   }
 
   .hero-right {
     align-items: flex-start;
     text-align: left;
     width: 100%;
+    gap: 20px;
+  }
+
+  /* "SINCE 2002" badge block and its subtext are hidden on mobile */
+  .since-block {
+    display: none;
   }
 
   .hero-actions {
     width: 100%;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  /* Prev/next navigation arrows are hidden on mobile */
+  .hero-swiper .swiper-button-next,
+  .hero-swiper .swiper-button-prev {
+    display: none;
   }
 }
 
@@ -301,8 +336,17 @@ $banners = array_map(function ($p) {
     margin-bottom: 50px;
   }
 
+  .hero-swiper {
+    height: 480px;
+    min-height: 480px;
+  }
+
   .hero-container {
-    padding: 40px 20px 70px;
+    padding: 90px 20px 32px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
   }
 }
 </style>

@@ -241,14 +241,15 @@
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 36px 24px;
 }
 
 .about-intro-stat {
-  flex: 1 1 25%;
+  flex: 0 1 auto;
   min-width: 160px;
-  text-align: left;
-  padding: 0 16px;
+  text-align: center;
+  padding: 0 32px;
 }
 
 .about-intro-stat-number {
