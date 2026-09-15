@@ -558,6 +558,11 @@ function bleizure_field_manifest() {
 						),
 					),
 				),
+				'gallery_images' => array(
+					'group_title' => 'Gallery Page Settings',
+					'label' => 'Gallery Images (shown in the grid below; click any photo to open the lightbox and scroll through all of them)',
+					'type' => 'gallery',
+				),
 			),
 		),
 		'page:370' => array(

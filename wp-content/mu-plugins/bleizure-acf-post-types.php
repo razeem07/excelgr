@@ -31,10 +31,12 @@ function bleizure_register_acf_replacement_post_types() {
 	$post_types = array(
 		'portfolio'   => array( 'Portfolio', 'Portfolios' ),
 		'service'     => array( 'Service', 'Services' ),
-		'gallery'     => array( 'Gallery Item', 'Gallery' ),
 		'testimonial' => array( 'Testimonial', 'Testimonials' ),
 		// 'process' removed: "Our Process" is now a plain page with its own
 		// custom fields (page ID 271), not a post type — see ourprocesspage.php.
+		// 'gallery' removed: the Gallery page now uses its own multi-image
+		// "gallery_images" field (page ID 248) instead of one CPT post per
+		// photo — see gallerypage.php.
 	);
 
 	foreach ( $post_types as $slug => $names ) {

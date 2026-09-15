@@ -117,14 +117,10 @@
 </style>
 
 <?php
-  $args = array(
-    'post_type'      => 'gallery',
-    'posts_per_page' => -1,
-    'orderby'        => 'menu_order title',
-    'order'          => 'ASC'
-  );
-
-  $gallery_query = new WP_Query($args);
+  $gallery_images = get_field( 'gallery_images' );
+  if ( ! is_array( $gallery_images ) ) {
+    $gallery_images = array();
+  }
 ?>
 
 <section class="gallery-list-section">
@@ -140,39 +136,34 @@
     </div>
 
     <div class="gallery-grid">
-      <?php if ( $gallery_query->have_posts() ) :
-        while ( $gallery_query->have_posts() ) : $gallery_query->the_post(); 
-          $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-          $thumb_img_url = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+      <?php if ( ! empty( $gallery_images ) ) :
+        $gallery_urls = wp_list_pluck( $gallery_images, 'url' );
+        foreach ( $gallery_images as $index => $image ) :
+          if ( empty( $image['url'] ) ) {
+            continue;
+          }
         ?>
 
         <article class="gallery-card">
-          <?php if ( has_post_thumbnail() ) : ?>
-            <button 
-              type="button" 
-              class="gallery-card-img-btn gallery-trigger" 
-              data-full-img="<?php echo esc_url( $full_img_url ); ?>"
-              data-caption="<?php the_title_attribute(); ?>"
-              aria-label="Zoom image <?php the_title_attribute(); ?>"
-            >
-              <img 
-                src="<?php echo esc_url( $thumb_img_url ); ?>" 
-                alt="<?php the_title_attribute(); ?>" 
-                class="gallery-card-img fade-left" 
-              />
-              <div class="gallery-card-overlay">
-                <span class="gallery-view-icon">🔍</span>
-              </div>
-            </button>
-          <?php else : ?>
-            <div class="gallery-card-placeholder"></div>
-          <?php endif; ?>
+          <button
+            type="button"
+            class="gallery-card-img-btn gallery-trigger"
+            data-index="<?php echo esc_attr( $index ); ?>"
+            aria-label="Zoom image <?php echo esc_attr( $image['alt'] ?: ( 'Gallery photo ' . ( $index + 1 ) ) ); ?>"
+          >
+            <img
+              src="<?php echo esc_url( $image['url'] ); ?>"
+              alt="<?php echo esc_attr( $image['alt'] ?: ( 'Gallery photo ' . ( $index + 1 ) ) ); ?>"
+              class="gallery-card-img fade-left"
+            />
+            <div class="gallery-card-overlay">
+              <span class="gallery-view-icon">🔍</span>
+            </div>
+          </button>
         </article>
 
-      <?php endwhile;
-        wp_reset_postdata();
-      else : ?>
-        <p class="no-gallery-found">No gallery items found.</p>
+      <?php endforeach; else : ?>
+        <p class="no-gallery-found">No gallery images found.</p>
       <?php endif; ?>
     </div>
 
@@ -184,9 +175,16 @@
   <div class="gallery-lightbox-overlay" id="lightbox-overlay"></div>
   <div class="gallery-lightbox-container">
     <button type="button" class="gallery-lightbox-close" id="lightbox-close" aria-label="Close zoomed image">&times;</button>
+    <button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" id="lightbox-prev" aria-label="Previous image">&#8249;</button>
     <img src="" alt="" id="lightbox-img" class="gallery-lightbox-img" />
+    <button type="button" class="gallery-lightbox-nav gallery-lightbox-next" id="lightbox-next" aria-label="Next image">&#8250;</button>
+    <p class="gallery-lightbox-counter" id="lightbox-counter"></p>
   </div>
 </div>
+
+<script>
+  window.egGalleryImages = <?php echo wp_json_encode( array_values( $gallery_urls ?? array() ) ); ?>;
+</script>
 
 <style>
 /* Section Layout */
@@ -248,29 +246,21 @@
 /* Gallery 3-Column Grid */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
 }
 
 /* Gallery Card Styling */
 .gallery-card {
   background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 28px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.gallery-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
 }
 
 /* Image Button Trigger */
 .gallery-card-img-btn {
   display: block;
   width: 100%;
-  height: 320px;
+  aspect-ratio: 4 / 5;
   padding: 0;
   border: none;
   background-color: #f4f4f4;
@@ -288,12 +278,6 @@
 
 .gallery-card:hover .gallery-card-img {
   transform: scale(1.06);
-}
-
-.gallery-card-placeholder {
-  width: 100%;
-  height: 320px;
-  background-color: #e9ecef;
 }
 
 .gallery-card-overlay {
@@ -404,6 +388,44 @@
   color: #1ba3b0;
 }
 
+.gallery-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #ffffff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.gallery-lightbox-nav:hover {
+  background: rgba(27, 163, 176, 0.85);
+}
+
+.gallery-lightbox-prev {
+  left: -64px;
+}
+
+.gallery-lightbox-next {
+  right: -64px;
+}
+
+.gallery-lightbox-counter {
+  margin: 8px 0 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
   .gallery-list-section {
@@ -416,15 +438,11 @@
 
 @media (max-width: 991px) {
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
   }
   .gallery-list-main-title {
     font-size: 2.6rem;
-  }
-  .gallery-card-img-btn,
-  .gallery-card-placeholder {
-    height: 280px;
   }
 }
 
@@ -434,23 +452,32 @@
     padding: 0 10px;
   }
 
-  .gallery-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
   .gallery-list-main-title {
     font-size: 2.2rem;
   }
 
-  .gallery-card-img-btn,
-  .gallery-card-placeholder {
-    height: 240px;
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
   }
 
   .gallery-lightbox-close {
     top: -40px;
     right: 0;
+  }
+
+  .gallery-lightbox-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+
+  .gallery-lightbox-prev {
+    left: 4px;
+  }
+
+  .gallery-lightbox-next {
+    right: 4px;
   }
 }
 </style>
@@ -459,13 +486,28 @@
 document.addEventListener('DOMContentLoaded', function () {
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCounter = document.getElementById('lightbox-counter');
   const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
   const overlay = document.getElementById('lightbox-overlay');
   const triggers = document.querySelectorAll('.gallery-trigger');
 
-  function openLightbox(fullSrc, altText) {
-    lightboxImg.src = fullSrc;
-    lightboxImg.alt = altText || '';
+  const images = Array.isArray(window.egGalleryImages) ? window.egGalleryImages : [];
+  let currentIndex = 0;
+
+  function showImage(index) {
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    lightboxImg.src = images[currentIndex];
+    const hasMultiple = images.length > 1;
+    prevBtn.style.display = hasMultiple ? '' : 'none';
+    nextBtn.style.display = hasMultiple ? '' : 'none';
+    lightboxCounter.textContent = hasMultiple ? (currentIndex + 1) + ' / ' + images.length : '';
+  }
+
+  function openLightbox(index) {
+    showImage(index);
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -482,21 +524,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   triggers.forEach(function (trigger) {
     trigger.addEventListener('click', function () {
-      const fullSrc = this.getAttribute('data-full-img');
-      const caption = this.getAttribute('data-caption');
-      if (fullSrc) {
-        openLightbox(fullSrc, caption);
-      }
+      const index = parseInt(this.getAttribute('data-index'), 10) || 0;
+      openLightbox(index);
     });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
   overlay.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-      closeLightbox();
-    }
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
   });
 });
 </script>
