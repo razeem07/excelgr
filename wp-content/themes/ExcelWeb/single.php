@@ -287,6 +287,17 @@
   margin: 32px 0;
 }
 
+.single-post-content ul,
+.single-post-content ol {
+  margin: 0 0 20px 24px;
+  padding: 0;
+  text-align: left;
+}
+
+.single-post-content li {
+  margin-bottom: 8px;
+}
+
 /* Tags Styling */
 .single-post-tags {
   display: flex;

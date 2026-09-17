@@ -208,6 +208,14 @@ function bleizure_field_manifest() {
 							'label' => 'Title',
 							'type' => 'text',
 						),
+						'description' => array(
+							'label' => 'Description',
+							'type' => 'text',
+						),
+						'button_text' => array(
+							'label' => 'Button Text',
+							'type' => 'text',
+						),
 						'link' => array(
 							'label' => 'link',
 							'type' => 'text',
@@ -262,10 +270,6 @@ function bleizure_field_manifest() {
 						),
 						'title' => array(
 							'label' => 'Title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'Content',
 							'type' => 'text',
 						),
 					),

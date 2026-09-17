@@ -605,8 +605,11 @@ $home_services = get_posts([
       <span class="eg-services-badge-text  fade-left">What we do</span>
     </div>
     <h2 class="eg-services-main-title fade-right">
-      Innovative ideas and bold execution<br />that drive measurable growth
+      Signage Solutions for Every Business
     </h2>
+    <p class="eg-services-subtitle fade-left">
+      From eye-catching LED signage to professional signage boards, we provide customized solutions that help your business get noticed. Our team handles everything from design and fabrication to installation.
+    </p>
   </div>
 
   <!-- Carousel Wrapper -->
@@ -707,6 +710,14 @@ function egScrollCarousel() {
   line-height: 1.15;
   letter-spacing: -1px;
   color: #0d0d0d;
+  margin: 0 auto 20px;
+}
+
+.eg-services-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #555555;
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -901,7 +912,7 @@ function egScrollCarousel() {
       <div class="eg-features-left">
         <div class="eg-features-badge">
           <span class="eg-features-diamond">◆</span>
-          <span class="eg-features-badge-text fade-left">Who we are</span>
+          <span class="eg-features-badge-text fade-left">Our Highlights</span>
         </div>
         <h2 class="eg-features-main-title fade-right">
           <?php echo get_field('who_we_are_2')['title']; ?>
@@ -909,9 +920,9 @@ function egScrollCarousel() {
       </div>
 
       <div class="eg-features-right">
-        <p class="eg-features-description fade-left">
+        <div class="eg-features-description fade-left">
           <?php echo get_field('who_we_are_2')['content']; ?>
-        </p>
+        </div>
       </div>
     </div>
 
@@ -1033,6 +1044,14 @@ function egScrollCarousel() {
   line-height: 1.65;
   color: #333333;
   margin: 0;
+}
+
+.eg-features-description p {
+  margin: 0 0 16px 0;
+}
+
+.eg-features-description p:last-child {
+  margin-bottom: 0;
 }
 
 /* Bottom Grid: 5 Feature Cards */
@@ -1180,7 +1199,7 @@ function egScrollCarousel() {
         <div class="eg-scale-row-large">
           <span class="eg-scale-num-teal fade-left"><?php echo get_field('scale')['customers']; ?></span>
           <span class="eg-scale-text-bold fade-right">
-            Satisfied<br />Customers
+            Happy<br />Customers
           </span>
         </div>
 
@@ -2875,7 +2894,7 @@ if ($faq_query->have_posts()) :
       </h2>
 
       <p class="eg-faq-description fade-left">
-        Everything you need to know about our process, pricing, and how we work together
+        Everything you need to know about our signage boards, LED signage, design process, and installation.
       </p>
     </div>
 
@@ -3088,7 +3107,7 @@ if ($faq_query->have_posts()) :
 <!-- Blog Posts Section -->
 <section class="eg-blog-section">
   <div class="eg-blog-container">
-    
+
     <!-- Left Column: Header & View All Button -->
     <div class="eg-blog-left">
       <div class="eg-blog-badge">
@@ -3097,16 +3116,19 @@ if ($faq_query->have_posts()) :
       </div>
 
       <h2 class="eg-blog-title fade-right">
-        Latest content<br />
-        From Excel
+        Latest Signage Insights
       </h2>
+
+      <p class="eg-blog-description fade-left">
+        Stay updated with practical ideas, trends, and inspiration for signage boards, LED signage, and business branding.
+      </p>
 
       <a href="<?php echo esc_url(get_permalink(get_option('page_for_posts'))); ?>" class="eg-blog-btn-outline">View all</a>
     </div>
 
     <!-- Right Column: Blog Cards Grid -->
-    <div class="eg-blog-right">
-      
+    <div class="eg-blog-grid">
+
       <?php
       // Query 2 latest WordPress blog posts
       $blog_query = new WP_Query(array(
@@ -3169,7 +3191,10 @@ if ($faq_query->have_posts()) :
         <h2 class="eg-cta-title fade-right">
           <?php echo get_field('cta_section')['title']; ?>
         </h2>
-        <a href=" <?php echo get_field('cta_section')['link']; ?>" class="eg-cta-btn fade-left">Book a Consultation</a>
+        <?php if ( ! empty( get_field('cta_section')['description'] ) ) : ?>
+          <p class="eg-cta-description fade-left"><?php echo esc_html( get_field('cta_section')['description'] ); ?></p>
+        <?php endif; ?>
+        <a href="<?php echo esc_url( get_field('cta_section')['link'] ?: '#' ); ?>" class="eg-cta-btn fade-left"><?php echo esc_html( get_field('cta_section')['button_text'] ?: 'Book a Consultation' ); ?></a>
       </div>
     </div>
   </div>
@@ -3199,7 +3224,7 @@ if ($faq_query->have_posts()) :
 
 /* Left Column */
 .eg-blog-left {
-/*   flex: 0 0 320px; */
+  flex: 0 0 340px;
 }
 
 .eg-blog-badge {
@@ -3227,7 +3252,14 @@ if ($faq_query->have_posts()) :
   line-height: 1.12;
   letter-spacing: -1.2px;
   color: #0d0d0d;
-  margin: 0 0 36px 0;
+  margin: 0 0 20px 0;
+}
+
+.eg-blog-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555555;
+  margin: 0 0 32px 0;
 }
 
 .eg-blog-btn-outline {
@@ -3248,7 +3280,7 @@ if ($faq_query->have_posts()) :
 }
 
 /* Right Column: 2 Cards */
-.eg-blog-right {
+.eg-blog-grid {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3398,6 +3430,14 @@ if ($faq_query->have_posts()) :
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -1px;
+  margin: 0 0 20px 0;
+}
+
+.eg-cta-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 640px;
   margin: 0 0 36px 0;
 }
 
@@ -3444,7 +3484,7 @@ if ($faq_query->have_posts()) :
     flex: 1 1 100%;
   }
 
-  .eg-blog-right {
+  .eg-blog-grid {
     max-width: 100%;
   }
 }
@@ -3456,7 +3496,7 @@ if ($faq_query->have_posts()) :
     padding-right: 20px;
   }
 
-  .eg-blog-right {
+  .eg-blog-grid {
     grid-template-columns: 1fr;
   }
 
