@@ -336,56 +336,15 @@ function bleizure_field_manifest() {
 						'button_link' => array( 'label' => 'Button Link', 'type' => 'text' ),
 					),
 				),
-				'about_why_choose' => array(
-					'group_title' => 'About Page Settings',
-					'label' => 'Why Choose Us (badge, heading, description, image, 4 features, mini CTA)',
-					'fields' => array(
-						'badge' => array( 'label' => 'Badge Text (e.g. "Why Choose Us")', 'type' => 'text' ),
-						'heading' => array( 'label' => 'Heading', 'type' => 'text' ),
-						'description' => array( 'label' => 'Description', 'type' => 'text' ),
-						'image' => array( 'label' => 'Image', 'type' => 'image' ),
-						'feature_1' => array(
-							'label' => 'Feature 1',
-							'fields' => array(
-								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
-								'title' => array( 'label' => 'Title', 'type' => 'text' ),
-								'description' => array( 'label' => 'Description', 'type' => 'text' ),
-							),
-						),
-						'feature_2' => array(
-							'label' => 'Feature 2',
-							'fields' => array(
-								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
-								'title' => array( 'label' => 'Title', 'type' => 'text' ),
-								'description' => array( 'label' => 'Description', 'type' => 'text' ),
-							),
-						),
-						'feature_3' => array(
-							'label' => 'Feature 3',
-							'fields' => array(
-								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
-								'title' => array( 'label' => 'Title', 'type' => 'text' ),
-								'description' => array( 'label' => 'Description', 'type' => 'text' ),
-							),
-						),
-						'feature_4' => array(
-							'label' => 'Feature 4',
-							'fields' => array(
-								'icon' => array( 'label' => 'Icon (emoji/symbol)', 'type' => 'text' ),
-								'title' => array( 'label' => 'Title', 'type' => 'text' ),
-								'description' => array( 'label' => 'Description', 'type' => 'text' ),
-							),
-						),
-						'cta_text' => array( 'label' => 'Mini CTA Text', 'type' => 'text' ),
-						'cta_link_text' => array( 'label' => 'Mini CTA Link Text', 'type' => 'text' ),
-						'cta_link' => array( 'label' => 'Mini CTA Link URL', 'type' => 'text' ),
-						'cta_image' => array( 'label' => 'Mini CTA Background Image', 'type' => 'image' ),
-					),
-				),
 				'group_photo' => array(
 					'group_title' => 'About Page Settings',
 					'label' => 'Group Photo',
 					'type' => 'image',
+				),
+				'achievements_gallery' => array(
+					'group_title' => 'About Page Settings',
+					'label' => 'Achievements & Recognition Images (awards, event photos)',
+					'type' => 'gallery',
 				),
 				'owner' => array(
 					'group_title' => 'About Page Settings',
@@ -444,10 +403,6 @@ function bleizure_field_manifest() {
 							'label' => 'title',
 							'type' => 'text',
 						),
-						'content' => array(
-							'label' => 'content',
-							'type' => 'text',
-						),
 						'image' => array(
 							'label' => 'image',
 							'type' => 'image',
@@ -469,10 +424,6 @@ function bleizure_field_manifest() {
 						),
 						'title' => array(
 							'label' => 'title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'content',
 							'type' => 'text',
 						),
 						'banner_image' => array(
@@ -498,10 +449,6 @@ function bleizure_field_manifest() {
 							'label' => 'title',
 							'type' => 'text',
 						),
-						'content' => array(
-							'label' => 'content',
-							'type' => 'text',
-						),
 						'image' => array(
 							'label' => 'image',
 							'type' => 'image',
@@ -525,10 +472,6 @@ function bleizure_field_manifest() {
 							'label' => 'title',
 							'type' => 'text',
 						),
-						'content' => array(
-							'label' => 'content',
-							'type' => 'text',
-						),
 						'image' => array(
 							'label' => 'image',
 							'type' => 'image',
@@ -550,10 +493,6 @@ function bleizure_field_manifest() {
 						),
 						'title' => array(
 							'label' => 'title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'content',
 							'type' => 'text',
 						),
 						'image' => array(
@@ -609,10 +548,6 @@ function bleizure_field_manifest() {
 						),
 						'title' => array(
 							'label' => 'title',
-							'type' => 'text',
-						),
-						'content' => array(
-							'label' => 'content',
 							'type' => 'text',
 						),
 						'image' => array(

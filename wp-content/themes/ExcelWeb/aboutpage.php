@@ -689,6 +689,343 @@
 }
 </style>
 
+<!-- Achievements & Recognition -->
+<?php $achievement_images = get_field('achievements_gallery'); if ( ! is_array( $achievement_images ) ) { $achievement_images = array(); } ?>
+<?php if ( ! empty( $achievement_images ) ) : ?>
+<section class="about-achievements-section">
+  <div class="about-achievements-container">
+
+    <div class="about-achievements-header">
+      <div class="about-achievements-badge">
+        <span class="about-achievements-diamond">◆</span>
+        <span class="about-achievements-badge-text fade-left">Achievements</span>
+      </div>
+      <h2 class="about-achievements-title fade-right">Awards &amp; Recognition</h2>
+    </div>
+
+    <div class="about-achievements-grid">
+      <?php foreach ( $achievement_images as $index => $image ) : if ( empty( $image['url'] ) ) { continue; } ?>
+        <button
+          type="button"
+          class="about-achievements-item achievements-trigger"
+          data-index="<?php echo esc_attr( $index ); ?>"
+          aria-label="View achievement photo <?php echo esc_attr( $index + 1 ); ?>"
+        >
+          <img
+            src="<?php echo esc_url( $image['url'] ); ?>"
+            alt="<?php echo esc_attr( $image['alt'] ?: 'Achievement photo' ); ?>"
+            class="about-achievements-img"
+          />
+        </button>
+      <?php endforeach; ?>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="achievements-lightbox" class="achievements-lightbox" aria-hidden="true" role="dialog">
+  <div class="achievements-lightbox-overlay" id="achievements-lightbox-overlay"></div>
+  <div class="achievements-lightbox-container">
+    <button type="button" class="achievements-lightbox-close" id="achievements-lightbox-close" aria-label="Close">&times;</button>
+    <button type="button" class="achievements-lightbox-nav achievements-lightbox-prev" id="achievements-lightbox-prev" aria-label="Previous image">&#8249;</button>
+    <img src="" alt="" id="achievements-lightbox-img" class="achievements-lightbox-img" />
+    <button type="button" class="achievements-lightbox-nav achievements-lightbox-next" id="achievements-lightbox-next" aria-label="Next image">&#8250;</button>
+    <p class="achievements-lightbox-counter" id="achievements-lightbox-counter"></p>
+  </div>
+</div>
+
+<script>
+window.egAchievementImages = <?php echo wp_json_encode( array_values( wp_list_pluck( $achievement_images, 'url' ) ) ); ?>;
+</script>
+
+<style>
+.about-achievements-section {
+  width: calc(100% - 40px);
+  max-width: 100%;
+  margin: 0 auto 100px;
+  padding: 0 80px;
+  box-sizing: border-box;
+}
+
+.about-achievements-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 48px;
+}
+
+.about-achievements-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.about-achievements-diamond {
+  color: #1ba3b0;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.about-achievements-badge-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.about-achievements-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  color: #0d0d0d;
+  margin: 0;
+}
+
+.about-achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.about-achievements-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-achievements-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+}
+
+.about-achievements-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.about-achievements-item:hover .about-achievements-img {
+  transform: scale(1.06);
+}
+
+/* Lightbox */
+.achievements-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.achievements-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.achievements-lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+}
+
+.achievements-lightbox-container {
+  position: relative;
+  z-index: 2;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.achievements-lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.achievements-lightbox.active .achievements-lightbox-img {
+  transform: scale(1);
+}
+
+.achievements-lightbox-counter {
+  margin: 8px 0 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.achievements-lightbox-close {
+  position: absolute;
+  top: -45px;
+  right: -10px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 5px 15px;
+  transition: color 0.2s ease;
+}
+
+.achievements-lightbox-close:hover {
+  color: #1ba3b0;
+}
+
+.achievements-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #ffffff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.achievements-lightbox-nav:hover {
+  background: rgba(27, 163, 176, 0.85);
+}
+
+.achievements-lightbox-prev {
+  left: -64px;
+}
+
+.achievements-lightbox-next {
+  right: -64px;
+}
+
+@media (max-width: 1200px) {
+  .about-achievements-section {
+    padding: 0 40px;
+  }
+  .about-achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .about-achievements-section {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    margin-bottom: 70px;
+  }
+  .about-achievements-title {
+    font-size: 1.8rem;
+  }
+  .about-achievements-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .achievements-lightbox-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+  }
+  .achievements-lightbox-prev {
+    left: 4px;
+  }
+  .achievements-lightbox-next {
+    right: 4px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const lightbox = document.getElementById('achievements-lightbox');
+  if (!lightbox) return;
+
+  const lightboxImg = document.getElementById('achievements-lightbox-img');
+  const lightboxCounter = document.getElementById('achievements-lightbox-counter');
+  const closeBtn = document.getElementById('achievements-lightbox-close');
+  const prevBtn = document.getElementById('achievements-lightbox-prev');
+  const nextBtn = document.getElementById('achievements-lightbox-next');
+  const overlay = document.getElementById('achievements-lightbox-overlay');
+  const triggers = document.querySelectorAll('.achievements-trigger');
+  const images = Array.isArray(window.egAchievementImages) ? window.egAchievementImages : [];
+
+  let currentIndex = 0;
+
+  function showImage(index) {
+    if (!images.length) return;
+    currentIndex = (index + images.length) % images.length;
+    lightboxImg.src = images[currentIndex];
+    const hasMultiple = images.length > 1;
+    prevBtn.style.display = hasMultiple ? '' : 'none';
+    nextBtn.style.display = hasMultiple ? '' : 'none';
+    lightboxCounter.textContent = hasMultiple ? (currentIndex + 1) + ' / ' + images.length : '';
+  }
+
+  function openLightbox(index) {
+    showImage(index);
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(function () {
+      lightboxImg.src = '';
+    }, 300);
+  }
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      const index = parseInt(this.getAttribute('data-index'), 10) || 0;
+      openLightbox(index);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+  });
+});
+</script>
+<?php endif; ?>
+
 <!-- Our Purpose + Mission/Vision -->
 <?php $purpose = get_field('about_purpose'); $mission = get_field('mission_section'); $vision = get_field('vision_section'); ?>
 <section class="about-purpose-section">
@@ -898,324 +1235,6 @@
   }
   .about-purpose-card {
     padding: 20px;
-  }
-}
-</style>
-
-<!-- Why Choose Us -->
-<?php $why = get_field('about_why_choose'); $why_features = array_filter( array( $why['feature_1'], $why['feature_2'], $why['feature_3'], $why['feature_4'] ), function ( $f ) { return ! empty( $f['title'] ); } ); ?>
-<section class="about-why-section">
-  <div class="about-why-container">
-
-    <div class="about-why-media">
-      <div class="about-why-badge">
-        <span class="about-why-diamond">◆</span>
-        <span class="about-why-badge-text"><?php echo esc_html( $why['badge'] ?: 'Why Choose Us' ); ?></span>
-      </div>
-      <h2 class="about-why-heading fade-right"><?php echo esc_html( $why['heading'] ); ?></h2>
-      <?php if ( ! empty( $why['description'] ) ) : ?>
-        <p class="about-why-desc fade-left"><?php echo esc_html( $why['description'] ); ?></p>
-      <?php endif; ?>
-      <?php if ( ! empty( $why['image'] ) ) : ?>
-        <img src="<?php echo esc_url( $why['image'] ); ?>" alt="<?php echo esc_attr( $why['heading'] ); ?>" class="about-why-img" />
-      <?php endif; ?>
-    </div>
-
-    <div class="about-why-grid">
-      <?php foreach ( $why_features as $feature ) : ?>
-        <div class="about-why-card">
-          <span class="about-why-card-icon"><?php echo esc_html( $feature['icon'] ); ?></span>
-          <h3 class="about-why-card-title"><?php echo esc_html( $feature['title'] ); ?></h3>
-          <p class="about-why-card-text"><?php echo esc_html( $feature['description'] ); ?></p>
-        </div>
-      <?php endforeach; ?>
-    </div>
-
-  </div>
-
-</section>
-
-<?php if ( ! empty( $why['cta_text'] ) ) : ?>
-<!-- CTA Banner - matches Our Process page CTA card exactly -->
-<section class="about-why-cta-section">
-  <div class="about-why-cta-container">
-    <div class="about-why-cta-card">
-      <?php if ( ! empty( $why['cta_image'] ) ) : ?>
-        <img src="<?php echo esc_url( $why['cta_image'] ); ?>" alt="Call To Action Background" class="about-why-cta-bg" />
-      <?php endif; ?>
-      <div class="about-why-cta-overlay"></div>
-
-      <div class="about-why-cta-content">
-        <h2 class="about-why-cta-title fade-right"><?php echo esc_html( $why['cta_text'] ); ?></h2>
-        <?php if ( ! empty( $why['cta_link_text'] ) ) : ?>
-          <a href="<?php echo esc_url( $why['cta_link'] ?: '#' ); ?>" class="about-why-cta-btn fade-left"><?php echo esc_html( $why['cta_link_text'] ); ?></a>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<style>
-.about-why-section {
-  width: calc(100% - 40px);
-  max-width: 100%;
-  margin: 0 auto 100px;
-  padding: 0 80px;
-  box-sizing: border-box;
-}
-
-.about-why-container {
-  display: flex;
-  gap: 60px;
-  align-items: flex-start;
-  margin-bottom: 50px;
-}
-
-.about-why-media,
-.about-why-grid {
-  flex: 0 0 calc(50% - 30px);
-}
-
-.about-why-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.about-why-diamond {
-  color: #1ba3b0;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.about-why-badge-text {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #1ba3b0;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.about-why-heading {
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.6px;
-  color: #0d0d0d;
-  margin: 0 0 20px 0;
-}
-
-.about-why-desc {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #666666;
-  margin: 0 0 28px 0;
-}
-
-.about-why-img {
-  width: 100%;
-  height: 340px;
-  object-fit: cover;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  display: block;
-}
-
-.about-why-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid #e6e9ec;
-  border-radius: 24px;
-  overflow: hidden;
-}
-
-.about-why-card {
-  padding: 32px 26px;
-  border-right: 1px solid #e6e9ec;
-  border-bottom: 1px solid #e6e9ec;
-}
-
-.about-why-card:nth-child(2n) {
-  border-right: none;
-}
-
-.about-why-card:nth-last-child(-n+2) {
-  border-bottom: none;
-}
-
-.about-why-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background-color: rgba(27, 163, 176, 0.12);
-  font-size: 1.3rem;
-  margin-bottom: 16px;
-}
-
-.about-why-card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #0d0d0d;
-  margin: 0 0 8px 0;
-}
-
-.about-why-card-text {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #666666;
-  margin: 0;
-}
-
-.about-why-cta-section {
-  width: 100%;
-  padding: 0 80px 80px;
-  box-sizing: border-box;
-}
-
-.about-why-cta-container {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.about-why-cta-card {
-  position: relative;
-  width: 100%;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-  padding: 90px 40px;
-  text-align: center;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.about-why-cta-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
-.about-why-cta-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 8, 20, 0.75);
-  z-index: 1;
-}
-
-.about-why-cta-content {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.about-why-cta-title {
-  color: #ffffff;
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -1px;
-  margin: 0 0 32px 0;
-}
-
-.about-why-cta-btn {
-  display: inline-block;
-  background-color: #ffffff;
-  color: #111111;
-  text-decoration: none;
-  padding: 16px 40px;
-  border-radius: 50px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  transition: all 0.3s ease;
-}
-
-.about-why-cta-btn:hover {
-  background-color: #1ba3b0;
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 1200px) {
-  .about-why-section {
-    padding: 0 40px;
-  }
-  .about-why-cta-section {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-}
-
-@media (max-width: 900px) {
-  .about-why-cta-card {
-    padding: 60px 30px;
-  }
-  .about-why-cta-title {
-    font-size: 2.15rem;
-  }
-}
-
-@media (max-width: 991px) {
-  .about-why-container {
-    flex-direction: column;
-    gap: 40px;
-  }
-  .about-why-media,
-  .about-why-grid {
-    flex: 0 0 100%;
-  }
-  .about-why-heading {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-why-section {
-    width: calc(100% - 20px);
-    padding: 0 10px;
-    margin-bottom: 70px;
-  }
-  .about-why-heading {
-    font-size: 1.7rem;
-  }
-  .about-why-img {
-    height: 240px;
-  }
-  .about-why-grid {
-    grid-template-columns: 1fr;
-  }
-  .about-why-card {
-    border-right: none !important;
-    border-bottom: 1px solid #e6e9ec !important;
-  }
-  .about-why-card:last-child {
-    border-bottom: none !important;
-  }
-  .about-why-cta-section {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .about-why-cta-card {
-    padding: 44px 24px;
-    border-radius: 16px;
-  }
-  .about-why-cta-title {
-    font-size: 1.6rem;
   }
 }
 </style>

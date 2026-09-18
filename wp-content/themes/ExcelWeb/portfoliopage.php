@@ -18,9 +18,6 @@
         <h1 class="portfolio-hero-title fade-right"><?php echo esc_html( $banner['title'] ); ?></h1>
       <?php endif; ?>
 
-      <?php if ( ! empty( $banner['content'] ) ) : ?>
-        <p class="portfolio-hero-subtext fade-left"><?php echo esc_html( $banner['content'] ); ?></p>
-      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -83,13 +80,6 @@
   margin: 0 0 20px 0;
 }
 
-.portfolio-hero-subtext {
-  font-size: 1.15rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-}
-
 @media (max-width: 900px) {
   .portfolio-hero-banner {
     min-height: 340px;
@@ -99,9 +89,6 @@
   }
   .portfolio-hero-title {
     font-size: 2.15rem;
-  }
-  .portfolio-hero-subtext {
-    font-size: 1.05rem;
   }
 }
 

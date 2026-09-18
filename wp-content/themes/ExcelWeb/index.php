@@ -4,7 +4,7 @@
     
 <!-- Section 1: Banner -->
    
-<?php $banner = get_field('blog_banner'); ?>
+<?php $banner = get_field( 'blog_banner', (int) get_option( 'page_for_posts' ) ); ?>
 <section class="blog-hero-banner">
   <?php if ( ! empty( $banner['banner_image'] ) ) : ?>
     <img src="<?php echo esc_url( $banner['banner_image'] ); ?>" alt="Blog Page Banner" class="blog-hero-bg-img" />
@@ -15,9 +15,6 @@
     <div class="blog-hero-content">
       <?php if ( ! empty( $banner['title'] ) ) : ?>
         <h1 class="blog-hero-title fade-right"><?php echo $banner['title']; ?></h1>
-      <?php endif; ?>
-      <?php if ( ! empty( $banner['content'] ) ) : ?>
-        <p class="blog-hero-subtext fade-left"><?php echo $banner['content']; ?></p>
       <?php endif; ?>
     </div>
   </div>
@@ -81,13 +78,6 @@
   margin: 0 0 20px 0;
 }
 
-.blog-hero-subtext {
-  font-size: 1.15rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-}
-
 @media (max-width: 900px) {
   .blog-hero-banner {
     min-height: 340px;
@@ -97,9 +87,6 @@
   }
   .blog-hero-title {
     font-size: 2.15rem;
-  }
-  .blog-hero-subtext {
-    font-size: 1.05rem;
   }
 }
 

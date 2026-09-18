@@ -17,9 +17,6 @@
       <?php if ( ! empty( $banner['title'] ) ) : ?>
         <h1 class="services-hero-title fade-right"><?php echo $banner['title']; ?></h1>
       <?php endif; ?>
-      <?php if ( ! empty( $banner['content'] ) ) : ?>
-        <p class="services-hero-subtext fade-left"><?php echo $banner['content']; ?></p>
-      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -82,13 +79,6 @@
   margin: 0 0 20px 0;
 }
 
-.services-hero-subtext {
-  font-size: 1.15rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-}
-
 @media (max-width: 900px) {
   .services-hero-banner {
     min-height: 340px;
@@ -98,9 +88,6 @@
   }
   .services-hero-title {
     font-size: 2.15rem;
-  }
-  .services-hero-subtext {
-    font-size: 1.05rem;
   }
 }
 
