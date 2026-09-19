@@ -262,7 +262,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- Right: Get a Quote Button & Mobile Toggle -->
       <div class="header-actions flex-row d-flex align-items-center gap-3">
-        <a href="#quote" class="btn-quote d-none d-lg-inline-flex">Get a Quote</a>
+        <a href="<?php echo esc_url( home_url('/contact/') ); ?>" class="btn-quote d-none d-lg-inline-flex">Get a Quote</a>
 
         <!-- Mobile Nav Toggler matching script logic -->
         <a href="#" class="mobile-nav__toggler d-lg-none">
@@ -304,7 +304,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ?>
     </div>
 
-    <a href="#quote" class="btn-quote d-block text-center mt-4">Get a Quote</a>
+    <a href="<?php echo esc_url( home_url('/contact/') ); ?>" class="btn-quote d-block text-center mt-4">Get a Quote</a>
   </div>
 </div>
 

@@ -85,7 +85,8 @@
 
             <?php if ( get_theme_mod('footer_phone') ) :
               $phone = get_theme_mod('footer_phone');
-              $phone_link = preg_replace('/\D+/', '', $phone);
+              $phone_first = preg_split('/[;,]/', $phone)[0];
+              $phone_link = preg_replace('/\D+/', '', $phone_first);
             ?>
               <p class="exg-ft-contact-item">
                 <i class="bi bi-telephone"></i>

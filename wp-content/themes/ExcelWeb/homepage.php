@@ -12,15 +12,24 @@ $banner_posts = get_posts([
     'order'          => 'ASC',
 ]);
 
-$banners = array_map(function ($p) {
+// Site-relative paths (e.g. "/portfolio/") must resolve against home_url(),
+// not the domain root, since this install can live in a subdirectory.
+$eg_resolve_banner_url = function ( $url ) {
+    if ( ! empty( $url ) && strpos( $url, '/' ) === 0 ) {
+        return home_url( $url );
+    }
+    return $url;
+};
+
+$banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
     return [
         'banner_image'         => get_the_post_thumbnail_url($p->ID, 'full'),
         'title'                => get_post_meta($p->ID, 'banner_content_headline', true),
         'content'              => get_post_meta($p->ID, 'banner_content_description', true),
         'title_2'              => get_post_meta($p->ID, 'banner_content_badge_title', true),
         'content_2'            => get_post_meta($p->ID, 'banner_content_badge_content', true),
-        'view_project_button'  => get_post_meta($p->ID, 'banner_content_view_project_button', true),
-        'reach_out_button'     => get_post_meta($p->ID, 'banner_content_reach_out_button', true),
+        'view_project_button'  => $eg_resolve_banner_url( get_post_meta($p->ID, 'banner_content_view_project_button', true) ),
+        'reach_out_button'     => $eg_resolve_banner_url( get_post_meta($p->ID, 'banner_content_reach_out_button', true) ),
     ];
 }, $banner_posts);
 ?>

@@ -136,10 +136,9 @@
       </div>
       <?php endif; ?>
 
-      <?php 
+      <?php
         $phone = get_theme_mod('footer_phone');
-        $whatsapp = get_theme_mod('footer_whatsapp');
-        if ( $phone || $whatsapp ) : 
+        if ( $phone ) :
       ?>
       <div class="contact-card">
         <div class="contact-card-icon-wrapper">
@@ -149,28 +148,18 @@
         </div>
         <h3 class="contact-card-title fade-left">Phone & WhatsApp</h3>
         <p class="contact-card-text fade-right">
-          <?php if ( $phone ) : 
+          <?php
             $phone_link = preg_replace('/\D+/', '', $phone);
           ?>
-            <a href="tel:<?php echo esc_attr($phone_link); ?>"><?php echo esc_html($phone); ?></a><br />
-          <?php endif; ?>
-
-          <?php if ( $whatsapp ) : 
-            $wa_link = preg_replace('/\D+/', '', $whatsapp);
-          ?>
-            <a href="https://wa.me/<?php echo esc_attr($wa_link); ?>?text=<?php echo urlencode('Hello, I would like to know more.'); ?>" target="_blank" rel="noopener">
-              WA: <?php echo esc_html($whatsapp); ?>
-            </a>
-          <?php endif; ?>
+            <a href="tel:<?php echo esc_attr($phone_link); ?>"><?php echo esc_html($phone); ?></a>
         </p>
       </div>
       <?php endif; ?>
 
-      <?php 
+      <?php
         $email = get_theme_mod('footer_email');
         $email2 = get_theme_mod('footer_email2', '');
-        $website = get_theme_mod('footer_website', '');
-        if ( $email || $email2 || $website ) : 
+        if ( $email || $email2 ) :
       ?>
       <div class="contact-card">
         <div class="contact-card-icon-wrapper">
@@ -179,18 +168,14 @@
             <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
         </div>
-        <h3 class="contact-card-title fade-right">Email & Web</h3>
+        <h3 class="contact-card-title fade-right">Email</h3>
         <p class="contact-card-text fade-left">
           <?php if ( $email ) : ?>
             <a href="mailto:<?php echo antispambot($email); ?>"><?php echo esc_html($email); ?></a><br />
           <?php endif; ?>
 
           <?php if ( $email2 ) : ?>
-            <a href="mailto:<?php echo antispambot($email2); ?>"><?php echo esc_html($email2); ?></a><br />
-          <?php endif; ?>
-
-          <?php if ( $website ) : ?>
-            <a href="<?php echo esc_url($website); ?>" target="_blank" rel="noopener"><?php echo esc_html($website); ?></a>
+            <a href="mailto:<?php echo antispambot($email2); ?>"><?php echo esc_html($email2); ?></a>
           <?php endif; ?>
         </p>
       </div>
