@@ -106,6 +106,7 @@
 <?php
 $services_query = new WP_Query( array(
     'post_type'      => 'service',
+    'post_parent'    => 0,
     'posts_per_page' => -1,
     'orderby'        => 'menu_order title',
     'order'          => 'ASC',
@@ -121,7 +122,7 @@ $services_query = new WP_Query( array(
         <span class="services-list-badge-text fade-left">What We Offer</span>
       </div>
       <h2 class="services-list-main-title fade-right">Our Specialized Services</h2>
-      <p class="services-list-subtitle fade-left">Explore our wide range of tailored solutions designed to meet your specific needs.</p>
+      <p class="services-list-subtitle fade-left">Explore our wide range of customized solutions designed to meet your specific needs.</p>
     </div>
 
     <?php if ( ! $services_query->have_posts() ) : ?>

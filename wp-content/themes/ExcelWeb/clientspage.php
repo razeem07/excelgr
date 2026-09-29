@@ -248,32 +248,25 @@
 /* Clients 3-Column Grid */
 .clients-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  align-items: center;
 }
 
-/* Client Card Styling */
+/* Client logo tile: no card chrome */
 .clients-card {
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 28px;
+  background: transparent;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.clients-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
 }
 
 /* Image Button Trigger */
 .clients-card-img-btn {
   display: block;
   width: 100%;
-  height: 320px;
+  height: 110px;
   padding: 0;
   border: none;
-  background-color: #f4f4f4;
+  background: transparent;
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -282,17 +275,17 @@
 .clients-card-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .clients-card:hover .clients-card-img {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
 .clients-card-placeholder {
   width: 100%;
-  height: 320px;
+  height: 110px;
   background-color: #e9ecef;
 }
 
@@ -416,15 +409,15 @@
 
 @media (max-width: 991px) {
   .clients-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
   .clients-list-main-title {
     font-size: 2.6rem;
   }
   .clients-card-img-btn,
   .clients-card-placeholder {
-    height: 280px;
+    height: 90px;
   }
 }
 
@@ -435,8 +428,8 @@
   }
 
   .clients-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 
   .clients-list-main-title {
@@ -445,7 +438,7 @@
 
   .clients-card-img-btn,
   .clients-card-placeholder {
-    height: 240px;
+    height: 70px;
   }
 
   .clients-lightbox-close {

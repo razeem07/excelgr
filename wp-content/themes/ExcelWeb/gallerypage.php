@@ -154,6 +154,10 @@
       <?php endif; ?>
     </div>
 
+    <div class="gallery-pinterest-wrap">
+      <a href="https://pin.it/5qRCJzo9Q" class="gallery-pinterest-btn" target="_blank" rel="noopener">View All Images on Pinterest <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
   </div>
 </section>
 
@@ -228,6 +232,31 @@
   line-height: 1.6;
   color: #555555;
   margin: 0;
+}
+
+.gallery-pinterest-wrap {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.gallery-pinterest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background-color: #1ba3b0;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-pinterest-btn:hover {
+  background-color: #14838e;
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
 /* Gallery 3-Column Grid */

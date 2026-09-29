@@ -50,7 +50,7 @@ function bleizure_register_acf_replacement_post_types() {
 		register_post_type( $slug, array(
 			'labels'            => bleizure_acf_cpt_labels( $names[0], $names[1] ),
 			'public'            => true,
-			'hierarchical'      => false,
+			'hierarchical'      => ( $slug === 'service' ), // services form a pillar (parent) / sub-service (child) content hub
 			'show_ui'           => true,
 			'show_in_menu'      => true,
 			'show_in_admin_bar' => true,
