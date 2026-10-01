@@ -64,6 +64,7 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 
               <!-- Right Section: Badge & Buttons -->
               <div class="hero-right">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/iso-certified.png' ); ?>" alt="ISO 9001:2015 Certified Company" class="hero-iso-badge fade-left" />
                 <?php if (!empty($slide['title_2'])): ?>
                   <div class="since-block">
                     <h2 class="since-title fade-left"><?php echo $slide['title_2']; ?></h2>
@@ -186,6 +187,12 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   align-items: flex-end;
   gap: 36px;
   text-align: right;
+}
+
+.hero-iso-badge {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
 }
 
 .since-block {
@@ -311,6 +318,11 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
     text-align: left;
     width: 100%;
     gap: 20px;
+  }
+
+  .hero-iso-badge {
+    width: 64px;
+    height: 64px;
   }
 
   /* "SINCE 2002" badge block and its subtext are hidden on mobile */

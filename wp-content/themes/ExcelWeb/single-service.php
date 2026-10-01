@@ -305,7 +305,7 @@
 
 .related-sidebar-badge .related-badge-text {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #111111;
 }
 
