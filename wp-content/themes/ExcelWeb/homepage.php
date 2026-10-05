@@ -64,7 +64,7 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 
               <!-- Right Section: Badge & Buttons -->
               <div class="hero-right">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/iso-certified.png' ); ?>" alt="ISO 9001:2015 Certified Company" class="hero-iso-badge fade-left" />
+                <p class="hero-iso-badge fade-left">An ISO 9001:2015 Certified Company</p>
                 <?php if (!empty($slide['title_2'])): ?>
                   <div class="since-block">
                     <h2 class="since-title fade-left"><?php echo $slide['title_2']; ?></h2>
@@ -190,9 +190,17 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 }
 
 .hero-iso-badge {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
+  display: inline-block;
+  margin: 0;
+  padding: 8px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
 }
 
 .since-block {
@@ -321,8 +329,8 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   }
 
   .hero-iso-badge {
-    width: 64px;
-    height: 64px;
+    font-size: 0.8rem;
+    padding: 6px 16px;
   }
 
   /* "SINCE 2002" badge block and its subtext are hidden on mobile */
@@ -611,6 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php
 $home_services = get_posts([
     'post_type'      => 'service',
+    'post_parent'    => 0,
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'menu_order',
@@ -654,11 +663,20 @@ $home_services = get_posts([
 
     </div>
 
-    <!-- Carousel Arrow Button -->
+    <!-- Carousel Arrow Buttons -->
     <button
-      class="eg-services-arrow-btn"
+      class="eg-services-arrow-btn eg-services-arrow-btn--prev"
+      aria-label="Previous slide"
+      onclick="egScrollCarousel(-1)"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button
+      class="eg-services-arrow-btn eg-services-arrow-btn--next"
       aria-label="Next slide"
-      onclick="egScrollCarousel()"
+      onclick="egScrollCarousel(1)"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6"></polyline>
@@ -673,18 +691,25 @@ $home_services = get_posts([
 </section>
 
 <script>
-function egScrollCarousel() {
+function egScrollCarousel(direction) {
   const track = document.getElementById('egServicesTrack');
   const maxScroll = track.scrollWidth - track.clientWidth;
+  const card = track.querySelector('.eg-services-card');
+  const scrollAmount = card ? card.offsetWidth + 45 : 260;
 
-  // Check if we reached or are near the end (10px tolerance for decimal precision)
-  if (track.scrollLeft >= maxScroll - 10) {
-    track.scrollTo({ left: 0, behavior: 'smooth' });
+  if (direction > 0) {
+    // Check if we reached or are near the end (10px tolerance for decimal precision)
+    if (track.scrollLeft >= maxScroll - 10) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
   } else {
-    // Scroll dynamic width based on card size and layout gaps
-    const card = track.querySelector('.eg-services-card');
-    const scrollAmount = card ? card.offsetWidth + 45 : 260;
-    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    if (track.scrollLeft <= 10) {
+      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
   }
 }
 </script>
@@ -835,7 +860,6 @@ function egScrollCarousel() {
 .eg-services-arrow-btn {
   position: absolute;
   top: 50%;
-  right: -26px;
   transform: translateY(-50%);
   z-index: 10;
   width: 52px;
@@ -850,6 +874,14 @@ function egScrollCarousel() {
   cursor: pointer;
   color: #111111;
   transition: all 0.3s ease;
+}
+
+.eg-services-arrow-btn--next {
+  right: -26px;
+}
+
+.eg-services-arrow-btn--prev {
+  left: -26px;
 }
 
 .eg-services-arrow-btn:hover {
@@ -918,8 +950,12 @@ function egScrollCarousel() {
     flex: 0 0 82%; /* Mobile view */
     height: 400px;
   }
-  .eg-services-arrow-btn {
+  .eg-services-arrow-btn--next {
     right: -10px;
+  }
+
+  .eg-services-arrow-btn--prev {
+    left: -10px;
   }
 }
 </style>
