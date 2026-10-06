@@ -292,20 +292,21 @@
 }
 
 .related-sidebar-badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 18px;
 }
 
 .related-sidebar-badge .related-diamond {
   color: #1ba3b0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 .related-sidebar-badge .related-badge-text {
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #111111;
 }
 

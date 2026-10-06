@@ -50,7 +50,7 @@
 }
 
 .logo-wrapper .navbar-brand img {
-  height: 130px;
+  height: 180px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));

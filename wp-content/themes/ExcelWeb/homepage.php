@@ -2813,7 +2813,7 @@ if ($clients_query->have_posts()) :
   align-items: center;
   gap: 70px;
   width: max-content;
-  animation: eg-clients-scroll 30s linear infinite;
+  animation: eg-clients-scroll 100s linear infinite;
 }
 
 .eg-clients-carousel:hover .eg-clients-track {

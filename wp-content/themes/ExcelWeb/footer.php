@@ -407,6 +407,14 @@
   box-shadow: 0 12px 24px rgba(255, 0, 0, 0.4);
 }
 
+.exg-social-float--pinterest {
+  background-color: #e60023;
+}
+
+.exg-social-float--pinterest:hover {
+  box-shadow: 0 12px 24px rgba(230, 0, 35, 0.45);
+}
+
 .exg-social-float--whatsapp {
   width: 56px;
   height: 56px;
@@ -497,9 +505,10 @@
 <?php
 $float_facebook  = get_theme_mod('footer_facebook');
 $float_instagram = get_theme_mod('footer_instagram');
+$float_pinterest = get_theme_mod('footer_pinterest');
 $float_youtube   = get_theme_mod('footer_youtube');
 $float_whatsapp  = get_theme_mod('footer_whatsapp');
-if ( $float_facebook || $float_instagram || $float_youtube || $float_whatsapp ) : ?>
+if ( $float_facebook || $float_instagram || $float_pinterest || $float_youtube || $float_whatsapp ) : ?>
   <div class="exg-social-float-stack">
     <?php if ( $float_facebook ) : ?>
       <a href="<?php echo esc_url( $float_facebook ); ?>" class="exg-social-float exg-social-float--facebook" target="_blank" rel="noopener" aria-label="Facebook">
@@ -510,6 +519,12 @@ if ( $float_facebook || $float_instagram || $float_youtube || $float_whatsapp ) 
     <?php if ( $float_instagram ) : ?>
       <a href="<?php echo esc_url( $float_instagram ); ?>" class="exg-social-float exg-social-float--instagram" target="_blank" rel="noopener" aria-label="Instagram">
         <i class="bi bi-instagram"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if ( $float_pinterest ) : ?>
+      <a href="<?php echo esc_url( $float_pinterest ); ?>" class="exg-social-float exg-social-float--pinterest" target="_blank" rel="noopener" aria-label="Pinterest">
+        <i class="bi bi-pinterest"></i>
       </a>
     <?php endif; ?>
 
