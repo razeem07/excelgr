@@ -162,7 +162,7 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 
 /* Left Column */
 .hero-left {
-  max-width: 780px;
+  max-width: 560px;
 }
 
 .hero-title {
@@ -171,13 +171,15 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   line-height: 1.1;
   letter-spacing: -1.2px;
   margin-bottom: 24px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
 }
 
 .hero-subtext {
   font-size: 1.15rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
-  max-width: 600px;
+  max-width: 480px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* Right Column */
@@ -192,15 +194,16 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 .hero-iso-badge {
   display: inline-block;
   margin: 0;
-  padding: 8px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 12px 28px;
+  border: 1.5px solid #1ba3b0;
   border-radius: 50px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   letter-spacing: 0.3px;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(27, 163, 176, 0.35);
   backdrop-filter: blur(4px);
+  box-shadow: 0 4px 20px rgba(27, 163, 176, 0.4);
 }
 
 .since-block {
@@ -329,8 +332,8 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   }
 
   .hero-iso-badge {
-    font-size: 0.8rem;
-    padding: 6px 16px;
+    font-size: 0.85rem;
+    padding: 8px 18px;
   }
 
   /* "SINCE 2002" badge block and its subtext are hidden on mobile */
