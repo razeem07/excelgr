@@ -277,13 +277,14 @@
 }
 
 .services-detail-col {
-  flex: 1;
+  flex: 3 1 0;
   min-width: 0;
 }
 
-/* Related Services sidebar */
+/* Related Services sidebar (col-9 / col-3 style ratio) */
 .related-sidebar-col {
-  flex: 0 0 300px;
+  flex: 1 1 0;
+  min-width: 260px;
   position: sticky;
   top: 20px;
   background-color: #f8f9fa;
@@ -305,7 +306,7 @@
 }
 
 .related-sidebar-badge .related-badge-text {
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #111111;
 }
@@ -328,14 +329,14 @@
   display: block;
   padding: 14px 4px;
   font-size: 1.05rem;
-  font-weight: 600;
-  color: #333333;
+  font-weight: bold;
+  color: #158590;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .related-sidebar-list a:hover {
-  color: #1ba3b0;
+  color: #14838e;
 }
 
 /* Header & Meta */
