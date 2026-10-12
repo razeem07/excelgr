@@ -464,6 +464,7 @@
 </style>
 <?php endif; ?>
 
+<?php if ( false ) : // Temporarily hidden — flip to true to re-enable. ?>
 <!-- Video Section -->
 <?php
   $video_banner_img = get_field( 'process_video_banner_image' );
@@ -670,6 +671,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<?php endif; // end Video Section temporary hide ?>
 
 <?php
   $quality_intro    = get_field( 'quality_intro' );

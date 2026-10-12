@@ -64,7 +64,18 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 
               <!-- Right Section: Badge & Buttons -->
               <div class="hero-right">
-                <p class="hero-iso-badge fade-left">An ISO 9001:2015 Certified Company</p>
+                <div class="hero-iso-badge fade-left" role="img" aria-label="An ISO 9001 : 2015 Certified Company">
+                  <svg viewBox="0 0 200 200" class="hero-iso-badge-svg" aria-hidden="true">
+                    <defs>
+                      <path id="heroIsoCirclePath" d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
+                    </defs>
+                    <circle cx="100" cy="100" r="97" class="hero-iso-badge-ring" />
+                    <text class="hero-iso-badge-text">
+                      <textPath href="#heroIsoCirclePath" startOffset="0%">ISO 9001 : 2015 CERTIFIED COMPANY &#8226;</textPath>
+                    </text>
+                  </svg>
+                  <span class="hero-iso-badge-center" aria-hidden="true">&#10003;</span>
+                </div>
                 <?php if (!empty($slide['title_2'])): ?>
                   <div class="since-block">
                     <h2 class="since-title fade-left"><?php echo $slide['title_2']; ?></h2>
@@ -192,18 +203,44 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 }
 
 .hero-iso-badge {
-  display: inline-block;
-  margin: 0;
-  padding: 12px 28px;
-  border: 1.5px solid #1ba3b0;
-  border-radius: 50px;
-  font-size: 1.15rem;
+  position: relative;
+  width: 132px;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-iso-badge-svg {
+  width: 100%;
+  height: 100%;
+  animation: hero-iso-badge-spin 32s linear infinite;
+}
+
+@keyframes hero-iso-badge-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hero-iso-badge-ring {
+  fill: rgba(27, 163, 176, 0.45);
+  stroke: #1ba3b0;
+  stroke-width: 2.5;
+}
+
+.hero-iso-badge-text {
+  font-size: 20px;
   font-weight: 800;
-  letter-spacing: 0.3px;
+  letter-spacing: 1.6px;
+  fill: #ffffff;
+}
+
+.hero-iso-badge-center {
+  position: absolute;
   color: #ffffff;
-  background: rgba(27, 163, 176, 0.35);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 20px rgba(27, 163, 176, 0.4);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .since-block {
@@ -332,8 +369,12 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   }
 
   .hero-iso-badge {
-    font-size: 0.85rem;
-    padding: 8px 18px;
+    width: 92px;
+    height: 92px;
+  }
+
+  .hero-iso-badge-center {
+    font-size: 1.3rem;
   }
 
   /* "SINCE 2002" badge block and its subtext are hidden on mobile */

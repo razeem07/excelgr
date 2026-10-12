@@ -562,6 +562,7 @@
 }
 </style>
 
+<?php if ( false ) : // Temporarily hidden — flip to true to re-enable. ?>
 <!-- Our Team -->
 <section class="about-team">
   <div class="team-container">
@@ -688,6 +689,7 @@
   }
 }
 </style>
+<?php endif; // end Our Team temporary hide ?>
 
 <!-- Achievements & Recognition -->
 <?php $achievement_images = get_field('achievements_gallery'); if ( ! is_array( $achievement_images ) ) { $achievement_images = array(); } ?>
