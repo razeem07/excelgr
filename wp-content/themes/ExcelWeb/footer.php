@@ -1,3 +1,5 @@
+</main>
+
 <!-- Footer Section -->
 <footer class="exg-ft-section">
   <div class="exg-ft-container">
@@ -44,7 +46,7 @@
 
           <!-- Quick Links -->
           <div class="exg-ft-col">
-            <h4 class="exg-ft-heading">Quick Links</h4>
+            <h3 class="exg-ft-heading">Quick Links</h3>
             <?php
             wp_nav_menu([
               'theme_location' => 'primary_menu',
@@ -58,7 +60,7 @@
 
           <!-- Our Services -->
           <div class="exg-ft-col">
-            <h4 class="exg-ft-heading">Our Services</h4>
+            <h3 class="exg-ft-heading">Our Services</h3>
             <ul class="exg-ft-list">
               <?php
               $footer_services = new WP_Query( array(
@@ -81,7 +83,7 @@
 
           <!-- Contact Info -->
           <div class="exg-ft-col">
-            <h4 class="exg-ft-heading">Contact Info</h4>
+            <h3 class="exg-ft-heading">Contact Info</h3>
 
             <?php if ( get_theme_mod('footer_phone') ) :
               $phone = get_theme_mod('footer_phone');
@@ -327,7 +329,7 @@
 
 .exg-ft-copyright {
   font-size: 0.88rem;
-  color: #64748b;
+  color: #8b98ad;
   margin: 0;
 }
 

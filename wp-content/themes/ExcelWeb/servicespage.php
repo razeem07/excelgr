@@ -133,7 +133,11 @@ $services_query = new WP_Query( array(
       <?php while ( $services_query->have_posts() ) : $services_query->the_post(); ?>
         <a href="<?php the_permalink(); ?>" class="services-tab-item">
           <?php if ( has_post_thumbnail() ) : ?>
-            <img src="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>" alt="<?php the_title_attribute(); ?>" class="services-tab-img" />
+            <?php echo get_the_post_thumbnail( get_the_ID(), 'medium_large', array(
+              'alt'   => the_title_attribute( array( 'echo' => false ) ),
+              'class' => 'services-tab-img',
+              'sizes' => '(max-width: 640px) 100vw, (max-width: 991px) 48vw, 23vw',
+            ) ); ?>
           <?php endif; ?>
           <div class="services-tab-overlay"></div>
           <h3 class="services-tab-title"><?php the_title(); ?></h3>

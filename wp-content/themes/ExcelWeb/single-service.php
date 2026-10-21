@@ -7,8 +7,8 @@
   $hero_service_id  = get_queried_object_id();
   $hero_banner_id   = (int) get_post_meta( $hero_service_id, 'service_banner_image', true );
   $hero_banner_url  = $hero_banner_id
-    ? wp_get_attachment_url( $hero_banner_id )
-    : ( has_post_thumbnail( $hero_service_id ) ? get_the_post_thumbnail_url( $hero_service_id, 'full' ) : get_template_directory_uri() . '/assets/images/services-banner.jpg' );
+    ? wp_get_attachment_image_url( $hero_banner_id, 'large' )
+    : ( has_post_thumbnail( $hero_service_id ) ? get_the_post_thumbnail_url( $hero_service_id, 'large' ) : get_template_directory_uri() . '/assets/images/services-banner.jpg' );
 ?>
 <section class="service-hero-banner">
   <img src="<?php echo esc_url( $hero_banner_url ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" />

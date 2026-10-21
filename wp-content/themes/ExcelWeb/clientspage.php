@@ -142,8 +142,8 @@
     <div class="clients-grid">
       <?php if ( $clients_list_query->have_posts() ) :
         while ( $clients_list_query->have_posts() ) : $clients_list_query->the_post();
-          $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-          $thumb_img_url = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+          $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); // only used lazily, inside the lightbox data attribute below
+          $thumb_img_url = get_the_post_thumbnail_url( get_the_ID(), 'medium' ); // logo grid tiles are ~110px tall; 'large' was serving full-size originals
         ?>
 
         <article class="clients-card">
