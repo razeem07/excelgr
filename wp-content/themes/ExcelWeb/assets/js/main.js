@@ -80,37 +80,12 @@
   });
 })(jQuery);
 
-document.addEventListener("DOMContentLoaded", function () {
-  AOS.init({
-    duration: 1000, // animation duration in ms
-    once: true, // animate only once
-  });
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  new Swiper(".myClientsSwiper", {
-    slidesPerView: 2,
-    spaceBetween: 20,
-    breakpoints: {
-      576: { slidesPerView: 3 },
-      768: { slidesPerView: 4 },
-      992: { slidesPerView: 5 },
-    },
-    loop: true,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-  });
-});
-
-
+// Note: this theme previously called AOS.init() and initialized a Swiper
+// instance on ".myClientsSwiper" here, but neither library was actually
+// enqueued for anything on the live pages to use (no element anywhere has
+// a data-aos attribute or the myClientsSwiper class — the real clients
+// carousel below uses a plain CSS animation instead), so both calls were
+// removed as dead code.
 
 document.addEventListener("DOMContentLoaded", () => {
   const animatedElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right');

@@ -31,19 +31,16 @@ function mytheme_enqueue_styles() {
     wp_enqueue_style('mytheme-google-fonts','https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap',array(),null);
 
 
-    // AOS CSS — scroll-animation styling, not needed for first paint; loaded async below.
-    wp_enqueue_style('aos-css','https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css',array(),'2.3.4');
+    // AOS is intentionally not loaded: AOS.init() is never called anywhere in
+    // this theme, and the only files using data-aos attributes aren't
+    // included by any live template — it was pure dead weight on every page.
 
-
-
-     // AOS JS
-    wp_enqueue_script('aos-js','https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js',array(),'2.3.4',true);
-
-
-        //Swiper — carousel chrome, not needed for first paint; CSS loaded async below.
-
-    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
-    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), null, true);
+        // Swiper — only the homepage actually uses it (hero slider, reviews
+        // carousel); loading it site-wide was pure waste elsewhere.
+    if ( is_page_template( 'homepage.php' ) ) {
+        wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+        wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), null, true);
+    }
 
     // Desktop CSS (default)
     wp_enqueue_style('desktop-css', get_template_directory_uri() . '/assets/css/main.css');
@@ -63,7 +60,7 @@ add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
 // since those carry core layout and blocking them risks a flash of
 // unstyled content.
 function mytheme_async_load_styles( $html, $handle, $href, $media ) {
-    $async_handles = array( 'bootstrap-icons', 'mytheme-google-fonts', 'aos-css', 'swiper-css' );
+    $async_handles = array( 'bootstrap-icons', 'mytheme-google-fonts', 'swiper-css' );
     if ( ! in_array( $handle, $async_handles, true ) ) {
         return $html;
     }
