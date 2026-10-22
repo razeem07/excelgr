@@ -6,12 +6,20 @@
 
 
 <!-- Section 1: Banner -->
+<?php
+  $generalpage_banner_id = (int) get_post_meta( get_the_ID(), 'service_banner_image', true );
+  if ( ! $generalpage_banner_id && has_post_thumbnail() ) {
+    $generalpage_banner_id = get_post_thumbnail_id();
+  }
+?>
 <section class="about-banner">
-  <img src="<?php the_field("banner_image") ?>" alt="Banner">
+  <?php if ( $generalpage_banner_id ) : ?>
+    <?php echo wp_get_attachment_image( $generalpage_banner_id, 'large', false, array( 'alt' => esc_attr( get_the_title() ) ) ); ?>
+  <?php endif; ?>
   <div class="overlay"></div>
   <div class="content container">
     <h1 class="fw-bold"><?php the_title(); ?></h1>
-  
+
   </div>
 </section>
 
@@ -35,7 +43,5 @@
 </section>
 
 
-
- <?php get_template_part('template-parts/hero','booking'); ?>
 
 <?php get_footer(); ?>
