@@ -12,7 +12,7 @@
 ?>
 <section class="service-hero-banner">
   <?php if ( $hero_banner_id ) : ?>
-    <?php echo wp_get_attachment_image( $hero_banner_id, 'large', false, array(
+    <?php echo wp_get_attachment_image( $hero_banner_id, 'full', false, array(
       'alt'   => esc_attr( get_the_title( $hero_service_id ) ),
       'class' => 'service-hero-bg-img',
     ) ); ?>

@@ -14,7 +14,7 @@
 ?>
 <section class="about-banner">
   <?php if ( $generalpage_banner_id ) : ?>
-    <?php echo wp_get_attachment_image( $generalpage_banner_id, 'large', false, array( 'alt' => esc_attr( get_the_title() ) ) ); ?>
+    <?php echo wp_get_attachment_image( $generalpage_banner_id, 'full', false, array( 'alt' => esc_attr( get_the_title() ) ) ); ?>
   <?php endif; ?>
   <div class="overlay"></div>
   <div class="content container">
