@@ -18,6 +18,7 @@
   <!-- End Google Tag Manager -->
   
   <meta name="google-site-verification" content="2ZAu435gdoGvs41eQ_Hha4pWoFOrY8lWdwPGzwdQe_I" />
+  <meta name="google-site-verification" content="xYlkwwwtrjbT3Q7AYmJGWcH0YXjlFCjJOeSWOy49S_g" />
 
   <?php
     $eg_meta_desc = 'Excel Graphics is Kollam, Kerala\'s trusted signage and branding company since 2002 — LED signage, metal and acrylic signboards, vehicle branding, and custom printing.';
