@@ -11,11 +11,10 @@
   }
 ?>
 <section class="service-hero-banner">
-  <?php if ( $hero_banner_id ) : ?>
-    <?php echo wp_get_attachment_image( $hero_banner_id, 'full', false, array(
-      'alt'   => esc_attr( get_the_title( $hero_service_id ) ),
-      'class' => 'service-hero-bg-img',
-    ) ); ?>
+  <?php if ( $hero_banner_id ) :
+    $hero_img = wp_get_attachment_image_src( $hero_banner_id, 'full' );
+  ?>
+    <img src="<?php echo esc_url( $hero_img[0] ); ?>" width="<?php echo esc_attr( $hero_img[1] ); ?>" height="<?php echo esc_attr( $hero_img[2] ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" fetchpriority="high" decoding="async" />
   <?php else : ?>
     <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/services-banner.jpg' ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" />
   <?php endif; ?>

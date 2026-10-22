@@ -13,8 +13,10 @@
   }
 ?>
 <section class="about-banner">
-  <?php if ( $generalpage_banner_id ) : ?>
-    <?php echo wp_get_attachment_image( $generalpage_banner_id, 'full', false, array( 'alt' => esc_attr( get_the_title() ) ) ); ?>
+  <?php if ( $generalpage_banner_id ) :
+    $hero_img = wp_get_attachment_image_src( $generalpage_banner_id, 'full' );
+  ?>
+    <img src="<?php echo esc_url( $hero_img[0] ); ?>" width="<?php echo esc_attr( $hero_img[1] ); ?>" height="<?php echo esc_attr( $hero_img[2] ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" fetchpriority="high" decoding="async" />
   <?php endif; ?>
   <div class="overlay"></div>
   <div class="content container">
