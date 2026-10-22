@@ -130,7 +130,7 @@
       <?php if ( $portfolio_query->have_posts() ) :
         while ( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
           $full_img_url  = get_the_post_thumbnail_url( get_the_ID(), 'full' ); // only used lazily, inside the lightbox data attribute below
-          $bg_img_url    = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ); // eagerly loaded as the card background
+          $bg_img_url    = $full_img_url; // card background — full size, no GD-resized derivative, to match original clarity
           $category      = get_field( 'service_category' );
           $excerpt       = get_the_excerpt();
 
