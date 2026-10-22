@@ -4,6 +4,12 @@
 
  require get_template_directory() . '/inc/customizer.php';
 
+// Raise image quality for generated thumbnail sizes (medium/large/etc.) —
+// WordPress's GD default of 82 was visibly softening resized photos/banners.
+add_filter( 'wp_editor_set_quality', function () {
+    return 92;
+} );
+
 
 // Load Bootstrap + Theme CSS
 function mytheme_enqueue_styles() {
