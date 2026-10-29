@@ -146,7 +146,7 @@
           }
         ?>
 
-        <article class="portfolio-card" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
+        <article id="portfolio-<?php echo esc_attr( get_post_field( 'post_name' ) ); ?>" class="portfolio-card" style="<?php echo $bg_img_url ? 'background-image:url(' . esc_url( $bg_img_url ) . ');' : ''; ?>">
           <details class="portfolio-card-panel">
             <summary class="portfolio-card-summary">
               <?php if ( ! empty( $category ) ) : ?>
@@ -642,6 +642,22 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
     if (e.key === 'ArrowRight') showImage(currentIndex + 1);
   });
+});
+
+// Links like /portfolio/#portfolio-diya-group (from service pages): the browser's
+// own jump happens before images settle the layout, so it lands off-target.
+// Re-scroll once everything has loaded, and open that project's panel.
+window.addEventListener('load', function () {
+  const id = decodeURIComponent(window.location.hash.slice(1));
+  if (id.indexOf('portfolio-') !== 0) return;
+  const card = document.getElementById(id);
+  if (!card) return;
+  const panel = card.querySelector('.portfolio-card-panel');
+  if (panel) panel.open = true;
+  // Deferred: the browser re-applies its own fragment jump right after load.
+  setTimeout(function () {
+    card.scrollIntoView({ block: 'center', behavior: 'instant' });
+  }, 150);
 });
 </script>
 
