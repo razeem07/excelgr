@@ -5,33 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/fav.png" type="image/png">
 
+  <!-- FontAwesome for Mobile Toggler & Menu Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-P4DLSBWH');</script>
+  })(window,document,'script','dataLayer','GTM-NNBKKBB2');</script>
   <!-- End Google Tag Manager -->
-
-  <!-- FontAwesome for Mobile Toggler & Menu Icons — loaded async (preload + swap) since icons aren't needed for first paint -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>
-
-  <meta name="google-site-verification" content="xYlkwwwtrjbT3Q7AYmJGWcH0YXjlFCjJOeSWOy49S_g" />
-
-  <?php
-    $eg_meta_desc = 'Excel Graphics is Kollam, Kerala\'s trusted signage and branding company since 2002 — LED signage, metal and acrylic signboards, vehicle branding, and custom printing.';
-    if ( is_singular() && has_excerpt() ) {
-      $eg_meta_desc = wp_strip_all_tags( get_the_excerpt() );
-    } elseif ( is_singular() ) {
-      $eg_content_desc = wp_strip_all_tags( get_post_field( 'post_content', get_queried_object_id() ) );
-      if ( ! empty( $eg_content_desc ) ) {
-        $eg_meta_desc = wp_trim_words( $eg_content_desc, 30, '...' );
-      }
-    }
-  ?>
-  <meta name="description" content="<?php echo esc_attr( $eg_meta_desc ); ?>">
-
+  
+  <meta name="google-site-verification" content="2ZAu435gdoGvs41eQ_Hha4pWoFOrY8lWdwPGzwdQe_I" />
+	
   <?php wp_head(); ?>
 
 <style>
@@ -235,10 +221,11 @@
 </style>
 </head>
 <body <?php body_class(); ?>>
+
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P4DLSBWH"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNBKKBB2"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<!-- End Google Tag Manager -->
 
 <header class="site-header">
   <nav class="navbar navbar-expand-lg">
@@ -278,7 +265,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="<?php echo esc_url( home_url('/contact/') ); ?>" class="btn-quote d-none d-lg-inline-flex">Get a Quote</a>
 
         <!-- Mobile Nav Toggler matching script logic -->
-        <a href="#" class="mobile-nav__toggler d-lg-none" aria-label="Open menu">
+        <a href="#" class="mobile-nav__toggler d-lg-none">
           <i class="fa fa-bars"></i>
         </a>
       </div>
@@ -286,8 +273,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </nav>
 </header>
-
-<main id="eg-main-content">
 
 <!-- Mobile Navigation Drawer Overlay Structure -->
 <div class="mobile-nav__wrapper">

@@ -6,18 +6,12 @@
 <?php
   $hero_service_id  = get_queried_object_id();
   $hero_banner_id   = (int) get_post_meta( $hero_service_id, 'service_banner_image', true );
-  if ( ! $hero_banner_id && has_post_thumbnail( $hero_service_id ) ) {
-    $hero_banner_id = get_post_thumbnail_id( $hero_service_id );
-  }
+  $hero_banner_url  = $hero_banner_id
+    ? wp_get_attachment_url( $hero_banner_id )
+    : ( has_post_thumbnail( $hero_service_id ) ? get_the_post_thumbnail_url( $hero_service_id, 'full' ) : get_template_directory_uri() . '/assets/images/services-banner.jpg' );
 ?>
 <section class="service-hero-banner">
-  <?php if ( $hero_banner_id ) :
-    $hero_img = wp_get_attachment_image_src( $hero_banner_id, 'full' );
-  ?>
-    <img src="<?php echo esc_url( $hero_img[0] ); ?>" width="<?php echo esc_attr( $hero_img[1] ); ?>" height="<?php echo esc_attr( $hero_img[2] ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" fetchpriority="high" decoding="async" />
-  <?php else : ?>
-    <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/services-banner.jpg' ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" />
-  <?php endif; ?>
+  <img src="<?php echo esc_url( $hero_banner_url ); ?>" alt="<?php echo esc_attr( get_the_title( $hero_service_id ) ); ?>" class="service-hero-bg-img" />
   <div class="service-hero-overlay"></div>
   <div class="service-hero-container">
     <div class="service-hero-content">

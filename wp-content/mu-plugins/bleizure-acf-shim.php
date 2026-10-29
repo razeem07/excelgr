@@ -54,25 +54,15 @@ function bleizure_resolve_field_value( array $spec, string $meta_key, int $post_
 
 	switch ( $spec['type'] ) {
 		case 'image':
-			if ( ! $raw ) {
-				return '';
-			}
-			// Cap to the 'large' (1024px) registered size instead of serving
-			// the full original — full-bleed banners never need more than
-			// that, and uncapped originals were the single biggest cause of
-			// page weight site-wide. Falls back to the full URL if for any
-			// reason the sized version isn't available.
-			$sized_url = wp_get_attachment_image_url( (int) $raw, 'large' );
-			return $sized_url ? $sized_url : wp_get_attachment_url( (int) $raw ); // matches ACF return_format=url
+			return $raw ? wp_get_attachment_url( (int) $raw ) : ''; // matches ACF return_format=url
 		case 'image_array':
 			if ( ! $raw ) {
 				return false;
 			}
 			$id = (int) $raw;
-			$sized_url = wp_get_attachment_image_url( $id, 'large' );
 			return array(
 				'id'  => $id,
-				'url' => $sized_url ? $sized_url : wp_get_attachment_url( $id ),
+				'url' => wp_get_attachment_url( $id ),
 				'alt' => get_post_meta( $id, '_wp_attachment_image_alt', true ),
 			); // exception: mission_section.image / vision_section.image only
 		case 'gallery':
@@ -82,12 +72,9 @@ function bleizure_resolve_field_value( array $spec, string $meta_key, int $post_
 			$ids = array_filter( array_map( 'absint', explode( ',', $raw ) ) );
 			$out = array();
 			foreach ( $ids as $id ) {
-				// Gallery grids display these as moderate-sized tiles, never
-				// at full original resolution — cap to 'medium_large' (768px).
-				$sized_url = wp_get_attachment_image_url( $id, 'medium_large' );
 				$out[] = array(
 					'id'  => $id,
-					'url' => $sized_url ? $sized_url : wp_get_attachment_url( $id ),
+					'url' => wp_get_attachment_url( $id ),
 					'alt' => get_post_meta( $id, '_wp_attachment_image_alt', true ),
 				);
 			}

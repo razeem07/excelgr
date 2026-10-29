@@ -23,7 +23,7 @@ $eg_resolve_banner_url = function ( $url ) {
 
 $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
     return [
-        'banner_image'         => get_the_post_thumbnail_url($p->ID, 'large'),
+        'banner_image'         => get_the_post_thumbnail_url($p->ID, 'full'),
         'title'                => get_post_meta($p->ID, 'banner_content_headline', true),
         'content'              => get_post_meta($p->ID, 'banner_content_description', true),
         'title_2'              => get_post_meta($p->ID, 'banner_content_badge_title', true),
@@ -281,7 +281,7 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 }
 
 .btn-primary {
-  background-color: #117079;
+  background-color: #1ba3b0;
   color: #ffffff;
 }
 
@@ -307,31 +307,11 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 }
 
 .hero-swiper .swiper-pagination-bullet {
-  /* Larger tappable box (24x24, meets touch-target size guidance) with a
-     small visible dot centered inside via ::before, so the visual design
-     stays the same while the actual hit area grows. */
-  width: 24px;
-  height: 24px;
-  margin: 0 2px !important;
-  background: transparent;
-  opacity: 1;
-  position: relative;
-}
-
-.hero-swiper .swiper-pagination-bullet::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
   background: #ffffff;
   opacity: 0.5;
 }
 
-.hero-swiper .swiper-pagination-bullet-active::before {
+.hero-swiper .swiper-pagination-bullet-active {
   background: #1ba3b0;
   opacity: 1;
 }
@@ -714,11 +694,11 @@ $home_services = get_posts([
       <?php foreach ($home_services as $service): ?>
         <a href="<?php echo esc_url(get_permalink($service->ID)); ?>" class="eg-services-card">
           <?php if (has_post_thumbnail($service->ID)): ?>
-            <?php echo get_the_post_thumbnail( $service->ID, 'medium_large', array(
-              'alt'   => esc_attr(get_the_title($service->ID)),
-              'class' => 'eg-services-card-img fade-up',
-              'sizes' => '(max-width: 550px) 82vw, (max-width: 991px) 45vw, 300px',
-            ) ); ?>
+            <img
+              src="<?php echo esc_url(get_the_post_thumbnail_url($service->ID, 'large')); ?>"
+              alt="<?php echo esc_attr(get_the_title($service->ID)); ?>"
+              class="eg-services-card-img fade-up"
+            />
           <?php endif; ?>
           <div class="eg-services-card-overlay"></div>
           <h3 class="eg-services-card-title fade-left"><?php echo esc_html(get_the_title($service->ID)); ?></h3>
@@ -1760,7 +1740,7 @@ if ($testimonials_query->have_posts()) :
 
               <div class="eg-reviews-author">
                 <div class="eg-reviews-author-info">
-                  <h3 class="eg-reviews-name fade-right"><?php the_title(); ?></h3>
+                  <h4 class="eg-reviews-name fade-right"><?php the_title(); ?></h4>
                   <?php if ($designation) : ?>
                     <span class="eg-reviews-role fade-left"><?php echo esc_html($designation); ?></span>
                   <?php endif; ?>
@@ -2180,8 +2160,8 @@ if ($portfolio_query->have_posts()) :
 
       <?php
       while ($portfolio_query->have_posts()) : $portfolio_query->the_post();
-        $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); // only used lazily, inside the lightbox data attribute below
-        $bg_img_url   = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' ); // eagerly loaded as the card background
+        $full_img_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+        $bg_img_url   = get_the_post_thumbnail_url( get_the_ID(), 'large' );
         $category     = get_field( 'service_category' );
         $excerpt      = get_the_excerpt();
 
@@ -3262,25 +3242,20 @@ if ($faq_query->have_posts()) :
 
       if ($blog_query->have_posts()) :
         while ($blog_query->have_posts()) : $blog_query->the_post();
-          $has_thumb = has_post_thumbnail();
+          $thumb_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+          if (!$thumb_url) {
+              $thumb_url = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop';
+          }
       ?>
         <!-- Dynamic Card -->
         <article class="eg-blog-card">
           <div class="eg-blog-card-img-wrapper">
             <a href="<?php the_permalink(); ?>">
-              <?php if ( $has_thumb ) : ?>
-                <?php echo get_the_post_thumbnail( get_the_ID(), 'medium_large', array(
-                  'alt'   => esc_attr(get_the_title()),
-                  'class' => 'eg-blog-card-img fade-up',
-                  'sizes' => '(max-width: 640px) 100vw, (max-width: 991px) 48vw, 300px',
-                ) ); ?>
-              <?php else : ?>
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=800&amp;auto=format&amp;fit=crop"
-                  alt="<?php echo esc_attr(get_the_title()); ?>"
-                  class="eg-blog-card-img fade-up"
-                />
-              <?php endif; ?>
+              <img 
+                src="<?php echo esc_url($thumb_url); ?>" 
+                alt="<?php echo esc_attr(get_the_title()); ?>" 
+                class="eg-blog-card-img fade-up" 
+              />
             </a>
           </div>
           <div class="eg-blog-card-content">
@@ -3466,7 +3441,7 @@ if ($faq_query->have_posts()) :
 .eg-blog-date {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #666666;
+  color: #777777;
   margin-bottom: 14px;
   display: block;
 }
