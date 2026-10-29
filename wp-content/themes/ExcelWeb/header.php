@@ -12,10 +12,10 @@
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NNBKKBB2');</script>
+  })(window,document,'script','dataLayer','GTM-P4DLSBWH');</script>
   <!-- End Google Tag Manager -->
   
-  <meta name="google-site-verification" content="2ZAu435gdoGvs41eQ_Hha4pWoFOrY8lWdwPGzwdQe_I" />
+  <meta name="google-site-verification" content="xYlkwwwtrjbT3Q7AYmJGWcH0YXjlFCjJOeSWOy49S_g" />
 	
   <?php wp_head(); ?>
 
@@ -222,7 +222,7 @@
 <body <?php body_class(); ?>>
 
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNBKKBB2"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P4DLSBWH"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager -->
 
