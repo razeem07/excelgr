@@ -119,12 +119,119 @@ function mytheme_footer_secondary_link_classes( $atts, $item, $args ) {
 add_filter('nav_menu_link_attributes', 'mytheme_footer_secondary_link_classes', 10, 3);
 
 
+// Service page SEO. Yoast owns the title, meta description and breadcrumb; this
+// adds what Yoast doesn't generate for these pages — a Service piece and the
+// FAQ (WebPage becomes WebPage + FAQPage, same as Yoast's own FAQ block) —
+// into Yoast's single schema graph. Page-level extras (H1, FAQ heading, CTA,
+// starting prices) come from the "SEO Settings" fields on each service.
+function mytheme_service_seo( $key, $post_id = 0 ) {
+  $post_id = $post_id ? $post_id : get_queried_object_id();
+  return trim( (string) get_post_meta( $post_id, 'service_seo_' . $key, true ) );
+}
 
+// Split the services_faq WYSIWYG into question/answer pairs: each <strong>
+// (or <b>) starts a question, and everything up to the next one is its answer.
+function mytheme_service_faq_items( $post_id ) {
+  $raw   = get_field( 'services_faq', $post_id );
+  $items = array();
+  if ( empty( $raw ) ) {
+    return $items;
+  }
+  $pattern = '/<(strong|b)[^>]*>(.*?)<\/\1>\s*([\s\S]*?)(?=(?:<(?:strong|b)[^>]*>|$))/i';
+  if ( preg_match_all( $pattern, $raw, $matches, PREG_SET_ORDER ) ) {
+    foreach ( $matches as $match ) {
+      $question = trim( strip_tags( $match[2] ) );
+      $answer   = trim( preg_replace( '/^<\/p>|<p>$/i', '', trim( $match[3] ) ) );
+      if ( ! empty( $question ) ) {
+        $items[] = array( 'question' => $question, 'answer' => $answer );
+      }
+    }
+  }
+  return $items;
+}
 
+// Services is a regular page, not the CPT archive, so Yoast leaves it out of
+// service breadcrumbs: Home > Services > [parent service] > service.
+function mytheme_service_breadcrumb_links( $crumbs ) {
+  $services_page = get_page_by_path( 'services' );
+  if ( is_singular( 'service' ) && $services_page && count( $crumbs ) > 1 ) {
+    array_splice( $crumbs, 1, 0, array( array(
+      'url'  => get_permalink( $services_page ),
+      'text' => get_the_title( $services_page ),
+      'id'   => $services_page->ID,
+    ) ) );
+  }
+  return $crumbs;
+}
+add_filter( 'wpseo_breadcrumb_links', 'mytheme_service_breadcrumb_links' );
 
+function mytheme_service_faq_question_id( $context, $index ) {
+  return $context->canonical . '#faq-question-' . ( $index + 1 );
+}
 
+function mytheme_service_schema_webpage( $piece, $context ) {
+  if ( ! is_singular( 'service' ) ) {
+    return $piece;
+  }
+  $faq_items = mytheme_service_faq_items( $context->id );
+  if ( $faq_items ) {
+    $piece['@type']      = array_values( array_unique( array_merge( (array) $piece['@type'], array( 'FAQPage' ) ) ) );
+    $piece['mainEntity'] = array();
+    foreach ( $faq_items as $i => $item ) {
+      $piece['mainEntity'][] = array( '@id' => mytheme_service_faq_question_id( $context, $i ) );
+    }
+  }
+  return $piece;
+}
+add_filter( 'wpseo_schema_webpage', 'mytheme_service_schema_webpage', 10, 2 );
 
+function mytheme_service_schema_graph( $graph, $context ) {
+  if ( ! is_singular( 'service' ) ) {
+    return $graph;
+  }
+  $post_id = $context->id;
+  $url     = $context->canonical;
 
+  $service = array(
+    '@type'            => 'Service',
+    '@id'              => $url . '#service',
+    'name'             => mytheme_service_seo( 'heading', $post_id ) ? mytheme_service_seo( 'heading', $post_id ) : get_the_title( $post_id ),
+    'description'      => $context->description ? $context->description : wp_trim_words( wp_strip_all_tags( get_post_field( 'post_content', $post_id ) ), 30, '...' ),
+    'url'              => $url,
+    'mainEntityOfPage' => array( '@id' => $context->main_schema_id ),
+    'areaServed'       => array( '@type' => 'City', 'name' => 'Kollam' ),
+  );
+  if ( $context->site_represents_reference ) {
+    $service['provider'] = $context->site_represents_reference;
+  }
 
+  $offers = array();
+  foreach ( array_filter( array_map( 'trim', explode( ';', mytheme_service_seo( 'schema_offers', $post_id ) ) ) ) as $offer ) {
+    $parts = array_map( 'trim', explode( '|', $offer ) );
+    if ( 2 === count( $parts ) && is_numeric( $parts[1] ) ) {
+      $offers[] = array(
+        '@type'              => 'Offer',
+        'name'               => $parts[0],
+        'priceSpecification' => array( '@type' => 'PriceSpecification', 'minPrice' => (float) $parts[1], 'priceCurrency' => 'INR' ),
+      );
+    }
+  }
+  if ( $offers ) {
+    $service['offers'] = $offers;
+  }
+  $graph[] = $service;
 
-
+  foreach ( mytheme_service_faq_items( $post_id ) as $i => $item ) {
+    $graph[] = array(
+      '@type'          => 'Question',
+      '@id'            => mytheme_service_faq_question_id( $context, $i ),
+      'position'       => $i + 1,
+      'url'            => mytheme_service_faq_question_id( $context, $i ),
+      'name'           => $item['question'],
+      'answerCount'    => 1,
+      'acceptedAnswer' => array( '@type' => 'Answer', 'text' => trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $item['answer'] ) ) ) ),
+    );
+  }
+  return $graph;
+}
+add_filter( 'wpseo_schema_graph', 'mytheme_service_schema_graph', 10, 2 );

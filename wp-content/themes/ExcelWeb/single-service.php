@@ -15,7 +15,7 @@
   <div class="service-hero-overlay"></div>
   <div class="service-hero-container">
     <div class="service-hero-content">
-      <h1 class="service-hero-title fade-right"><?php echo esc_html( get_the_title( $hero_service_id ) ); ?></h1>
+      <p class="service-hero-title fade-right"><?php echo esc_html( get_the_title( $hero_service_id ) ); ?></p>
     </div>
   </div>
 </section>
@@ -143,39 +143,21 @@
               </p>
             <?php endif; ?>
 
-            <h1 class="single-post-title fade-right"><?php the_title(); ?></h1>
+            <h1 class="single-post-title fade-right"><?php echo esc_html( mytheme_service_seo( 'heading' ) ? mytheme_service_seo( 'heading' ) : get_the_title() ); ?></h1>
           </header>
 
           <div class="services-detail-content animate-fade fade-left">
             <?php the_content(); ?>
           </div>
 
-          <?php
-            $raw_wysiwyg = get_field( 'services_faq', $current_service_id );
-            $faq_items   = array();
-
-            if ( ! empty( $raw_wysiwyg ) ) {
-                $pattern = '/<(strong|b)[^>]*>(.*?)<\/\1>\s*([\s\S]*?)(?=(?:<(?:strong|b)[^>]*>|$))/i';
-                if ( preg_match_all( $pattern, $raw_wysiwyg, $matches, PREG_SET_ORDER ) ) {
-                    foreach ( $matches as $match ) {
-                        $question = trim( strip_tags( $match[2] ) );
-                        $answer   = trim( $match[3] );
-                        $answer   = preg_replace( '/^<\/p>|<p>$/i', '', $answer );
-                        $answer   = trim( $answer );
-                        if ( ! empty( $question ) ) {
-                            $faq_items[] = array( 'question' => $question, 'answer' => $answer );
-                        }
-                    }
-                }
-            }
-          ?>
+          <?php $faq_items = mytheme_service_faq_items( $current_service_id ); ?>
           <?php if ( ! empty( $faq_items ) ) : ?>
             <div class="services-detail-faq">
-              <h4 class="services-detail-faq-title">Frequently Asked Questions</h4>
+              <h2 class="services-detail-faq-title"><?php echo esc_html( mytheme_service_seo( 'faq_heading' ) ? mytheme_service_seo( 'faq_heading' ) : 'Frequently Asked Questions' ); ?></h2>
               <?php foreach ( $faq_items as $item ) : ?>
                 <details class="services-detail-faq-item">
                   <summary class="services-detail-faq-question">
-                    <span><?php echo esc_html( $item['question'] ); ?></span>
+                    <h3 class="services-detail-faq-q"><?php echo esc_html( $item['question'] ); ?></h3>
                     <span class="services-detail-faq-icon">+</span>
                   </summary>
                   <div class="services-detail-faq-answer">
@@ -231,15 +213,25 @@
     <?php
       $service_cta_whatsapp = get_theme_mod( 'footer_whatsapp' );
       $service_cta_wa_link  = $service_cta_whatsapp ? preg_replace( '/\D+/', '', $service_cta_whatsapp ) : '';
+      $service_cta_title    = mytheme_service_seo( 'cta_title' );
+      $service_cta_text     = mytheme_service_seo( 'cta_text' );
     ?>
     <section class="service-cta-section">
       <div class="service-cta-card">
-        <h2 class="service-cta-title">Ready to get started with <?php the_title(); ?>?</h2>
-        <p class="service-cta-subtitle">Get a free quote from Excel Graphics, Kollam.</p>
-        <?php if ( $service_cta_wa_link ) : ?>
-          <a href="https://wa.me/<?php echo esc_attr( $service_cta_wa_link ); ?>?text=<?php echo urlencode( 'Hello, I would like to know more about ' . get_the_title() . '.' ); ?>" target="_blank" rel="noopener" class="service-cta-btn">WhatsApp Now</a>
-        <?php else : ?>
-          <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="service-cta-btn">Get a Quote</a>
+        <h2 class="service-cta-title"><?php echo $service_cta_title ? esc_html( $service_cta_title ) : 'Ready to get started with ' . esc_html( get_the_title() ) . '?'; ?></h2>
+        <p class="service-cta-subtitle"><?php echo esc_html( $service_cta_text ? $service_cta_text : 'Get a free quote from Excel Graphics, Kollam.' ); ?></p>
+        <div class="service-cta-actions">
+          <?php if ( $service_cta_wa_link ) : ?>
+            <a href="https://wa.me/<?php echo esc_attr( $service_cta_wa_link ); ?>?text=<?php echo urlencode( 'Hello, I would like to know more about ' . get_the_title() . '.' ); ?>" target="_blank" rel="noopener" class="service-cta-btn">WhatsApp Now</a>
+          <?php endif; ?>
+          <?php if ( $service_cta_title ) : ?>
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="service-cta-btn service-cta-btn-ghost">Get a Quote</a>
+          <?php elseif ( ! $service_cta_wa_link ) : ?>
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="service-cta-btn">Get a Quote</a>
+          <?php endif; ?>
+        </div>
+        <?php if ( $service_cta_title && $service_cta_whatsapp ) : ?>
+          <p class="service-cta-call">Or call <a href="tel:+<?php echo esc_attr( $service_cta_wa_link ); ?>"><?php echo esc_html( $service_cta_whatsapp ); ?></a></p>
         <?php endif; ?>
       </div>
     </section>
@@ -568,6 +560,7 @@
   }
   .services-detail-layout {
     flex-direction: column;
+    align-items: stretch; /* flex-start would let wide content (e.g. tables) size the column past the screen */
   }
   .related-sidebar-col {
     flex: 1 1 auto;
@@ -597,7 +590,7 @@
           entry.target.classList.add("visible");
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0 }); // 0, not a ratio: long content can be taller than the viewport and never reach e.g. 15% visible
 
     elements.forEach(el => observer.observe(el));
   });
@@ -665,6 +658,449 @@
 
 .services-detail-faq-answer p {
   margin: 0 0 10px 0;
+}
+
+.services-detail-faq-q {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.4;
+  color: inherit;
+  margin: 0;
+}
+
+/* Closing CTA extras (shown when a custom CTA is set in SEO Settings) */
+.service-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.service-cta-btn-ghost {
+  background-color: transparent;
+  color: #ffffff;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.service-cta-btn-ghost:hover {
+  color: #ffffff;
+}
+
+.service-cta-call {
+  margin: 22px 0 0 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.service-cta-call a {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+</style>
+
+<style>
+/* SEO content blocks — used inside a service's main content (post editor HTML) */
+.services-detail-content a {
+  color: #158590;
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.services-detail-content a:hover {
+  color: #0d7a85;
+}
+
+.services-detail-content h2 {
+  font-size: 2rem;
+  letter-spacing: -0.6px;
+}
+
+.services-detail-content h3 {
+  font-size: 1.35rem;
+}
+
+.services-detail-content .seo-lead {
+  font-size: 1.3rem;
+  line-height: 1.7;
+  color: #0d0d0d;
+}
+
+/* Trust chips under the intro */
+.services-detail-content .seo-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0 0 28px 0;
+  padding: 0;
+}
+
+.services-detail-content .seo-trust-row li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #eaf7f8;
+  color: #0d7a85;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 9px 16px;
+  border-radius: 50px;
+}
+
+.services-detail-content .seo-trust-row li::before {
+  content: "◆";
+  font-size: 0.7rem;
+  color: #1ba3b0;
+}
+
+/* Inline CTA buttons */
+.services-detail-content .seo-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin: 8px 0 40px 0;
+}
+
+.services-detail-content .seo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #1ba3b0 0%, #0d7a85 100%);
+  color: #ffffff;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.services-detail-content .seo-btn:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(13, 122, 133, 0.25);
+}
+
+.services-detail-content .seo-btn-outline {
+  background: transparent;
+  color: #0d7a85;
+  box-shadow: inset 0 0 0 2px #1ba3b0;
+}
+
+.services-detail-content .seo-btn-outline:hover {
+  color: #0d7a85;
+  box-shadow: inset 0 0 0 2px #0d7a85;
+}
+
+/* Material comparison table */
+.services-detail-content .seo-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 8px 0 28px 0;
+  border: 1px solid #e9ecef;
+  border-radius: 20px;
+}
+
+.services-detail-content .seo-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.services-detail-content .seo-table th,
+.services-detail-content .seo-table td {
+  padding: 16px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.services-detail-content .seo-table thead th {
+  background-color: #0d7a85;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border-bottom: none;
+}
+
+.services-detail-content .seo-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.services-detail-content .seo-table tbody tr:last-child th,
+.services-detail-content .seo-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.services-detail-content .seo-table tbody th {
+  font-weight: 700;
+  color: #0d0d0d;
+}
+
+.services-detail-content .seo-table .seo-row-recommended {
+  background-color: #eaf7f8;
+}
+
+.services-detail-content .seo-table .seo-pick {
+  display: inline-block;
+  margin-left: 6px;
+  background-color: #1ba3b0;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 50px;
+  vertical-align: middle;
+}
+
+.services-detail-content .seo-price {
+  font-weight: 700;
+  color: #0d7a85;
+  white-space: nowrap;
+}
+
+/* Callout note */
+.services-detail-content .seo-note {
+  display: flex;
+  gap: 14px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #1ba3b0;
+  border-radius: 0 16px 16px 0;
+  padding: 20px 24px;
+  margin: 0 0 32px 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.services-detail-content .seo-note p {
+  margin: 0;
+}
+
+/* Name board type cards */
+.services-detail-content .seo-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin: 12px 0 40px 0;
+}
+
+.services-detail-content .seo-type-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 20px;
+  padding: 26px 24px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.services-detail-content .seo-type-card:hover {
+  border-color: #1ba3b0;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+  transform: translateY(-3px);
+}
+
+.services-detail-content .seo-type-card h3 {
+  font-size: 1.15rem;
+  margin: 0 0 10px 0;
+}
+
+.services-detail-content .seo-type-card p {
+  flex: 1;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: #444444;
+  margin: 0 0 16px 0;
+}
+
+.services-detail-content .seo-type-card .seo-type-link {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.services-detail-content .seo-type-card .seo-type-link::after {
+  content: " →";
+}
+
+.services-detail-content .seo-type-card.is-featured {
+  background-color: #eaf7f8;
+  border-color: #1ba3b0;
+}
+
+.services-detail-content .seo-type-tag {
+  align-self: flex-start;
+  background-color: #1ba3b0;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+}
+
+/* Check lists */
+.services-detail-content .seo-check-list {
+  list-style: none;
+  margin: 0 0 28px 0;
+  padding: 0;
+}
+
+.services-detail-content .seo-check-list li {
+  position: relative;
+  padding: 0 0 0 36px;
+  margin-bottom: 14px;
+  font-size: 1.1rem;
+  line-height: 1.65;
+}
+
+.services-detail-content .seo-check-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1ba3b0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / 13px no-repeat;
+}
+
+.services-detail-content .seo-check-list strong {
+  color: #0d0d0d;
+}
+
+/* Feature grid (why choose us) */
+.services-detail-content .seo-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 8px 0 28px 0;
+  padding: 0;
+}
+
+.services-detail-content .seo-feature-grid li {
+  background-color: #f8f9fa;
+  border-radius: 18px;
+  padding: 22px 22px 22px 58px;
+  position: relative;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.services-detail-content .seo-feature-grid li::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1ba3b0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / 14px no-repeat;
+}
+
+.services-detail-content .seo-feature-grid strong {
+  display: block;
+  color: #0d0d0d;
+  margin-bottom: 4px;
+}
+
+/* Numbered process steps */
+.services-detail-content .seo-steps {
+  list-style: none;
+  counter-reset: seo-step;
+  margin: 8px 0 28px 0;
+  padding: 0;
+}
+
+.services-detail-content .seo-steps li {
+  counter-increment: seo-step;
+  position: relative;
+  padding: 0 0 26px 70px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.services-detail-content .seo-steps li::before {
+  content: counter(seo-step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1ba3b0 0%, #0d7a85 100%);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.services-detail-content .seo-steps li::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 52px;
+  bottom: 6px;
+  width: 2px;
+  background-color: #d5eef0;
+}
+
+.services-detail-content .seo-steps li:last-child {
+  padding-bottom: 0;
+}
+
+.services-detail-content .seo-steps li:last-child::after {
+  display: none;
+}
+
+.services-detail-content .seo-steps strong {
+  display: block;
+  font-size: 1.15rem;
+  color: #0d0d0d;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 640px) {
+  .services-detail-content {
+    font-size: 1.05rem;
+  }
+  .services-detail-content h2 {
+    font-size: 1.55rem;
+  }
+  .services-detail-content h3 {
+    font-size: 1.2rem;
+  }
+  .services-detail-content .seo-lead {
+    font-size: 1.12rem;
+  }
+  .services-detail-content .seo-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  .services-detail-content .seo-steps li {
+    padding-left: 60px;
+  }
+  .services-detail-content .seo-feature-grid,
+  .services-detail-content .seo-type-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 

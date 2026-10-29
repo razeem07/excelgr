@@ -717,6 +717,17 @@ function bleizure_field_manifest() {
 					'label' => 'Services FAQ',
 					'type' => 'wysiwyg',
 				),
+				'service_seo' => array(
+					'group_title' => 'Single Services Settings',
+					'label' => 'SEO Settings (all optional — meta title and description live in the Yoast SEO box)',
+					'fields' => array(
+						'heading' => array( 'label' => 'Page Heading (H1) — defaults to the service title', 'type' => 'text' ),
+						'faq_heading' => array( 'label' => 'FAQ Heading — defaults to "Frequently Asked Questions"', 'type' => 'text' ),
+						'cta_title' => array( 'label' => 'Closing CTA Title', 'type' => 'text' ),
+						'cta_text' => array( 'label' => 'Closing CTA Text', 'type' => 'text' ),
+						'schema_offers' => array( 'label' => 'Schema Starting Prices (INR), e.g. "Acrylic house name board | 750; Metal house name board | 1500"', 'type' => 'text' ),
+					),
+				),
 			),
 		),
 		'posttype:banner' => array(
