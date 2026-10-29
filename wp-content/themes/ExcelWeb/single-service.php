@@ -952,6 +952,62 @@
   margin-bottom: 12px;
 }
 
+.services-detail-content .seo-type-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Project cards (recent work, with a photo on top) */
+.services-detail-content .seo-project-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.services-detail-content .seo-project-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+
+.services-detail-content .seo-project-card .seo-project-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px 24px 24px;
+}
+
+/* Whole project card as a link (to the project on the portfolio page) */
+.services-detail-content a.seo-project-card {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.services-detail-content a.seo-project-card:hover {
+  color: inherit;
+}
+
+.services-detail-content a.seo-project-card img {
+  transition: transform 0.4s ease;
+}
+
+.services-detail-content a.seo-project-card:hover img {
+  transform: scale(1.04);
+}
+
+.services-detail-content .seo-project-card .seo-project-more {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #158590;
+}
+
+.services-detail-content .seo-project-card .seo-project-more::after {
+  content: " →";
+}
+
 /* Check lists */
 .services-detail-content .seo-check-list {
   list-style: none;

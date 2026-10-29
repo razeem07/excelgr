@@ -201,18 +201,29 @@ function mytheme_service_schema_graph( $graph, $context ) {
     'mainEntityOfPage' => array( '@id' => $context->main_schema_id ),
     'areaServed'       => array( '@type' => 'City', 'name' => 'Kollam' ),
   );
+  // "State | Kerala" style override; anything malformed keeps the Kollam default.
+  $area = array_map( 'trim', explode( '|', mytheme_service_seo( 'area_served', $post_id ) ) );
+  if ( 2 === count( $area ) && in_array( $area[0], array( 'City', 'State', 'Country', 'AdministrativeArea' ), true ) && '' !== $area[1] ) {
+    $service['areaServed'] = array( '@type' => $area[0], 'name' => $area[1] );
+  }
   if ( $context->site_represents_reference ) {
     $service['provider'] = $context->site_represents_reference;
   }
 
   $offers = array();
   foreach ( array_filter( array_map( 'trim', explode( ';', mytheme_service_seo( 'schema_offers', $post_id ) ) ) ) as $offer ) {
+    // "name | price" or "name | price | unit" (e.g. "sq ft" for per-unit pricing).
     $parts = array_map( 'trim', explode( '|', $offer ) );
-    if ( 2 === count( $parts ) && is_numeric( $parts[1] ) ) {
+    if ( in_array( count( $parts ), array( 2, 3 ), true ) && is_numeric( $parts[1] ) ) {
+      $price = array( '@type' => 'PriceSpecification', 'minPrice' => (float) $parts[1], 'priceCurrency' => 'INR' );
+      if ( ! empty( $parts[2] ) ) {
+        $price['@type']    = 'UnitPriceSpecification';
+        $price['unitText'] = $parts[2];
+      }
       $offers[] = array(
         '@type'              => 'Offer',
         'name'               => $parts[0],
-        'priceSpecification' => array( '@type' => 'PriceSpecification', 'minPrice' => (float) $parts[1], 'priceCurrency' => 'INR' ),
+        'priceSpecification' => $price,
       );
     }
   }
