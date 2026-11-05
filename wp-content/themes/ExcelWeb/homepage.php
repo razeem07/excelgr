@@ -38,8 +38,11 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   <div class="swiper hero-swiper">
     <div class="swiper-wrapper">
 
-      <?php foreach ($banners as $slide): ?>
-        <?php if (!empty($slide)): ?>
+      <?php foreach ($banners as $slide_index => $slide): ?>
+        <?php if (!empty($slide)):
+          // One H1 per page: only the first slide's headline is the page heading.
+          $hero_title_tag = 0 === $slide_index ? 'h1' : 'p';
+        ?>
           <div class="swiper-slide hero-slide">
             <!-- HTML Background Image -->
             <img 
@@ -54,9 +57,9 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
             <div class="hero-container">
               <!-- Left Section: Main Heading & Description -->
               <div class="hero-left">
-                <h1 class="hero-title fade-left">
+                <<?php echo $hero_title_tag; ?> class="hero-title fade-left">
                   <?php echo $slide['title']; ?>
-                </h1>
+                </<?php echo $hero_title_tag; ?>>
                 <p class="hero-subtext fade-right">
                   <?php echo $slide['content']; ?>
                 </p>
@@ -78,17 +81,19 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
                 </div>
                 <?php if (!empty($slide['title_2'])): ?>
                   <div class="since-block">
-                    <h2 class="since-title fade-left"><?php echo $slide['title_2']; ?></h2>
+                    <p class="since-title fade-left"><?php echo $slide['title_2']; ?></p>
                     <p class="since-subtext fade-right"><?php echo $slide['content_2']; ?></p>
                   </div>
                 <?php endif; ?>
 
                 <div class="hero-actions">
-                  <?php if (!empty($slide['view_project_button'])): ?>
-                    <a href="<?php echo esc_url($slide['view_project_button']); ?>" class="btn btn-primary">View project</a>
+                  <?php if (!empty($slide['reach_out_button'])):
+                    $is_whatsapp = false !== strpos( $slide['reach_out_button'], 'wa.me' );
+                  ?>
+                    <a href="<?php echo esc_url($slide['reach_out_button']); ?>" class="btn btn-primary"<?php echo $is_whatsapp ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo $is_whatsapp ? 'Get a Quote on WhatsApp' : 'Get a Quote'; ?></a>
                   <?php endif; ?>
-                  <?php if (!empty($slide['reach_out_button'])): ?>
-                    <a href="<?php echo esc_url($slide['reach_out_button']); ?>" class="btn btn-secondary">Reach Out</a>
+                  <?php if (!empty($slide['view_project_button'])): ?>
+                    <a href="<?php echo esc_url($slide['view_project_button']); ?>" class="btn btn-secondary">View Our Projects</a>
                   <?php endif; ?>
                 </div>
               </div>
@@ -328,13 +333,17 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
 }
 
 @media (max-width: 900px) {
+  /* Grow with the content (headline + sub-line + badge + stacked buttons)
+     instead of a fixed height, which pushed the text up under the logo. */
   .hero-swiper {
-    height: 460px;
+    height: auto;
     min-height: 460px;
   }
 
   .hero-slide {
     align-items: center;
+    height: auto;
+    min-height: 460px;
   }
 
   .hero-container {
@@ -410,7 +419,11 @@ $banners = array_map(function ($p) use ( $eg_resolve_banner_url ) {
   }
 
   .hero-swiper {
-    height: 480px;
+    height: auto;
+    min-height: 480px;
+  }
+
+  .hero-slide {
     min-height: 480px;
   }
 
@@ -462,13 +475,17 @@ document.addEventListener('DOMContentLoaded', function () {
       </h2>
     </div>
 
-    <!-- Right Column: Paragraph + 3 Features Grid -->
+    <!-- Right Column: Paragraph -->
     <div class="eg-about-right">
-      <p class="eg-about-description fade-left">
-        <?php echo get_field('who_we_are')['content']; ?>
-      </p>
+      <div class="eg-about-description fade-left">
+        <?php echo wp_kses_post( get_field('who_we_are')['content'] ); ?>
+      </div>
+    </div>
 
-      <div class="eg-about-features-grid">
+  </div>
+
+  <!-- Full-width row: 3 feature cards -->
+  <div class="eg-about-features-grid">
         
         <!-- Feature 1: Creative -->
         <div class="eg-about-feature-item">
@@ -506,9 +523,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <?php echo get_field('who_we_are')['card_3']['content']; ?>
           </p>
         </div>
-
-      </div>
-    </div>
 
   </div>
 </section>
@@ -576,15 +590,31 @@ document.addEventListener('DOMContentLoaded', function () {
   font-size: 1.15rem;
   line-height: 1.6;
   color: #222222;
-  margin-bottom: 56px;
+  margin-bottom: 0;
   max-width: 100%;
+}
+
+.eg-about-description p {
+  margin: 0 0 16px 0;
+}
+
+.eg-about-description p:last-child {
+  margin-bottom: 0;
+}
+
+.eg-about-description a,
+.eg-features-description a {
+  color: #158590;
+  font-weight: 700;
+  text-underline-offset: 3px;
 }
 
 /* Features Grid */
 .eg-about-features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
+  gap: 24px;
+  margin-top: 56px;
 }
 
 .eg-about-feature-item {
@@ -592,6 +622,9 @@ document.addEventListener('DOMContentLoaded', function () {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  padding: 36px 28px;
 }
 
 /* Teal Icons */
@@ -653,11 +686,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   .eg-about-features-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 16px;
+    margin-top: 40px;
   }
 }
 </style>
 
+
+<?php get_template_part( 'template-parts/home-seo-section', null, array( 'field' => 'led_types' ) ); ?>
 
 
 <?php
@@ -679,10 +715,10 @@ $home_services = get_posts([
       <span class="eg-services-badge-text  fade-left">What we do</span>
     </div>
     <h2 class="eg-services-main-title fade-right">
-      Signage Solutions for Every Business
+      Signage and branding services in Kollam
     </h2>
     <p class="eg-services-subtitle fade-left">
-      From eye-catching LED signage to professional signage boards, we provide customized solutions that help your business get noticed. Our team handles everything from design and fabrication to installation.
+      Besides LED signboards, Excel Graphics makes house name boards, ACP cladding, metal letters, glass branding and large-format printing, all from the same Kollam manufacturing unit. Choose a service below to see types, materials and prices.
     </p>
   </div>
 
@@ -701,7 +737,13 @@ $home_services = get_posts([
             />
           <?php endif; ?>
           <div class="eg-services-card-overlay"></div>
-          <h3 class="eg-services-card-title fade-left"><?php echo esc_html(get_the_title($service->ID)); ?></h3>
+          <div class="eg-services-card-text">
+            <h3 class="eg-services-card-title fade-left"><?php echo esc_html(get_the_title($service->ID)); ?></h3>
+            <?php $card_line = mytheme_service_seo( 'card_line', $service->ID ); ?>
+            <?php if ( $card_line ) : ?>
+              <p class="eg-services-card-line"><?php echo esc_html( $card_line ); ?></p>
+            <?php endif; ?>
+          </div>
         </a>
       <?php endforeach; ?>
 
@@ -900,6 +942,21 @@ function egScrollCarousel(direction) {
   margin: 0;
 }
 
+.eg-services-card-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* Optional one-line description under the title (service SEO Settings "Card Line") */
+.eg-services-card-line {
+  position: relative;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  margin: 8px 0 0 0;
+}
+
 /* Arrow Button Floating Right */
 .eg-services-arrow-btn {
   position: absolute;
@@ -1022,7 +1079,7 @@ function egScrollCarousel(direction) {
 
       <div class="eg-features-right">
         <div class="eg-features-description fade-left">
-          <?php echo get_field('who_we_are_2')['content']; ?>
+          <?php echo wp_kses_post( get_field('who_we_are_2')['content'] ); ?>
         </div>
       </div>
     </div>
@@ -1258,6 +1315,9 @@ function egScrollCarousel(direction) {
 </style>
 
 
+<?php get_template_part( 'template-parts/home-seo-section', null, array( 'field' => 'monsoon' ) ); ?>
+
+
 <section class="eg-scale-section">
   <div class="eg-scale-container">
     
@@ -1488,6 +1548,9 @@ function egScrollCarousel(direction) {
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image']; ?>" class="eg-pill-avatar" alt="" />
               <span class="eg-pill-title fade-left"><?php echo esc_html( get_field('selected_work')['card_1_title'] ); ?></span>            </div>
+              <?php if ( ! empty( get_field('selected_work')['card_1_caption'] ) ) : ?>
+                <p class="eg-work-caption"><?php echo esc_html( get_field('selected_work')['card_1_caption'] ); ?></p>
+              <?php endif; ?>
           </div>
         </div>
       </div>
@@ -1500,6 +1563,9 @@ function egScrollCarousel(direction) {
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_2']; ?>" class="eg-pill-avatar" alt="" />
               <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_2_title'] ); ?></span>            </div>
+              <?php if ( ! empty( get_field('selected_work')['card_2_caption'] ) ) : ?>
+                <p class="eg-work-caption"><?php echo esc_html( get_field('selected_work')['card_2_caption'] ); ?></p>
+              <?php endif; ?>
           </div>
         </div>
       </div>
@@ -1512,6 +1578,9 @@ function egScrollCarousel(direction) {
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_3']; ?>" class="eg-pill-avatar" alt="" />
               <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_3_title'] ); ?></span>            </div>
+              <?php if ( ! empty( get_field('selected_work')['card_3_caption'] ) ) : ?>
+                <p class="eg-work-caption"><?php echo esc_html( get_field('selected_work')['card_3_caption'] ); ?></p>
+              <?php endif; ?>
           </div>
         </div>
       </div>
@@ -1524,6 +1593,9 @@ function egScrollCarousel(direction) {
             <div class="eg-work-pill-btn">
               <img src="<?php echo get_field('selected_work')['image_4']; ?>" class="eg-pill-avatar" alt="" />
               <span class="eg-pill-title fade-right"><?php echo esc_html( get_field('selected_work')['card_4_title'] ); ?></span>            </div>
+              <?php if ( ! empty( get_field('selected_work')['card_4_caption'] ) ) : ?>
+                <p class="eg-work-caption"><?php echo esc_html( get_field('selected_work')['card_4_caption'] ); ?></p>
+              <?php endif; ?>
           </div>
         </div>
       </div>
@@ -1613,9 +1685,26 @@ function egScrollCarousel(direction) {
   padding: 30px 40px;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
   pointer-events: none;
+}
+
+/* One-line project caption under the title pill */
+.eg-work-caption {
+  max-width: 560px;
+  margin: 0;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .eg-work-pill-btn {
@@ -2150,8 +2239,7 @@ if ($portfolio_query->have_posts()) :
       </div>
 
       <h2 class="eg-latest-title fade-left">
-        Featured projects &amp;<br />
-        creative works
+        Our latest signage work
       </h2>
     </div>
 
@@ -2721,9 +2809,11 @@ if ($clients_query->have_posts()) :
       </div>
 
       <h2 class="eg-clients-title fade-right">
-        Designing Better<br />
-        Customer Experiences
+        Trusted by brands across Kerala
       </h2>
+      <p class="eg-clients-intro fade-left">
+        More than 90 brands, from MILMA and Bhima Jewellers to Bosch, SBI and KSEB, trust Excel Graphics with their signage. See the full list on our <a href="<?php echo esc_url( home_url( '/clients/' ) ); ?>">clients page</a>.
+      </p>
     </div>
 
     <div class="eg-clients-box">
@@ -2740,7 +2830,7 @@ if ($clients_query->have_posts()) :
             <div class="eg-clients-track-item">
               <img
                 src="<?php echo esc_url( $logo_url ); ?>"
-                alt="<?php echo esc_attr( get_the_title() ?: 'Client logo' ); ?>"
+                alt="<?php echo esc_attr( get_the_title() ? get_the_title() . ' — Excel Graphics signage client' : 'Client logo' ); ?>"
                 class="eg-clients-logo"
               />
             </div>
@@ -2802,6 +2892,20 @@ if ($clients_query->have_posts()) :
   flex-direction: column;
   align-items: center;
   margin-bottom: 45px;
+}
+
+.eg-clients-intro {
+  max-width: 720px;
+  margin: 18px auto 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444444;
+}
+
+.eg-clients-intro a {
+  color: #158590;
+  font-weight: 700;
+  text-underline-offset: 3px;
 }
 
 /* Badge Component */
@@ -2990,8 +3094,7 @@ if ($faq_query->have_posts()) :
       </div>
 
       <h2 class="eg-faq-title fade-right">
-        Got questions?<br />
-        We’ve got answers
+        LED signboard FAQs
       </h2>
 
       <p class="eg-faq-description fade-left">
@@ -3155,6 +3258,12 @@ if ($faq_query->have_posts()) :
   margin: 0;
 }
 
+.eg-faq-answer a {
+  color: #158590;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
 /* Responsive Handling */
 @media (max-width: 1200px) {
   .eg-faq-section {
@@ -3295,7 +3404,15 @@ if ($faq_query->have_posts()) :
         <?php if ( ! empty( get_field('cta_section')['description'] ) ) : ?>
           <p class="eg-cta-description fade-left"><?php echo esc_html( get_field('cta_section')['description'] ); ?></p>
         <?php endif; ?>
-        <a href="<?php echo esc_url( get_field('cta_section')['link'] ?: '#' ); ?>" class="eg-cta-btn fade-left"><?php echo esc_html( get_field('cta_section')['button_text'] ?: 'Book a Consultation' ); ?></a>
+        <?php
+          $cta_link     = get_field('cta_section')['link'] ?: home_url( '/contact/' );
+          $cta_external = false !== strpos( $cta_link, 'wa.me' );
+          $cta_phone    = get_theme_mod( 'footer_whatsapp' );
+        ?>
+        <a href="<?php echo esc_url( $cta_link ); ?>" class="eg-cta-btn fade-left"<?php echo $cta_external ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo esc_html( get_field('cta_section')['button_text'] ?: 'Book a Consultation' ); ?></a>
+        <?php if ( $cta_phone ) : ?>
+          <p class="eg-cta-call">or call <a href="tel:+<?php echo esc_attr( preg_replace( '/\D+/', '', $cta_phone ) ); ?>"><?php echo esc_html( preg_replace( '/^\+91\s*/', '', $cta_phone ) ); ?></a></p>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -3540,6 +3657,19 @@ if ($faq_query->have_posts()) :
   line-height: 1.6;
   max-width: 640px;
   margin: 0 0 36px 0;
+}
+
+.eg-cta-call {
+  margin: 18px 0 0 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+}
+
+.eg-cta-call a {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .eg-cta-btn {

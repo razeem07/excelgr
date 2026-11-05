@@ -169,11 +169,21 @@ function mytheme_service_faq_question_id( $context, $index ) {
   return $context->canonical . '#faq-question-' . ( $index + 1 );
 }
 
-function mytheme_service_schema_webpage( $piece, $context ) {
-  if ( ! is_singular( 'service' ) ) {
-    return $piece;
+// FAQs shown on the current page: the homepage lists the FAQ posts, a service
+// page its "Services FAQ" field. Anything else has none.
+function mytheme_page_faq_items( $post_id ) {
+  if ( is_front_page() ) {
+    $items = array();
+    foreach ( get_posts( array( 'post_type' => 'faq', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC' ) ) as $faq ) {
+      $items[] = array( 'question' => $faq->post_title, 'answer' => $faq->post_content );
+    }
+    return $items;
   }
-  $faq_items = mytheme_service_faq_items( $context->id );
+  return is_singular( 'service' ) ? mytheme_service_faq_items( $post_id ) : array();
+}
+
+function mytheme_service_schema_webpage( $piece, $context ) {
+  $faq_items = mytheme_page_faq_items( $context->id );
   if ( $faq_items ) {
     $piece['@type']      = array_values( array_unique( array_merge( (array) $piece['@type'], array( 'FAQPage' ) ) ) );
     $piece['mainEntity'] = array();
@@ -186,6 +196,7 @@ function mytheme_service_schema_webpage( $piece, $context ) {
 add_filter( 'wpseo_schema_webpage', 'mytheme_service_schema_webpage', 10, 2 );
 
 function mytheme_service_schema_graph( $graph, $context ) {
+  $graph = mytheme_add_faq_questions( $graph, $context );
   if ( ! is_singular( 'service' ) ) {
     return $graph;
   }
@@ -231,8 +242,12 @@ function mytheme_service_schema_graph( $graph, $context ) {
     $service['offers'] = $offers;
   }
   $graph[] = $service;
+  return $graph;
+}
+add_filter( 'wpseo_schema_graph', 'mytheme_service_schema_graph', 10, 2 );
 
-  foreach ( mytheme_service_faq_items( $post_id ) as $i => $item ) {
+function mytheme_add_faq_questions( $graph, $context ) {
+  foreach ( mytheme_page_faq_items( $context->id ) as $i => $item ) {
     $graph[] = array(
       '@type'          => 'Question',
       '@id'            => mytheme_service_faq_question_id( $context, $i ),
@@ -245,4 +260,56 @@ function mytheme_service_schema_graph( $graph, $context ) {
   }
   return $graph;
 }
-add_filter( 'wpseo_schema_graph', 'mytheme_service_schema_graph', 10, 2 );
+
+// Yoast's Organization is the site's single business entity (services point to
+// it as provider). Mark it as a LocalBusiness and add the NAP, hours and
+// founding details; these must match the footer and Google Business Profile.
+function mytheme_schema_local_business( $piece ) {
+  $piece['@type'] = array_values( array_unique( array_merge( (array) $piece['@type'], array( 'LocalBusiness' ) ) ) );
+  $piece['description']  = 'Excel Graphics is an ISO 9001:2015-certified signage manufacturer in Kollam, Kerala, founded in 2002 by Premnath Balasubraamaniyam. The company designs, fabricates and installs LED sign boards, ACP cladding, name boards, metal letters and large-format printing for businesses across Kerala.';
+  $piece['image']        = home_url( '/wp-content/uploads/2026/09/banner_excel.jpg' );
+  $piece['telephone']    = '+91-474-2751550';
+  $piece['foundingDate'] = '2002';
+  $piece['founder']      = array( '@type' => 'Person', 'name' => 'Premnath Balasubraamaniyam' );
+  $piece['priceRange']   = '₹250–₹2,500 per sq ft';
+  $piece['hasCredential'] = array( '@type' => 'EducationalOccupationalCredential', 'credentialCategory' => 'certification', 'name' => 'ISO 9001:2015' );
+  $piece['address']      = array(
+    '@type'           => 'PostalAddress',
+    'streetAddress'   => 'Excel Tower, Near Congress Bhavan, Mundakkal West',
+    'addressLocality' => 'Kollam',
+    'addressRegion'   => 'Kerala',
+    'postalCode'      => '691001',
+    'addressCountry'  => 'IN',
+  );
+  $piece['openingHoursSpecification'] = array( array(
+    '@type'     => 'OpeningHoursSpecification',
+    'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ),
+    'opens'     => '09:30',
+    'closes'    => '19:30',
+  ) );
+  $piece['areaServed']   = array(
+    array( '@type' => 'City', 'name' => 'Kollam' ),
+    array( '@type' => 'State', 'name' => 'Kerala' ),
+  );
+  $piece['contactPoint'] = array(
+    '@type'             => 'ContactPoint',
+    'telephone'         => '+91-9895524550',
+    'contactType'       => 'sales',
+    'areaServed'        => 'IN',
+    'availableLanguage' => array( 'English', 'Malayalam' ),
+  );
+  if ( get_theme_mod( 'footer_email' ) ) {
+    $piece['email'] = get_theme_mod( 'footer_email' );
+  }
+  $same_as = isset( $piece['sameAs'] ) ? (array) $piece['sameAs'] : array();
+  foreach ( array( 'footer_facebook', 'footer_instagram', 'footer_youtube', 'footer_pinterest' ) as $mod ) {
+    if ( get_theme_mod( $mod ) ) {
+      $same_as[] = get_theme_mod( $mod );
+    }
+  }
+  if ( $same_as ) {
+    $piece['sameAs'] = array_values( array_unique( $same_as ) );
+  }
+  return $piece;
+}
+add_filter( 'wpseo_schema_organization', 'mytheme_schema_local_business' );

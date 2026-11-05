@@ -21,7 +21,7 @@ function bleizure_field_manifest() {
 						),
 						'content' => array(
 							'label' => 'Content',
-							'type' => 'text',
+							'type' => 'wysiwyg',
 						),
 						'card_1' => array(
 							'label' => 'Card 1',
@@ -74,7 +74,7 @@ function bleizure_field_manifest() {
 						),
 						'content' => array(
 							'label' => 'Content',
-							'type' => 'text',
+							'type' => 'wysiwyg',
 						),
 						'card_1' => array(
 							'label' => 'Card 1',
@@ -186,13 +186,37 @@ function bleizure_field_manifest() {
 							'type' => 'text',
 						),
 						'card_1_title' => array( 'label' => 'Card 1 Project Title', 'type' => 'text' ),
+						'card_1_caption' => array( 'label' => 'Card 1 Caption (one line under the title)', 'type' => 'text' ),
 						'image' => array( 'label' => 'Card 1 Image', 'type' => 'image' ),
 						'card_2_title' => array( 'label' => 'Card 2 Project Title', 'type' => 'text' ),
+						'card_2_caption' => array( 'label' => 'Card 2 Caption (one line under the title)', 'type' => 'text' ),
 						'image_2' => array( 'label' => 'Card 2 Image', 'type' => 'image' ),
 						'card_3_title' => array( 'label' => 'Card 3 Project Title', 'type' => 'text' ),
+						'card_3_caption' => array( 'label' => 'Card 3 Caption (one line under the title)', 'type' => 'text' ),
 						'image_3' => array( 'label' => 'Card 3 Image', 'type' => 'image' ),
 						'card_4_title' => array( 'label' => 'Card 4 Project Title', 'type' => 'text' ),
+						'card_4_caption' => array( 'label' => 'Card 4 Caption (one line under the title)', 'type' => 'text' ),
 						'image_4' => array( 'label' => 'Card 4 Image', 'type' => 'image' ),
+					),
+				),
+				'led_types' => array(
+					'group_title' => 'Home Page Settings',
+					'label' => 'LED Types & Prices Section (after Who We Are)',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge (small text above the heading)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Heading (H2)', 'type' => 'text' ),
+						'intro' => array( 'label' => 'Intro (short text beside the heading)', 'type' => 'wysiwyg' ),
+						'content' => array( 'label' => 'Content (full width, below)', 'type' => 'wysiwyg' ),
+					),
+				),
+				'monsoon' => array(
+					'group_title' => 'Home Page Settings',
+					'label' => 'Monsoon & Warranty Section (after Highlights)',
+					'fields' => array(
+						'badge' => array( 'label' => 'Badge (small text above the heading)', 'type' => 'text' ),
+						'title' => array( 'label' => 'Heading (H2)', 'type' => 'text' ),
+						'intro' => array( 'label' => 'Intro (short text beside the heading)', 'type' => 'wysiwyg' ),
+						'content' => array( 'label' => 'Content (full width, below)', 'type' => 'wysiwyg' ),
 					),
 				),
 				'clients_logo' => array(
@@ -727,6 +751,7 @@ function bleizure_field_manifest() {
 						'cta_text' => array( 'label' => 'Closing CTA Text', 'type' => 'text' ),
 						'schema_offers' => array( 'label' => 'Schema Starting Prices (INR), e.g. "Acrylic house name board | 750; Metal house name board | 1500" — add a unit for per-unit prices: "ACP board | 250 | sq ft"', 'type' => 'text' ),
 						'area_served' => array( 'label' => 'Schema Area Served — "Type | Name", e.g. "State | Kerala" (defaults to "City | Kollam")', 'type' => 'text' ),
+						'card_line' => array( 'label' => 'Homepage Card Line — one short line shown under this service on the homepage carousel', 'type' => 'text' ),
 					),
 				),
 			),
