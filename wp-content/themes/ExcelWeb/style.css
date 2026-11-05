@@ -18,6 +18,14 @@ html {
   margin: 0px !important;
 }
 
+/* Elements that slide in from off-screen (.fade-right etc.) widened the page
+   on phones and tablets, causing sideways scrolling. clip (unlike hidden)
+   doesn't create a scroll container, so position: sticky keeps working. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   font-family: "Sora", sans-serif;
 }
