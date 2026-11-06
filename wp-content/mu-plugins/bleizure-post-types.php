@@ -25,6 +25,7 @@ function register_clients_cpt() {
         'show_in_rest' => true,
         'menu_icon'    => 'dashicons-images-alt2',
         'supports'     => array('title', 'thumbnail', 'page-attributes'), // adds the native Order field
+        'rewrite'      => array('slug' => 'clients', 'with_front' => false), // not under the /blog/ post prefix
     ));
 }
 add_action('init', 'register_clients_cpt');
@@ -51,7 +52,7 @@ function register_cpt_faq() {
         'menu_icon'    => 'dashicons-editor-help',
         'supports'     => array('title', 'editor'),
         'has_archive'  => false,
-        'rewrite'      => array('slug' => 'faq'),
+        'rewrite'      => array('slug' => 'faq', 'with_front' => false), // not under the /blog/ post prefix
         'show_in_rest' => true,
     );
 

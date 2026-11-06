@@ -59,7 +59,8 @@ function bleizure_register_acf_replacement_post_types() {
 			'menu_icon'         => 'dashicons-admin-post',
 			'supports'          => $supports,
 			'has_archive'       => false,
-			'rewrite'           => array( 'slug' => $slug, 'with_front' => true, 'pages' => true, 'feeds' => false ),
+			// with_front false: post permalinks live under /blog/, these must not.
+			'rewrite'           => array( 'slug' => $slug, 'with_front' => false, 'pages' => true, 'feeds' => false ),
 			'query_var'         => true,
 		) );
 	}

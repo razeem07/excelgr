@@ -119,6 +119,29 @@ function mytheme_footer_secondary_link_classes( $atts, $item, $args ) {
 add_filter('nav_menu_link_attributes', 'mytheme_footer_secondary_link_classes', 10, 3);
 
 
+// Posts moved from /%year%/%monthnum%/%day%/%postname%/ to /blog/%postname%/
+// (Nov 2026). Send the old dated URLs, which Google and links still use, to
+// the post's current address with a permanent redirect.
+function mytheme_redirect_old_dated_post_urls() {
+  if ( ! is_404() ) {
+    return;
+  }
+  $path = trim( wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+  $base = trim( (string) wp_parse_url( home_url(), PHP_URL_PATH ), '/' );
+  if ( $base && 0 === strpos( $path, $base . '/' ) ) {
+    $path = substr( $path, strlen( $base ) + 1 );
+  }
+  if ( ! preg_match( '#^\d{4}/\d{2}/\d{2}/([^/]+)$#', $path, $m ) ) {
+    return;
+  }
+  $posts = get_posts( array( 'name' => sanitize_title( $m[1] ), 'post_type' => 'post', 'post_status' => 'publish', 'numberposts' => 1 ) );
+  if ( $posts ) {
+    wp_safe_redirect( get_permalink( $posts[0] ), 301 );
+    exit;
+  }
+}
+add_action( 'template_redirect', 'mytheme_redirect_old_dated_post_urls' );
+
 // Service page SEO. Yoast owns the title, meta description and breadcrumb; this
 // adds what Yoast doesn't generate for these pages — a Service piece and the
 // FAQ (WebPage becomes WebPage + FAQPage, same as Yoast's own FAQ block) —
@@ -170,8 +193,19 @@ function mytheme_service_faq_question_id( $context, $index ) {
 }
 
 // FAQs shown on the current page: the homepage lists the FAQ posts, a service
-// page its "Services FAQ" field. Anything else has none.
+// page its "Services FAQ" field, a blog post the seo-faq accordion in its
+// content. Anything else has none.
 function mytheme_page_faq_items( $post_id ) {
+  if ( is_singular( 'post' ) ) {
+    $items   = array();
+    $pattern = '#<details class="seo-faq-item">\s*<summary>\s*<h3>(.*?)</h3>\s*</summary>\s*<div class="seo-faq-answer">(.*?)</div>\s*</details>#s';
+    if ( preg_match_all( $pattern, get_post_field( 'post_content', $post_id ), $matches, PREG_SET_ORDER ) ) {
+      foreach ( $matches as $match ) {
+        $items[] = array( 'question' => trim( wp_strip_all_tags( $match[1] ) ), 'answer' => $match[2] );
+      }
+    }
+    return $items;
+  }
   if ( is_front_page() ) {
     $items = array();
     foreach ( get_posts( array( 'post_type' => 'faq', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'menu_order', 'order' => 'ASC' ) ) as $faq ) {
