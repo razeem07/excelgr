@@ -994,6 +994,77 @@
   margin: 0;
 }
 
+/* Design entries: photo beside the text (portrait photos stay a sensible size).
+   Also read for the ItemList schema — see mytheme_add_design_itemlist(). */
+.single-post-content .seo-design {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin: 0 0 34px 0;
+  padding: 0 0 34px 0;
+  border-bottom: 1px solid #e9ecef;
+  text-align: left;
+}
+
+.single-post-content .seo-design:last-of-type {
+  border-bottom: none;
+}
+
+.single-post-content .seo-design .seo-figure {
+  margin: 0;
+}
+
+.single-post-content .seo-design .seo-figure img {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.single-post-content .seo-design h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.3rem;
+  margin: 4px 0 12px 0;
+}
+
+.single-post-content .seo-design-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1ba3b0 0%, #0d7a85 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  transform: translateY(-2px);
+}
+
+.single-post-content .seo-design p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0 0 12px 0;
+}
+
+.single-post-content .seo-design-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 0 0;
+}
+
+.single-post-content .seo-design-tags span {
+  background-color: #eaf7f8;
+  color: #0d7a85;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 50px;
+}
+
 /* Closing CTA box */
 .single-post-content .seo-cta-box {
   background: linear-gradient(135deg, #1ba3b0 0%, #0d7a85 100%);
@@ -1053,6 +1124,10 @@
   }
   .single-post-content .seo-factors {
     grid-template-columns: 1fr;
+  }
+  .single-post-content .seo-design {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   .single-post-content .seo-answer,
   .single-post-content .seo-cta-box {

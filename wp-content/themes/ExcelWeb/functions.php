@@ -280,6 +280,25 @@ function mytheme_service_schema_graph( $graph, $context ) {
 }
 add_filter( 'wpseo_schema_graph', 'mytheme_service_schema_graph', 10, 2 );
 
+// Blog posts listing designs (seo-design blocks: <h3> name + <img>) get an
+// ItemList of those designs, so search engines can read them as a list.
+function mytheme_add_design_itemlist( $graph, $context ) {
+  if ( ! is_singular( 'post' ) ) {
+    return $graph;
+  }
+  $content = get_post_field( 'post_content', $context->id );
+  if ( ! preg_match_all( '#<div class="seo-design">.*?<img[^>]*src="([^"]+)".*?<h3>(?:<span class="seo-design-num">\d+</span>)?\s*(.*?)</h3>#s', $content, $matches, PREG_SET_ORDER ) ) {
+    return $graph;
+  }
+  $list = array( '@type' => 'ItemList', '@id' => $context->canonical . '#designs', 'name' => wp_strip_all_tags( get_the_title( $context->id ) ), 'itemListElement' => array() );
+  foreach ( $matches as $i => $m ) {
+    $list['itemListElement'][] = array( '@type' => 'ListItem', 'position' => $i + 1, 'name' => trim( wp_strip_all_tags( $m[2] ) ), 'image' => $m[1] );
+  }
+  $graph[] = $list;
+  return $graph;
+}
+add_filter( 'wpseo_schema_graph', 'mytheme_add_design_itemlist', 10, 2 );
+
 function mytheme_add_faq_questions( $graph, $context ) {
   foreach ( mytheme_page_faq_items( $context->id ) as $i => $item ) {
     $graph[] = array(
